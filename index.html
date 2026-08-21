@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus | Anlık Karar ve Paylaşım Havuzu</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+        :root {
+            --bg-color: #090a0f;
+            --card-bg: #131620;
+            --card-border: #1e2230;
+            --accent: #6366f1;
+            --accent-gradient: linear-gradient(135deg, #6366f1, #a855f7);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 480px;
+            min-height: 100vh;
+            background-color: var(--bg-color);
+            box-shadow: 0 0 40px rgba(0,0,0,0.8);
+            position: relative;
+            box-sizing: border-box;
+            padding-bottom: 90px;
+        }
+
+        .screen {
+            display: none;
+            padding: 24px 20px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* GİRİŞ EKRANI */
+        #login-screen {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .logo-box h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 0 0 10px 0;
+            letter-spacing: -1px;
+        }
+
+        .logo-box p {
+            color: var(--text-muted);
+            font-size: 1rem;
+            margin-bottom: 40px;
+        }
+
+        .input-group {
+            width: 100%;
+            max-width: 320px;
+            margin-bottom: 16px;
+        }
+
+        input, textarea {
+            width: 100%;
+            background-color: var(--card-bg);
+            border: 1px solid var(--card-border);
+            padding: 16px 20px;
+            border-radius: 16px;
+            color: white;
+            font-size: 1rem;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            box-sizing: border-box;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        input:focus, textarea:focus {
+            border-color: var(--accent);
+        }
+
+        .btn-primary {
+            width: 100%;
+            max-width: 320px;
+            background: var(--accent-gradient);
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 16px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
+            transition: transform 0.1s;
+        }
+
+        .btn-primary:active {
+            transform: scale(0.98);
+        }
+
+        /* ÜST BAR */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .header h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .user-badge {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            padding: 8px 14px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        /* AKIŞ / KARTLAR */
+        .dilemma-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+        }
+
+        .card-author {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .card-text {
+            font-size: 1.05rem;
+            line-height: 1.5;
+            margin-bottom: 16px;
+            font-weight: 500;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .vote-btn {
+            flex: 1;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--card-border);
+            padding: 12px;
+            border-radius: 12px;
+            color: white;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .vote-btn:hover {
+            background: var(--accent);
+            border-color: var(--accent);
+        }
+
+        /* ALT NAVİGASYON ÇUBUĞU */
+        .nav-bar {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            max-width: 480px;
+            background-color: rgba(13, 15, 22, 0.95);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid var(--card-border);
+            display: flex;
+            justify-content: space-around;
+            padding: 14px 0;
+            box-sizing: border-box;
+            z-index: 100;
+        }
+
+        .nav-item {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            transition: color 0.2s;
+        }
+
+        .nav-item.active-nav {
+            color: var(--accent);
+        }
+
+        /* YENİ İKİLEM EKLEME EKRANI */
+        textarea {
+            resize: none;
+            height: 120px;
+            margin-bottom: 16px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+
+        <!-- 1. GİRİŞ EKRANI -->
+        <div id="login-screen" class="screen active">
+            <div class="logo-box">
+                <h1>Nexus</h1>
+                <p>Anlık Karar ve Paylaşım Havuzu</p>
+            </div>
+            <div class="input-group">
+                <input type="text" id="username-input" placeholder="Kullanıcı adını gir...">
+            </div>
+            <button class="btn-primary" onclick="handleLogin()">Keşfe Başla</button>
+        </div>
+
+        <!-- 2. ANA AKIŞ (HAVUZ) -->
+        <div id="home-screen" class="screen">
+            <div class="header">
+                <h2>Anlık Havuz</h2>
+                <div class="user-badge" id="display-user">@kullanici</div>
+            </div>
+            
+            <div id="feed-container">
+                <!-- Örnek İkilem Kartları -->
+                <div class="dilemma-card">
+                    <div class="card-author">@mert • 2 dk önce</div>
+                    <div class="card-text">Akşam dışarı çıkacağım ama hangi tişörtü giyeceğime bir türlü karar veremiyorum. Siyah mı beyaz mı?</div>
+                    <div class="card-actions">
+                        <button class="vote-btn" onclick="vote(this, 'Siyah')">🖤 Siyah</button>
+                        <button class="vote-btn" onclick="vote(this, 'Beyaz')">🤍 Beyaz</button>
+                    </div>
+                </div>
+
+                <div class="dilemma-card">
+                    <div class="card-author">@elif • 5 dk önce</div>
+                    <div class="card-text">Şu an işi bırakıp tamamen kendi projeme mi odaklanmalıyım, yoksa biraz daha sabretmeli miyim?</div>
+                    <div class="card-actions">
+                        <button class="vote-btn" onclick="vote(this, 'Odaklan')">🚀 Odaklan</button>
+                        <button class="vote-btn" onclick="vote(this, 'Sabret')">⏳ Sabret</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. İKİLEM PAYLAŞMA EKRANI -->
+        <div id="share-screen" class="screen">
+            <div class="header">
+                <h2>İkilemini Fırlat</h2>
+            </div>
+            <textarea id="dilemma-text" placeholder="Aklını kurcalayan, karar veremediğin o şeyi buraya yaz..."></textarea>
+            <input type="text" id="option-a" placeholder="1. Seçenek (Örn: Siyah)" style="margin-bottom: 12px;">
+            <input type="text" id="option-b" placeholder="2. Seçenek (Örn: Beyaz)" style="margin-bottom: 20px;">
+            <button class="btn-primary" onclick="postDilemma()">Havuza Gönder</button>
+        </div>
+
+        <!-- ALT MENÜ -->
+        <div class="nav-bar" id="bottom-nav" style="display: none;">
+            <button class="nav-item active-nav" id="nav-home" onclick="switchTab('home-screen', 'nav-home')">🔥 Havuz</button>
+            <button class="nav-item" id="nav-share" onclick="switchTab('share-screen', 'nav-share')">➕ İkilem Paylaş</button>
+        </div>
+
+    </div>
+
+    <script>
+        let currentUser = "";
+
+        function handleLogin() {
+            const input = document.getElementById('username-input').value.trim();
+            if(!input) {
+                alert("Lütfen bir kullanıcı adı gir");
+                return;
+            }
+            currentUser = "@" + input;
+            document.getElementById('display-user').innerText = currentUser;
+            
+            document.getElementById('login-screen').classList.remove('active');
+            document.getElementById('home-screen').classList.add('active');
+            document.getElementById('bottom-nav').style.display = 'flex';
+        }
+
+        function switchTab(screenId, navId) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active-nav'));
+            
+            document.getElementById(screenId).classList.add('active');
+            document.getElementById(navId).classList.add('active-nav');
+        }
+
+        function vote(btn, choice) {
+            const card = btn.closest('.dilemma-card');
+            card.innerHTML = `<div style="text-align: center; padding: 20px; color: #6366f1; font-weight: 700;">Oyun kaydedildi: "${choice}" 🎯</div>`;
+        }
+
+        function postDilemma() {
+            const text = document.getElementById('dilemma-text').value.trim();
+            const optA = document.getElementById('option-a').value.trim();
+            const optB = document.getElementById('option-b').value.trim();
+
+            if(!text || !optA || !optB) {
+                alert("Lütfen tüm alanları doldur");
+                return;
+            }
+
+            const feed = document.getElementById('feed-container');
+            const newCard = document.createElement('div');
+            newCard.className = 'dilemma-card';
+            newCard.innerHTML = `
+                <div class="card-author">${currentUser} • Şimdi</div>
+                <div class="card-text">${text}</div>
+                <div class="card-actions">
+                    <button class="vote-btn" onclick="vote(this, '${optA}')">${optA}</button>
+                    <button class="vote-btn" onclick="vote(this, '${optB}')">${optB}</button>
+                </div>
+            `;
+
+            feed.prepend(newCard);
+
+            document.getElementById('dilemma-text').value = '';
+            document.getElementById('option-a').value = '';
+            document.getElementById('option-b').value = '';
+            
+            switchTab('home-screen', 'nav-home');
+        }
+    </script>
+</body>
+</html>
