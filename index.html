@@ -1,372 +1,2332 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nexus | Anlık Karar ve Paylaşım Havuzu</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#08090d">
+<title>Nexus — Kararların Gücü</title>
 
-        :root {
-            --bg-color: #090a0f;
-            --card-bg: #131620;
-            --card-border: #1e2230;
-            --accent: #6366f1;
-            --accent-gradient: linear-gradient(135deg, #6366f1, #a855f7);
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-        }
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-        }
+:root{
+    --bg:#08090d;
+    --bg2:#0d0f16;
+    --card:#12151e;
+    --card2:#171a24;
+    --border:#242938;
+    --purple:#7c5cff;
+    --purple2:#a855f7;
+    --green:#22c55e;
+    --red:#ef4444;
+    --yellow:#f59e0b;
+    --blue:#38bdf8;
+    --text:#f8fafc;
+    --muted:#8d96aa;
+    --gradient:linear-gradient(135deg,#6d5dfc,#a855f7);
+}
 
-        .app-container {
-            width: 100%;
-            max-width: 480px;
-            min-height: 100vh;
-            background-color: var(--bg-color);
-            box-shadow: 0 0 40px rgba(0,0,0,0.8);
-            position: relative;
-            box-sizing: border-box;
-            padding-bottom: 90px;
-        }
+*{
+    box-sizing:border-box;
+    -webkit-tap-highlight-color:transparent;
+}
 
-        .screen {
-            display: none;
-            padding: 24px 20px;
-            animation: fadeIn 0.3s ease;
-        }
+html,body{
+    margin:0;
+    padding:0;
+    background:#050609;
+    color:var(--text);
+    font-family:'Plus Jakarta Sans',sans-serif;
+}
 
-        .screen.active {
-            display: block;
-        }
+body{
+    min-height:100vh;
+}
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(6px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+button,
+input,
+textarea{
+    font-family:inherit;
+}
 
-        /* GİRİŞ EKRANI */
-        #login-screen {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            text-align: center;
-            padding: 20px;
-            box-sizing: border-box;
-        }
+button{
+    cursor:pointer;
+}
 
-        .logo-box h1 {
-            font-size: 3rem;
-            font-weight: 800;
-            background: var(--accent-gradient);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin: 0 0 10px 0;
-            letter-spacing: -1px;
-        }
+.app{
+    width:100%;
+    max-width:500px;
+    min-height:100vh;
+    margin:auto;
+    background:var(--bg);
+    position:relative;
+    overflow:hidden;
+}
 
-        .logo-box p {
-            color: var(--text-muted);
-            font-size: 1rem;
-            margin-bottom: 40px;
-        }
+/* ================= LOGIN ================= */
 
-        .input-group {
-            width: 100%;
-            max-width: 320px;
-            margin-bottom: 16px;
-        }
+#login{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:28px;
+}
 
-        input, textarea {
-            width: 100%;
-            background-color: var(--card-bg);
-            border: 1px solid var(--card-border);
-            padding: 16px 20px;
-            border-radius: 16px;
-            color: white;
-            font-size: 1rem;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            box-sizing: border-box;
-            outline: none;
-            transition: border-color 0.2s;
-        }
+.login-box{
+    width:100%;
+    text-align:center;
+}
 
-        input:focus, textarea:focus {
-            border-color: var(--accent);
-        }
+.logo{
+    width:82px;
+    height:82px;
+    border-radius:26px;
+    margin:0 auto 22px;
+    background:var(--gradient);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:38px;
+    font-weight:800;
+    box-shadow:0 20px 60px rgba(124,92,255,.3);
+}
 
-        .btn-primary {
-            width: 100%;
-            max-width: 320px;
-            background: var(--accent-gradient);
-            color: white;
-            border: none;
-            padding: 16px;
-            border-radius: 16px;
-            font-size: 1rem;
-            font-weight: 700;
-            cursor: pointer;
-            box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
-            transition: transform 0.1s;
-        }
+.logo-title{
+    font-size:42px;
+    font-weight:800;
+    letter-spacing:-2px;
+    margin-bottom:8px;
+}
 
-        .btn-primary:active {
-            transform: scale(0.98);
-        }
+.logo-sub{
+    color:var(--muted);
+    line-height:1.6;
+    margin-bottom:35px;
+}
 
-        /* ÜST BAR */
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 24px;
-        }
+.input{
+    width:100%;
+    padding:17px 18px;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:16px;
+    color:white;
+    outline:none;
+    font-size:15px;
+    margin-bottom:12px;
+}
 
-        .header h2 {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin: 0;
-        }
+.input:focus,
+textarea:focus{
+    border-color:var(--purple);
+}
 
-        .user-badge {
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            padding: 8px 14px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: var(--text-muted);
-        }
+.primary{
+    width:100%;
+    border:0;
+    border-radius:16px;
+    padding:17px;
+    color:white;
+    font-weight:800;
+    font-size:15px;
+    background:var(--gradient);
+    box-shadow:0 12px 30px rgba(124,92,255,.25);
+}
 
-        /* AKIŞ / KARTLAR */
-        .dilemma-card {
-            background-color: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: 20px;
-            padding: 20px;
-            margin-bottom: 16px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-        }
+.small-note{
+    color:#626b7d;
+    font-size:11px;
+    margin-top:16px;
+}
 
-        .card-author {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            margin-bottom: 8px;
-            font-weight: 500;
-        }
+/* ================= APP ================= */
 
-        .card-text {
-            font-size: 1.05rem;
-            line-height: 1.5;
-            margin-bottom: 16px;
-            font-weight: 500;
-        }
+#mainApp{
+    display:none;
+    min-height:100vh;
+    padding-bottom:92px;
+}
 
-        .card-actions {
-            display: flex;
-            gap: 10px;
-        }
+.screen{
+    display:none;
+    padding:20px 16px;
+    animation:fade .25s ease;
+}
 
-        .vote-btn {
-            flex: 1;
-            background: rgba(255,255,255,0.03);
-            border: 1px solid var(--card-border);
-            padding: 12px;
-            border-radius: 12px;
-            color: white;
-            font-weight: 600;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
+.screen.active{
+    display:block;
+}
 
-        .vote-btn:hover {
-            background: var(--accent);
-            border-color: var(--accent);
-        }
+@keyframes fade{
+    from{
+        opacity:0;
+        transform:translateY(8px);
+    }
+    to{
+        opacity:1;
+        transform:none;
+    }
+}
 
-        /* ALT NAVİGASYON ÇUBUĞU (Başlangıçta gizli) */
-        .nav-bar {
-            display: none; 
-            position: fixed;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100%;
-            max-width: 480px;
-            background-color: rgba(13, 15, 22, 0.95);
-            backdrop-filter: blur(10px);
-            border-top: 1px solid var(--card-border);
-            justify-content: space-around;
-            padding: 14px 0;
-            box-sizing: border-box;
-            z-index: 100;
-        }
+/* ================= HEADER ================= */
 
-        .nav-bar.visible {
-            display: flex;
-        }
+.header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
 
-        .nav-item {
-            background: none;
-            border: none;
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            font-weight: 600;
-            cursor: pointer;
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            transition: color 0.2s;
-        }
+.header h1{
+    font-size:24px;
+    margin:0;
+    letter-spacing:-.8px;
+}
 
-        .nav-item.active-nav {
-            color: var(--accent);
-        }
+.header p{
+    margin:5px 0 0;
+    color:var(--muted);
+    font-size:12px;
+}
 
-        /* YENİ İKİLEM EKLEME EKRANI */
-        textarea {
-            resize: none;
-            height: 120px;
-            margin-bottom: 16px;
-        }
-    </style>
+.avatar{
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    background:var(--gradient);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:800;
+}
+
+/* ================= TICKER ================= */
+
+.ticker{
+    background:linear-gradient(135deg,#171328,#151321);
+    border:1px solid #292342;
+    border-radius:17px;
+    padding:14px;
+    margin-bottom:18px;
+}
+
+.ticker-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.live{
+    display:flex;
+    align-items:center;
+    gap:7px;
+    color:#c4b5fd;
+    font-size:11px;
+    font-weight:700;
+}
+
+.dot{
+    width:7px;
+    height:7px;
+    background:#22c55e;
+    border-radius:50%;
+    box-shadow:0 0 10px #22c55e;
+}
+
+.ticker strong{
+    font-size:12px;
+}
+
+/* ================= FILTER ================= */
+
+.filters{
+    display:flex;
+    gap:8px;
+    overflow-x:auto;
+    scrollbar-width:none;
+    margin-bottom:18px;
+}
+
+.filters::-webkit-scrollbar{
+    display:none;
+}
+
+.filter{
+    white-space:nowrap;
+    border:1px solid var(--border);
+    background:var(--card);
+    color:var(--muted);
+    border-radius:20px;
+    padding:9px 13px;
+    font-size:11px;
+    font-weight:700;
+}
+
+.filter.active{
+    color:white;
+    background:#242039;
+    border-color:#5541b4;
+}
+
+/* ================= CARD ================= */
+
+.decision{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:21px;
+    padding:17px;
+    margin-bottom:15px;
+    box-shadow:0 10px 30px rgba(0,0,0,.15);
+}
+
+.decision-head{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:14px;
+}
+
+.user-avatar{
+    width:35px;
+    height:35px;
+    border-radius:50%;
+    background:linear-gradient(135deg,#333a52,#6255a5);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:12px;
+    font-weight:800;
+}
+
+.author{
+    font-size:12px;
+    font-weight:700;
+}
+
+.author span{
+    display:block;
+    color:var(--muted);
+    font-size:10px;
+    font-weight:500;
+    margin-top:3px;
+}
+
+.category{
+    margin-left:auto;
+    color:#b8a9ff;
+    background:#211d35;
+    border-radius:10px;
+    padding:6px 8px;
+    font-size:9px;
+    font-weight:700;
+}
+
+.question{
+    font-size:16px;
+    line-height:1.55;
+    font-weight:700;
+    margin-bottom:15px;
+}
+
+.options{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:9px;
+}
+
+.option{
+    position:relative;
+    overflow:hidden;
+    border:1px solid var(--border);
+    background:#171a23;
+    color:white;
+    border-radius:14px;
+    padding:13px 9px;
+    font-weight:700;
+    font-size:12px;
+    min-height:55px;
+    transition:.2s;
+}
+
+.option:active{
+    transform:scale(.97);
+}
+
+.option.voted{
+    border-color:var(--purple);
+    background:#211c3b;
+}
+
+.option-bar{
+    position:absolute;
+    left:0;
+    bottom:0;
+    height:3px;
+    background:var(--gradient);
+    width:0%;
+    transition:.5s;
+}
+
+.percent{
+    display:block;
+    color:var(--muted);
+    font-size:10px;
+    margin-top:5px;
+}
+
+.card-bottom{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-top:13px;
+    color:#697386;
+    font-size:10px;
+}
+
+.card-links{
+    display:flex;
+    gap:14px;
+}
+
+.text-button{
+    border:0;
+    background:none;
+    color:#7f8aa0;
+    padding:0;
+    font-size:10px;
+    font-weight:700;
+}
+
+/* ================= COMMENTS ================= */
+
+.comments{
+    display:none;
+    margin-top:14px;
+    padding-top:13px;
+    border-top:1px solid var(--border);
+}
+
+.comments.show{
+    display:block;
+}
+
+.comment{
+    display:flex;
+    gap:9px;
+    margin-bottom:12px;
+}
+
+.comment-avatar{
+    width:27px;
+    height:27px;
+    flex:none;
+    border-radius:50%;
+    background:#292f40;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:9px;
+    font-weight:800;
+}
+
+.comment-body{
+    background:#191c26;
+    border-radius:12px;
+    padding:8px 10px;
+    font-size:11px;
+    line-height:1.4;
+}
+
+.trust{
+    color:#8b7cff;
+    font-size:8px;
+    font-weight:700;
+    margin-top:3px;
+}
+
+/* ================= SHARE ================= */
+
+.form-title{
+    font-size:23px;
+    font-weight:800;
+    margin-bottom:5px;
+}
+
+.form-sub{
+    color:var(--muted);
+    font-size:12px;
+    line-height:1.5;
+    margin-bottom:22px;
+}
+
+textarea{
+    width:100%;
+    height:130px;
+    resize:none;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:17px;
+    padding:16px;
+    color:white;
+    outline:none;
+    font-size:14px;
+    line-height:1.5;
+}
+
+.field-label{
+    color:#778196;
+    font-size:10px;
+    font-weight:700;
+    margin:15px 0 7px;
+}
+
+.category-select{
+    width:100%;
+    background:var(--card);
+    color:white;
+    border:1px solid var(--border);
+    padding:14px;
+    border-radius:14px;
+    outline:none;
+}
+
+.add-option{
+    border:1px dashed #3a4050;
+    background:none;
+    color:#9586ff;
+    width:100%;
+    padding:12px;
+    border-radius:13px;
+    margin-top:10px;
+    font-size:11px;
+    font-weight:700;
+}
+
+.result-info{
+    margin-top:15px;
+    padding:13px;
+    background:#11151e;
+    border:1px solid var(--border);
+    border-radius:14px;
+    color:#798398;
+    font-size:10px;
+    line-height:1.5;
+}
+
+/* ================= LEADERBOARD ================= */
+
+.leader-hero{
+    background:linear-gradient(145deg,#1c1734,#13151e);
+    border:1px solid #302750;
+    border-radius:22px;
+    padding:20px;
+    text-align:center;
+    margin-bottom:18px;
+}
+
+.crown{
+    font-size:34px;
+}
+
+.hero-name{
+    font-size:19px;
+    font-weight:800;
+    margin-top:5px;
+}
+
+.hero-score{
+    color:#a99bff;
+    font-size:12px;
+    margin-top:5px;
+}
+
+.rank-tabs{
+    display:flex;
+    background:#11141c;
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:4px;
+    margin-bottom:15px;
+}
+
+.rank-tab{
+    flex:1;
+    border:0;
+    background:none;
+    color:#70798c;
+    padding:10px 4px;
+    border-radius:10px;
+    font-size:10px;
+    font-weight:700;
+}
+
+.rank-tab.active{
+    color:white;
+    background:#29233e;
+}
+
+.rank-row{
+    display:flex;
+    align-items:center;
+    gap:11px;
+    background:var(--card);
+    border:1px solid var(--border);
+    padding:13px;
+    border-radius:15px;
+    margin-bottom:8px;
+}
+
+.rank-number{
+    width:23px;
+    text-align:center;
+    font-weight:800;
+    font-size:12px;
+}
+
+.rank-avatar{
+    width:36px;
+    height:36px;
+    border-radius:50%;
+    background:#2d3344;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:10px;
+    font-weight:800;
+}
+
+.rank-info{
+    flex:1;
+}
+
+.rank-info strong{
+    font-size:11px;
+}
+
+.rank-info span{
+    display:block;
+    color:#697387;
+    font-size:9px;
+    margin-top:3px;
+}
+
+.rank-score{
+    text-align:right;
+    color:#9b8cff;
+    font-size:12px;
+    font-weight:800;
+}
+
+.rank-score small{
+    display:block;
+    color:#647085;
+    font-size:8px;
+}
+
+/* ================= PROFILE ================= */
+
+.profile-top{
+    text-align:center;
+    padding:10px 0 20px;
+}
+
+.profile-avatar{
+    width:76px;
+    height:76px;
+    border-radius:50%;
+    background:var(--gradient);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:24px;
+    font-weight:800;
+    margin:auto;
+    box-shadow:0 15px 40px rgba(124,92,255,.2);
+}
+
+.profile-name{
+    font-size:20px;
+    font-weight:800;
+    margin-top:12px;
+}
+
+.profile-title{
+    color:#9d91ff;
+    font-size:10px;
+    margin-top:4px;
+}
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:8px;
+    margin-bottom:18px;
+}
+
+.stat{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:15px;
+    padding:14px 6px;
+    text-align:center;
+}
+
+.stat strong{
+    display:block;
+    font-size:17px;
+}
+
+.stat span{
+    color:#697386;
+    font-size:8px;
+    margin-top:4px;
+    display:block;
+}
+
+.section-title{
+    font-size:14px;
+    font-weight:800;
+    margin:20px 0 10px;
+}
+
+.badges{
+    display:flex;
+    gap:8px;
+    overflow-x:auto;
+}
+
+.badge{
+    min-width:86px;
+    text-align:center;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:12px 7px;
+}
+
+.badge-icon{
+    font-size:22px;
+}
+
+.badge span{
+    display:block;
+    font-size:8px;
+    color:#788196;
+    margin-top:6px;
+}
+
+/* ================= RESULT ================= */
+
+.pending{
+    background:linear-gradient(135deg,#17152a,#11141d);
+    border:1px solid #302b4d;
+    border-radius:18px;
+    padding:16px;
+    margin-bottom:12px;
+}
+
+.pending-label{
+    color:#a99cff;
+    font-size:9px;
+    font-weight:800;
+    margin-bottom:8px;
+}
+
+.pending-question{
+    font-size:13px;
+    font-weight:700;
+    line-height:1.4;
+}
+
+.result-buttons{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:7px;
+    margin-top:12px;
+}
+
+.result-btn{
+    border:1px solid var(--border);
+    background:#191c25;
+    color:#aaa;
+    padding:10px 4px;
+    border-radius:10px;
+    font-size:9px;
+    font-weight:700;
+}
+
+/* ================= NAV ================= */
+
+.bottom-nav{
+    position:fixed;
+    bottom:0;
+    left:50%;
+    transform:translateX(-50%);
+    width:100%;
+    max-width:500px;
+    height:76px;
+    background:rgba(10,12,17,.94);
+    backdrop-filter:blur(18px);
+    border-top:1px solid var(--border);
+    display:flex;
+    justify-content:space-around;
+    align-items:center;
+    z-index:50;
+}
+
+.nav{
+    border:0;
+    background:none;
+    color:#697386;
+    font-size:9px;
+    font-weight:700;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:5px;
+}
+
+.nav-icon{
+    font-size:20px;
+}
+
+.nav.active{
+    color:#9a8cff;
+}
+
+.nav-create{
+    width:48px;
+    height:48px;
+    border-radius:16px;
+    border:0;
+    background:var(--gradient);
+    color:white;
+    font-size:25px;
+    box-shadow:0 10px 25px rgba(124,92,255,.3);
+}
+
+/* ================= TOAST ================= */
+
+.toast{
+    position:fixed;
+    left:50%;
+    bottom:92px;
+    transform:translate(-50%,20px);
+    background:#252a37;
+    border:1px solid #3b4252;
+    color:white;
+    padding:11px 16px;
+    border-radius:13px;
+    font-size:11px;
+    font-weight:700;
+    opacity:0;
+    pointer-events:none;
+    transition:.3s;
+    z-index:100;
+    white-space:nowrap;
+}
+
+.toast.show{
+    opacity:1;
+    transform:translate(-50%,0);
+}
+
+/* ================= DESKTOP ================= */
+
+@media(min-width:700px){
+    body{
+        padding:20px 0;
+    }
+
+    .app{
+        border-radius:25px;
+        min-height:calc(100vh - 40px);
+        box-shadow:0 0 70px rgba(0,0,0,.5);
+    }
+
+    .bottom-nav{
+        bottom:20px;
+        border-radius:20px;
+        width:460px;
+        border:1px solid var(--border);
+    }
+}
+</style>
 </head>
+
 <body>
 
-    <div class="app-container">
+<div class="app">
 
-        <!-- 1. GİRİŞ EKRANI -->
-        <div id="login-screen" class="screen active">
-            <div class="logo-box">
-                <h1>Nexus</h1>
-                <p>Anlık Karar ve Paylaşım Havuzu</p>
-            </div>
-            <div class="input-group">
-                <input type="text" id="username-input" placeholder="Kullanıcı adını gir...">
-            </div>
-            <button class="btn-primary" onclick="handleLogin()">Keşfe Başla</button>
+<!-- ================= LOGIN ================= -->
+
+<section id="login">
+    <div class="login-box">
+
+        <div class="logo">N</div>
+
+        <div class="logo-title">Nexus</div>
+
+        <div class="logo-sub">
+            Kararını topluluğa bırak.<br>
+            Sonucunu geri getir.<br>
+            <strong>Kim daha iyi karar veriyor?</strong>
         </div>
 
-        <!-- 2. ANA AKIŞ (HAVUZ) -->
-        <div id="home-screen" class="screen">
-            <div class="header">
-                <h2>Anlık Havuz</h2>
-                <div class="user-badge" id="display-user">@kullanici</div>
-            </div>
-            
-            <div id="feed-container">
-                <!-- Örnek İkilem Kartları -->
-                <div class="dilemma-card">
-                    <div class="card-author">@mert • 2 dk önce</div>
-                    <div class="card-text">Akşam dışarı çıkacağım ama hangi tişörtü giyeceğime bir türlü karar veremiyorum. Siyah mı beyaz mı?</div>
-                    <div class="card-actions">
-                        <button class="vote-btn" onclick="vote(this, 'Siyah')">🖤 Siyah</button>
-                        <button class="vote-btn" onclick="vote(this, 'Beyaz')">🤍 Beyaz</button>
-                    </div>
-                </div>
+        <input
+            id="username"
+            class="input"
+            type="text"
+            maxlength="20"
+            placeholder="Kullanıcı adın..."
+        >
 
-                <div class="dilemma-card">
-                    <div class="card-author">@elif • 5 dk önce</div>
-                    <div class="card-text">Şu an işi bırakıp tamamen kendi projeme mi odaklanmalıyım, yoksa biraz daha sabretmeli miyim?</div>
-                    <div class="card-actions">
-                        <button class="vote-btn" onclick="vote(this, 'Odaklan')">🚀 Odaklan</button>
-                        <button class="vote-btn" onclick="vote(this, 'Sabret')">⏳ Sabret</button>
-                    </div>
-                </div>
-            </div>
+        <button class="primary" onclick="login()">
+            Nexus'a Gir →
+        </button>
+
+        <div class="small-note">
+            Üyelik gerektirmez • Demo sürüm
         </div>
 
-        <!-- 3. İKİLEM PAYLAŞMA EKRANI -->
-        <div id="share-screen" class="screen">
-            <div class="header">
-                <h2>İkilemini Fırlat</h2>
-            </div>
-            <textarea id="dilemma-text" placeholder="Aklını kurcalayan, karar veremediğin o şeyi buraya yaz..."></textarea>
-            <input type="text" id="option-a" placeholder="1. Seçenek (Örn: Siyah)" style="margin-bottom: 12px;">
-            <input type="text" id="option-b" placeholder="2. Seçenek (Örn: Beyaz)" style="margin-bottom: 20px;">
-            <button class="btn-primary" onclick="postDilemma()">Havuza Gönder</button>
+    </div>
+</section>
+
+
+<!-- ================= MAIN APP ================= -->
+
+<main id="mainApp">
+
+<!-- HOME -->
+
+<section id="home" class="screen active">
+
+    <div class="header">
+        <div>
+            <h1>🔥 Nexus</h1>
+            <p>Topluluk şu anda karar veriyor</p>
         </div>
 
-        <!-- ALT MENÜ BAR (Giriş yapınca görünür) -->
-        <div class="nav-bar" id="bottom-nav">
-            <button class="nav-item active-nav" id="nav-home" onclick="switchTab('home-screen', 'nav-home')">🔥 Havuz</button>
-            <button class="nav-item" id="nav-share" onclick="switchTab('share-screen', 'nav-share')">➕ İkilem Paylaş</button>
+        <div class="avatar" id="headerAvatar">N</div>
+    </div>
+
+    <div class="ticker">
+        <div class="ticker-top">
+            <div class="live">
+                <span class="dot"></span>
+                CANLI NEXUS
+            </div>
+
+            <strong id="liveCount">1.284 kişi aktif</strong>
+        </div>
+    </div>
+
+    <div class="filters">
+        <button class="filter active" onclick="filterFeed(this,'all')">🔥 Tümü</button>
+        <button class="filter" onclick="filterFeed(this,'İş')">💼 İş</button>
+        <button class="filter" onclick="filterFeed(this,'Aşk')">❤️ Aşk</button>
+        <button class="filter" onclick="filterFeed(this,'Günlük')">☕ Günlük</button>
+        <button class="filter" onclick="filterFeed(this,'Alışveriş')">🛍️ Alışveriş</button>
+    </div>
+
+    <div id="feed"></div>
+
+</section>
+
+
+<!-- SHARE -->
+
+<section id="create" class="screen">
+
+    <div class="form-title">
+        🧠 Kararını Fırlat
+    </div>
+
+    <div class="form-sub">
+        Kararsız kaldığın şeyi Nexus'a bırak.
+        Topluluk senin yerine karar versin.
+    </div>
+
+    <textarea
+        id="question"
+        placeholder="Örn: Bu işi kabul etmeli miyim?"
+    ></textarea>
+
+    <div class="field-label">SEÇENEKLER</div>
+
+    <input
+        id="option1"
+        class="input"
+        placeholder="1. seçenek"
+    >
+
+    <input
+        id="option2"
+        class="input"
+        placeholder="2. seçenek"
+    >
+
+    <button class="add-option" onclick="addThirdOption()">
+        + Üçüncü seçenek ekle
+    </button>
+
+    <div id="thirdOptionBox" style="display:none;margin-top:10px;">
+        <input
+            id="option3"
+            class="input"
+            placeholder="3. seçenek"
+        >
+    </div>
+
+    <div class="field-label">KATEGORİ</div>
+
+    <select id="category" class="category-select">
+        <option>Günlük</option>
+        <option>İş</option>
+        <option>Aşk</option>
+        <option>Alışveriş</option>
+        <option>Arkadaşlık</option>
+        <option>Hayat</option>
+    </select>
+
+    <div class="result-info">
+        💡 Kararını uyguladıktan sonra sonucu bildir.
+        Sonucun, senin ve sana oy verenlerin güvenilirlik
+        skorunu etkileyebilir.
+    </div>
+
+    <button class="primary" style="margin-top:18px;" onclick="createDecision()">
+        🚀 Nexus'a Sor
+    </button>
+
+</section>
+
+
+<!-- LEADERBOARD -->
+
+<section id="leaderboard" class="screen">
+
+    <div class="header">
+        <div>
+            <h1>🏆 Liderlik</h1>
+            <p>Kim daha iyi karar veriyor?</p>
+        </div>
+    </div>
+
+    <div class="leader-hero">
+        <div class="crown">👑</div>
+        <div class="hero-name" id="leaderHeroName">@Mert</div>
+        <div class="hero-score" id="leaderHeroScore">
+            %91 güvenilirlik • 128 karar
+        </div>
+    </div>
+
+    <div class="rank-tabs">
+
+        <button class="rank-tab active"
+                onclick="rankPeriod(this,'day')">
+            Bugün
+        </button>
+
+        <button class="rank-tab"
+                onclick="rankPeriod(this,'week')">
+            Hafta
+        </button>
+
+        <button class="rank-tab"
+                onclick="rankPeriod(this,'month')">
+            Ay
+        </button>
+
+        <button class="rank-tab"
+                onclick="rankPeriod(this,'all')">
+            Tümü
+        </button>
+
+    </div>
+
+    <div id="ranking"></div>
+
+</section>
+
+
+<!-- RESULTS -->
+
+<section id="results" class="screen">
+
+    <div class="header">
+        <div>
+            <h1>📊 Sonuçlarım</h1>
+            <p>Verdiğin kararların sonuçlarını bildir</p>
+        </div>
+    </div>
+
+    <div id="pendingResults"></div>
+
+</section>
+
+
+<!-- PROFILE -->
+
+<section id="profile" class="screen">
+
+    <div class="profile-top">
+
+        <div class="profile-avatar" id="profileAvatar">
+            N
+        </div>
+
+        <div class="profile-name" id="profileName">
+            @kullanici
+        </div>
+
+        <div class="profile-title">
+            🎯 Karar Avcısı
         </div>
 
     </div>
 
-    <script>
-        let currentUser = "";
+    <div class="stats">
 
-        function handleLogin() {
-            const input = document.getElementById('username-input').value.trim();
-            if(!input) {
-                alert("Lütfen bir kullanıcı adı gir");
-                return;
+        <div class="stat">
+            <strong id="statScore">0%</strong>
+            <span>GÜVENİLİRLİK</span>
+        </div>
+
+        <div class="stat">
+            <strong id="statDecisions">0</strong>
+            <span>KARAR</span>
+        </div>
+
+        <div class="stat">
+            <strong id="statCorrect">0</strong>
+            <span>İSABET</span>
+        </div>
+
+    </div>
+
+    <div class="section-title">
+        🏅 Rozetler
+    </div>
+
+    <div class="badges">
+
+        <div class="badge">
+            <div class="badge-icon">🌱</div>
+            <span>İlk Karar</span>
+        </div>
+
+        <div class="badge">
+            <div class="badge-icon">🎯</div>
+            <span>İsabetçi</span>
+        </div>
+
+        <div class="badge">
+            <div class="badge-icon">🔥</div>
+            <span>Seri Karar</span>
+        </div>
+
+        <div class="badge">
+            <div class="badge-icon">👑</div>
+            <span>Lider</span>
+        </div>
+
+    </div>
+
+    <div class="section-title">
+        📈 En güçlü olduğun alan
+    </div>
+
+    <div class="decision">
+        <div style="font-size:12px;font-weight:800;">
+            💼 İş kararları
+        </div>
+
+        <div style="margin-top:8px;color:#9a8cff;font-size:20px;font-weight:800;">
+            %82
+        </div>
+
+        <div style="margin-top:4px;color:#687286;font-size:9px;">
+            17 karardan 14 isabet
+        </div>
+    </div>
+
+</section>
+
+
+<!-- BOTTOM NAV -->
+
+<nav class="bottom-nav">
+
+    <button class="nav active" onclick="showScreen('home',this)">
+        <span class="nav-icon">🔥</span>
+        Havuz
+    </button>
+
+    <button class="nav" onclick="showScreen('leaderboard',this)">
+        <span class="nav-icon">🏆</span>
+        Liderlik
+    </button>
+
+    <button class="nav-create" onclick="showScreen('create',this)">
+        +
+    </button>
+
+    <button class="nav" onclick="showScreen('results',this)">
+        <span class="nav-icon">📊</span>
+        Sonuçlar
+    </button>
+
+    <button class="nav" onclick="showScreen('profile',this)">
+        <span class="nav-icon">👤</span>
+        Profil
+    </button>
+
+</nav>
+
+</main>
+
+<div id="toast" class="toast"></div>
+
+</div>
+
+
+<script>
+
+/* =========================================================
+   NEXUS V2
+   LOCAL DATA SYSTEM
+========================================================= */
+
+let currentUser = "";
+
+let userData = {
+    username:"",
+    decisions:0,
+    correct:0,
+    votes:0,
+    score:0
+};
+
+let decisions = [
+    {
+        id:1,
+        user:"@mert",
+        avatar:"M",
+        category:"Günlük",
+        time:"2 dk",
+        question:"Akşam dışarı çıkacağım. Siyah mı beyaz mı giymeliyim?",
+        options:[
+            {text:"🖤 Siyah",votes:73},
+            {text:"🤍 Beyaz",votes:27}
+        ],
+        totalVotes:100,
+        comments:[
+            {
+                user:"@elif",
+                text:"Siyah daha garanti.",
+                trust:87
             }
-            currentUser = "@" + input;
-            document.getElementById('display-user').innerText = currentUser;
-            
-            // Giriş ekranını kapat, ana akışı aç
-            document.getElementById('login-screen').classList.remove('active');
-            document.getElementById('home-screen').classList.add('active');
-            
-            // Alt menüyü görünür yap
-            document.getElementById('bottom-nav').classList.add('visible');
-        }
+        ],
+        voted:false
+    },
 
-        function switchTab(screenId, navId) {
-            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active-nav'));
-            
-            document.getElementById(screenId).classList.add('active');
-            document.getElementById(navId).classList.add('active-nav');
-        }
-
-        function vote(btn, choice) {
-            const card = btn.closest('.dilemma-card');
-            card.innerHTML = `<div style="text-align: center; padding: 20px; color: #6366f1; font-weight: 700;">Oyun kaydedildi: "${choice}" 🎯</div>`;
-        }
-
-        function postDilemma() {
-            const text = document.getElementById('dilemma-text').value.trim();
-            const optA = document.getElementById('option-a').value.trim();
-            const optB = document.getElementById('option-b').value.trim();
-
-            if(!text || !optA || !optB) {
-                alert("Lütfen tüm alanları doldur");
-                return;
+    {
+        id:2,
+        user:"@elif",
+        avatar:"E",
+        category:"İş",
+        time:"6 dk",
+        question:"İşi bırakıp kendi projeme mi odaklanmalıyım?",
+        options:[
+            {text:"🚀 Odaklan",votes:61},
+            {text:"⏳ Sabret",votes:39}
+        ],
+        totalVotes:100,
+        comments:[
+            {
+                user:"@mert",
+                text:"Önce gelir kaynağını garantiye al.",
+                trust:91
+            },
+            {
+                user:"@kaan",
+                text:"Risk almanın zamanı olabilir.",
+                trust:76
             }
+        ],
+        voted:false
+    },
 
-            const feed = document.getElementById('feed-container');
-            const newCard = document.createElement('div');
-            newCard.className = 'dilemma-card';
-            newCard.innerHTML = `
-                <div class="card-author">${currentUser} • Şimdi</div>
-                <div class="card-text">${text}</div>
-                <div class="card-actions">
-                    <button class="vote-btn" onclick="vote(this, '${optA}')">${optA}</button>
-                    <button class="vote-btn" onclick="vote(this, '${optB}')">${optB}</button>
+    {
+        id:3,
+        user:"@kaan",
+        avatar:"K",
+        category:"Aşk",
+        time:"11 dk",
+        question:"Ona tekrar mesaj atmalı mıyım?",
+        options:[
+            {text:"❤️ At",votes:42},
+            {text:"🚫 Atma",votes:58}
+        ],
+        totalVotes:100,
+        comments:[
+            {
+                user:"@mert",
+                text:"Bence biraz bekle.",
+                trust:91
+            }
+        ],
+        voted:false
+    }
+];
+
+let rankings = [
+    {
+        name:"@Mert",
+        avatar:"M",
+        score:91,
+        decisions:128
+    },
+    {
+        name:"@Elif",
+        avatar:"E",
+        score:87,
+        decisions:94
+    },
+    {
+        name:"@Kaan",
+        avatar:"K",
+        score:84,
+        decisions:76
+    },
+    {
+        name:"@Deniz",
+        avatar:"D",
+        score:81,
+        decisions:63
+    },
+    {
+        name:"@Sude",
+        avatar:"S",
+        score:78,
+        decisions:51
+    }
+];
+
+
+/* =========================================================
+   STORAGE
+========================================================= */
+
+function saveData(){
+
+    localStorage.setItem(
+        "nexusUser",
+        JSON.stringify(userData)
+    );
+
+    localStorage.setItem(
+        "nexusDecisions",
+        JSON.stringify(decisions)
+    );
+}
+
+function loadData(){
+
+    const savedUser =
+        localStorage.getItem("nexusUser");
+
+    const savedDecisions =
+        localStorage.getItem("nexusDecisions");
+
+    if(savedUser){
+
+        userData =
+            JSON.parse(savedUser);
+
+        currentUser =
+            userData.username;
+    }
+
+    if(savedDecisions){
+
+        decisions =
+            JSON.parse(savedDecisions);
+    }
+}
+
+
+/* =========================================================
+   LOGIN
+========================================================= */
+
+function login(){
+
+    const value =
+        document.getElementById("username")
+        .value
+        .trim();
+
+    if(!value){
+
+        showToast("Kullanıcı adı gir");
+        return;
+    }
+
+    currentUser =
+        "@" + value.replace(/\s+/g,"");
+
+    userData.username =
+        currentUser;
+
+    if(!userData.decisions){
+        userData.decisions = 0;
+    }
+
+    if(!userData.correct){
+        userData.correct = 0;
+    }
+
+    if(!userData.votes){
+        userData.votes = 0;
+    }
+
+    updateUser();
+
+    document.getElementById("login")
+        .style.display="none";
+
+    document.getElementById("mainApp")
+        .style.display="block";
+
+    renderFeed();
+    renderRanking();
+    renderProfile();
+    renderResults();
+
+    saveData();
+
+    showToast("Nexus'a hoş geldin 🚀");
+}
+
+
+/* =========================================================
+   USER
+========================================================= */
+
+function updateUser(){
+
+    document.getElementById("headerAvatar")
+        .innerText =
+        currentUser
+        ? currentUser.substring(1,2).toUpperCase()
+        : "N";
+
+    document.getElementById("profileAvatar")
+        .innerText =
+        currentUser
+        ? currentUser.substring(1,2).toUpperCase()
+        : "N";
+
+    document.getElementById("profileName")
+        .innerText =
+        currentUser || "@kullanici";
+
+    calculateScore();
+}
+
+function calculateScore(){
+
+    if(userData.decisions > 0){
+
+        userData.score =
+            Math.round(
+                (userData.correct /
+                userData.decisions) * 100
+            );
+
+    }else{
+
+        userData.score = 0;
+    }
+}
+
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
+
+function showScreen(id,button){
+
+    document.querySelectorAll(".screen")
+        .forEach(screen=>{
+            screen.classList.remove("active");
+        });
+
+    document.getElementById(id)
+        .classList.add("active");
+
+    document.querySelectorAll(".nav")
+        .forEach(nav=>{
+            nav.classList.remove("active");
+        });
+
+    if(button){
+        button.classList.add("active");
+    }
+
+    if(id==="profile"){
+        renderProfile();
+    }
+
+    if(id==="leaderboard"){
+        renderRanking();
+    }
+
+    if(id==="results"){
+        renderResults();
+    }
+
+    window.scrollTo({
+        top:0,
+        behavior:"smooth"
+    });
+}
+
+
+/* =========================================================
+   FEED
+========================================================= */
+
+function renderFeed(filter="all"){
+
+    const feed =
+        document.getElementById("feed");
+
+    feed.innerHTML="";
+
+    let list =
+        decisions.filter(d=>{
+            return filter==="all" ||
+                d.category===filter;
+        });
+
+    if(list.length===0){
+
+        feed.innerHTML=`
+            <div class="decision">
+                <div style="text-align:center;color:#687286;padding:30px 10px;font-size:12px;">
+                    Bu kategoride henüz karar yok.
+                </div>
+            </div>
+        `;
+
+        return;
+    }
+
+    list.forEach(decision=>{
+
+        const card =
+            document.createElement("div");
+
+        card.className="decision";
+
+        const total =
+            decision.options
+            .reduce((sum,o)=>sum+o.votes,0);
+
+        let optionsHTML="";
+
+        decision.options.forEach((option,index)=>{
+
+            const percent =
+                Math.round(
+                    (option.votes /
+                    total) * 100
+                );
+
+            optionsHTML += `
+                <button
+                    class="option ${decision.voted ? "voted":""}"
+                    onclick="vote(${decision.id},${index})">
+
+                    ${escapeHTML(option.text)}
+
+                    <span class="percent">
+                        ${percent}%
+                    </span>
+
+                    <span
+                        class="option-bar"
+                        style="width:${percent}%">
+                    </span>
+
+                </button>
+            `;
+        });
+
+        let commentsHTML="";
+
+        decision.comments.forEach(comment=>{
+
+            commentsHTML += `
+                <div class="comment">
+
+                    <div class="comment-avatar">
+                        ${comment.user.substring(1,2).toUpperCase()}
+                    </div>
+
+                    <div>
+
+                        <div class="comment-body">
+
+                            <strong>
+                                ${escapeHTML(comment.user)}
+                            </strong>
+
+                            <br>
+
+                            ${escapeHTML(comment.text)}
+
+                            <div class="trust">
+                                🎯 ${comment.trust}% güvenilirlik
+                            </div>
+
+                        </div>
+
+                    </div>
+
                 </div>
             `;
+        });
 
-            feed.prepend(newCard);
+        card.innerHTML=`
 
-            document.getElementById('dilemma-text').value = '';
-            document.getElementById('option-a').value = '';
-            document.getElementById('option-b').value = '';
-            
-            switchTab('home-screen', 'nav-home');
+            <div class="decision-head">
+
+                <div class="user-avatar">
+                    ${decision.avatar}
+                </div>
+
+                <div class="author">
+
+                    ${escapeHTML(decision.user)}
+
+                    <span>
+                        ${decision.time} önce
+                    </span>
+
+                </div>
+
+                <div class="category">
+                    ${escapeHTML(decision.category)}
+                </div>
+
+            </div>
+
+            <div class="question">
+                ${escapeHTML(decision.question)}
+            </div>
+
+            <div class="options">
+                ${optionsHTML}
+            </div>
+
+            <div class="card-bottom">
+
+                <span>
+                    👥 ${total} oy
+                </span>
+
+                <div class="card-links">
+
+                    <button
+                        class="text-button"
+                        onclick="toggleComments(${decision.id})">
+                        💬 ${decision.comments.length}
+                    </button>
+
+                    <button
+                        class="text-button"
+                        onclick="showToast('Karar kaydedildi 🔖')">
+                        🔖 Kaydet
+                    </button>
+
+                </div>
+
+            </div>
+
+            <div
+                class="comments"
+                id="comments-${decision.id}">
+
+                ${commentsHTML}
+
+                <div style="display:flex;gap:7px;margin-top:10px;">
+
+                    <input
+                        id="comment-${decision.id}"
+                        class="input"
+                        style="margin:0;padding:10px;font-size:10px;"
+                        placeholder="Neden böyle düşünüyorsun?">
+
+                    <button
+                        onclick="addComment(${decision.id})"
+                        style="
+                        border:0;
+                        background:var(--gradient);
+                        color:white;
+                        border-radius:10px;
+                        padding:0 12px;
+                        font-weight:800;">
+                        →
+                    </button>
+
+                </div>
+
+            </div>
+        `;
+
+        feed.appendChild(card);
+
+    });
+}
+
+
+/* =========================================================
+   FILTER
+========================================================= */
+
+function filterFeed(button,category){
+
+    document.querySelectorAll(".filter")
+        .forEach(x=>x.classList.remove("active"));
+
+    button.classList.add("active");
+
+    renderFeed(category);
+}
+
+
+/* =========================================================
+   VOTE
+========================================================= */
+
+function vote(id,index){
+
+    const decision =
+        decisions.find(d=>d.id===id);
+
+    if(!decision){
+        return;
+    }
+
+    if(decision.voted){
+
+        showToast("Bu karara zaten oy verdin");
+
+        return;
+    }
+
+    decision.options[index].votes++;
+
+    decision.totalVotes++;
+
+    decision.voted=true;
+
+    userData.votes++;
+
+    saveData();
+
+    renderFeed();
+
+    showToast(
+        "Oyun kaydedildi 🎯"
+    );
+}
+
+
+/* =========================================================
+   COMMENTS
+========================================================= */
+
+function toggleComments(id){
+
+    const element =
+        document.getElementById(
+            "comments-"+id
+        );
+
+    if(element){
+
+        element.classList.toggle("show");
+    }
+}
+
+function addComment(id){
+
+    const input =
+        document.getElementById(
+            "comment-"+id
+        );
+
+    const text =
+        input.value.trim();
+
+    if(!text){
+
+        showToast("Yorumunu yaz");
+
+        return;
+    }
+
+    const decision =
+        decisions.find(d=>d.id===id);
+
+    decision.comments.push({
+
+        user:currentUser,
+
+        text:text,
+
+        trust:userData.score || 50
+
+    });
+
+    input.value="";
+
+    saveData();
+
+    renderFeed();
+
+    showToast(
+        "Yorumun eklendi 💬"
+    );
+}
+
+
+/* =========================================================
+   CREATE DECISION
+========================================================= */
+
+function addThirdOption(){
+
+    const box =
+        document.getElementById(
+            "thirdOptionBox"
+        );
+
+    box.style.display="block";
+}
+
+function createDecision(){
+
+    const question =
+        document.getElementById("question")
+        .value.trim();
+
+    const option1 =
+        document.getElementById("option1")
+        .value.trim();
+
+    const option2 =
+        document.getElementById("option2")
+        .value.trim();
+
+    const option3 =
+        document.getElementById("option3")
+        .value.trim();
+
+    const category =
+        document.getElementById("category")
+        .value;
+
+    if(
+        !question ||
+        !option1 ||
+        !option2
+    ){
+
+        showToast(
+            "Karar ve en az iki seçenek gerekli"
+        );
+
+        return;
+    }
+
+    const options=[
+        {
+            text:option1,
+            votes:0
+        },
+        {
+            text:option2,
+            votes:0
         }
-    </script>
+    ];
+
+    if(option3){
+
+        options.push({
+            text:option3,
+            votes:0
+        });
+    }
+
+    const newDecision={
+
+        id:Date.now(),
+
+        user:currentUser,
+
+        avatar:
+            currentUser
+            .substring(1,2)
+            .toUpperCase(),
+
+        category:category,
+
+        time:"şimdi",
+
+        question:question,
+
+        options:options,
+
+        totalVotes:0,
+
+        comments:[],
+
+        voted:false,
+
+        pendingResult:true
+
+    };
+
+    decisions.unshift(
+        newDecision
+    );
+
+    userData.decisions++;
+
+    calculateScore();
+
+    saveData();
+
+    document.getElementById("question")
+        .value="";
+
+    document.getElementById("option1")
+        .value="";
+
+    document.getElementById("option2")
+        .value="";
+
+    document.getElementById("option3")
+        .value="";
+
+    document.getElementById("thirdOptionBox")
+        .style.display="none";
+
+    renderFeed();
+
+    renderResults();
+
+    showScreen(
+        "home",
+        document.querySelector(".nav")
+    );
+
+    showToast(
+        "Kararın Nexus'a gönderildi 🚀"
+    );
+}
+
+
+/* =========================================================
+   RESULTS
+========================================================= */
+
+function renderResults(){
+
+    const container =
+        document.getElementById(
+            "pendingResults"
+        );
+
+    container.innerHTML="";
+
+    const pending =
+        decisions.filter(
+            d =>
+            d.user===currentUser &&
+            d.pendingResult
+        );
+
+    if(pending.length===0){
+
+        container.innerHTML=`
+            <div class="decision">
+
+                <div style="
+                text-align:center;
+                padding:30px 10px;
+                color:#687286;
+                font-size:12px;">
+
+                    🎯 Henüz sonuç bekleyen
+                    kararın yok.
+
+                </div>
+
+            </div>
+        `;
+
+        return;
+    }
+
+    pending.forEach(decision=>{
+
+        const element =
+            document.createElement("div");
+
+        element.className="pending";
+
+        element.innerHTML=`
+
+            <div class="pending-label">
+                🔔 SONUÇ BEKLİYOR
+            </div>
+
+            <div class="pending-question">
+                ${escapeHTML(decision.question)}
+            </div>
+
+            <div style="
+                color:#6e788b;
+                font-size:9px;
+                margin-top:7px;">
+
+                Topluluk ${decision.totalVotes}
+                kişi tarafından oylandı.
+
+            </div>
+
+            <div class="result-buttons">
+
+                <button
+                    class="result-btn"
+                    onclick="setResult(${decision.id},'good')">
+                    🟢 İyi oldu
+                </button>
+
+                <button
+                    class="result-btn"
+                    onclick="setResult(${decision.id},'same')">
+                    🟡 Beklediğim gibi
+                </button>
+
+                <button
+                    class="result-btn"
+                    onclick="setResult(${decision.id},'bad')">
+                    🔴 Kötü oldu
+                </button>
+
+            </div>
+
+        `;
+
+        container.appendChild(element);
+    });
+}
+
+
+/* =========================================================
+   RESULT FEEDBACK
+========================================================= */
+
+function setResult(id,result){
+
+    const decision =
+        decisions.find(
+            d=>d.id===id
+        );
+
+    if(!decision){
+        return;
+    }
+
+    decision.pendingResult=false;
+
+    decision.result=result;
+
+    /*
+       Demo scoring:
+       Gerçek sistemde burada
+       kullanıcının seçtiği seçenek,
+       topluluk çoğunluğu ve gerçek
+       sonuç birlikte değerlendirilecek.
+    */
+
+    if(result==="good"){
+
+        userData.correct++;
+
+    }
+
+    calculateScore();
+
+    saveData();
+
+    renderResults();
+
+    renderProfile();
+
+    showToast(
+        "Sonucun kaydedildi. Nexus bunu hatırlayacak 🧠"
+    );
+}
+
+
+/* =========================================================
+   PROFILE
+========================================================= */
+
+function renderProfile(){
+
+    calculateScore();
+
+    document.getElementById("statScore")
+        .innerText =
+        userData.decisions
+        ? userData.score+"%"
+        : "—";
+
+    document.getElementById("statDecisions")
+        .innerText =
+        userData.decisions;
+
+    document.getElementById("statCorrect")
+        .innerText =
+        userData.correct;
+
+    updateUser();
+}
+
+
+/* =========================================================
+   RANKING
+========================================================= */
+
+function renderRanking(){
+
+    const container =
+        document.getElementById(
+            "ranking"
+        );
+
+    const allUsers=[
+        ...rankings
+    ];
+
+    if(
+        currentUser &&
+        !allUsers.some(
+            x=>x.name.toLowerCase()
+            ===currentUser.toLowerCase()
+        )
+    ){
+
+        allUsers.push({
+
+            name:currentUser,
+
+            avatar:
+                currentUser
+                .substring(1,2)
+                .toUpperCase(),
+
+            score:userData.score || 0,
+
+            decisions:userData.decisions || 0
+
+        });
+    }
+
+    allUsers.sort(
+        (a,b)=>b.score-a.score
+    );
+
+    const leader =
+        allUsers[0];
+
+    if(leader){
+
+        document.getElementById(
+            "leaderHeroName"
+        ).innerText =
+            leader.name;
+
+        document.getElementById(
+            "leaderHeroScore"
+        ).innerText =
+            `%${leader.score} güvenilirlik • ${leader.decisions} karar`;
+    }
+
+    container.innerHTML="";
+
+    allUsers.forEach((user,index)=>{
+
+        const row =
+            document.createElement("div");
+
+        row.className="rank-row";
+
+        let medal =
+            index===0
+            ?"🥇"
+            :index===1
+            ?"🥈"
+            :index===2
+            ?"🥉"
+            :(index+1);
+
+        row.innerHTML=`
+
+            <div class="rank-number">
+                ${medal}
+            </div>
+
+            <div class="rank-avatar">
+                ${user.avatar}
+            </div>
+
+            <div class="rank-info">
+
+                <strong>
+                    ${escapeHTML(user.name)}
+                </strong>
+
+                <span>
+                    ${user.decisions} karar
+                </span>
+
+            </div>
+
+            <div class="rank-score">
+
+                %${user.score}
+
+                <small>
+                    güvenilirlik
+                </small>
+
+            </div>
+
+        `;
+
+        container.appendChild(row);
+
+    });
+}
+
+
+/* =========================================================
+   RANK PERIOD
+========================================================= */
+
+function rankPeriod(button,period){
+
+    document.querySelectorAll(".rank-tab")
+        .forEach(x=>
+            x.classList.remove("active")
+        );
+
+    button.classList.add("active");
+
+    /*
+       Şimdilik demo verisi.
+       Backend geldiğinde burada
+       gerçek tarih filtrelemesi yapılacak.
+    */
+
+    renderRanking();
+
+    showToast(
+        period==="day"
+        ?"Bugünün liderleri"
+        :period==="week"
+        ?"Haftanın liderleri"
+        :period==="month"
+        ?"Ayın liderleri"
+        :"Tüm zamanlar"
+    );
+}
+
+
+/* =========================================================
+   UTILITIES
+========================================================= */
+
+function escapeHTML(value){
+
+    return String(value)
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
+}
+
+function showToast(message){
+
+    const toast =
+        document.getElementById(
+            "toast"
+        );
+
+    toast.innerText=message;
+
+    toast.classList.add("show");
+
+    clearTimeout(
+        window.toastTimer
+    );
+
+    window.toastTimer =
+        setTimeout(()=>{
+            toast.classList.remove("show");
+        },2200);
+}
+
+
+/* =========================================================
+   INITIALIZE
+========================================================= */
+
+loadData();
+
+if(currentUser){
+
+    document.getElementById("login")
+        .style.display="none";
+
+    document.getElementById("mainApp")
+        .style.display="block";
+
+    updateUser();
+
+    renderFeed();
+
+    renderRanking();
+
+    renderProfile();
+
+    renderResults();
+}
+
+</script>
+
 </body>
-</html>
+    </html>
