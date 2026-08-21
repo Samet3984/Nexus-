@@ -44,7 +44,7 @@
             animation: fadeIn 0.3s ease;
         }
 
-        .active {
+        .screen.active {
             display: block;
         }
 
@@ -62,6 +62,7 @@
             min-height: 100vh;
             text-align: center;
             padding: 20px;
+            box-sizing: border-box;
         }
 
         .logo-box h1 {
@@ -194,20 +195,26 @@
             border-color: var(--accent);
         }
 
-        /* ALT NAVİGASYON ÇUBUĞU */
+        /* ALT NAVİGASYON ÇUBUĞU (Başlangıçta gizli) */
         .nav-bar {
+            display: none; 
             position: fixed;
             bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
             width: 100%;
             max-width: 480px;
             background-color: rgba(13, 15, 22, 0.95);
             backdrop-filter: blur(10px);
             border-top: 1px solid var(--card-border);
-            display: flex;
             justify-content: space-around;
             padding: 14px 0;
             box-sizing: border-box;
             z-index: 100;
+        }
+
+        .nav-bar.visible {
+            display: flex;
         }
 
         .nav-item {
@@ -289,8 +296,8 @@
             <button class="btn-primary" onclick="postDilemma()">Havuza Gönder</button>
         </div>
 
-        <!-- ALT MENÜ -->
-        <div class="nav-bar" id="bottom-nav" style="display: none;">
+        <!-- ALT MENÜ BAR (Giriş yapınca görünür) -->
+        <div class="nav-bar" id="bottom-nav">
             <button class="nav-item active-nav" id="nav-home" onclick="switchTab('home-screen', 'nav-home')">🔥 Havuz</button>
             <button class="nav-item" id="nav-share" onclick="switchTab('share-screen', 'nav-share')">➕ İkilem Paylaş</button>
         </div>
@@ -309,9 +316,12 @@
             currentUser = "@" + input;
             document.getElementById('display-user').innerText = currentUser;
             
+            // Giriş ekranını kapat, ana akışı aç
             document.getElementById('login-screen').classList.remove('active');
             document.getElementById('home-screen').classList.add('active');
-            document.getElementById('bottom-nav').style.display = 'flex';
+            
+            // Alt menüyü görünür yap
+            document.getElementById('bottom-nav').classList.add('visible');
         }
 
         function switchTab(screenId, navId) {
