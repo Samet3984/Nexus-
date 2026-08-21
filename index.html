@@ -2330,22 +2330,3 @@ if(currentUser){
 
 </body>
     </html>
-// Geri tuşuna basıldığında uygulamanın kapanmasını engelle, sekmeler arası gezdir veya havuzda tut
-window.history.pushState({ page: "nexus_main" }, "", "");
-
-window.addEventListener('popstate', function(event) {
-    // Kullanıcı telefonda geri tuşuna bastığında siteyi kapatmak yerine Havuz ekranına atsın
-    // (Eğer zaten giriş ekranındaysa tarayıcı normal akışına devam eder)
-    const activeScreen = document.querySelector('.screen.active');
-    const loginScreen = document.getElementById('login-screen');
-
-    if (loginScreen && loginScreen.classList.contains('active')) {
-        // Eğer hala giriş ekranındaysa çıkışa izin ver
-        history.back();
-    } else {
-        // İçeride herhangi bir sekmedeyse her zaman Havuz'a (home-screen) geri döndür
-        // switchTab fonksiyonun projedeki adına göre burayı uyarlayabilirsin
-        switchTab('home-screen', 'nav-home');
-        window.history.pushState({ page: "nexus_main" }, "", "");
-    }
-});
