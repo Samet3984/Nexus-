@@ -4,157 +4,112 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <meta name="theme-color" content="#08090d">
-<title>Nexus — Kararların Gücü</title>
+<title>Nexus</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-:root{
---bg:#08090d;--card:#12151e;--border:#242938;
---purple:#7c5cff;--purple2:#a855f7;
---text:#f8fafc;--muted:#8d96aa;
---gradient:linear-gradient(135deg,#6d5dfc,#a855f7)
-}
-html,body{
-margin:0;padding:0;background:#050609;color:var(--text);
-font-family:Arial,sans-serif;min-height:100vh
-}
-button,input{font-family:inherit}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:#050609;color:#fff;font-family:Arial,sans-serif}
+body{min-height:100vh}
+button,input,textarea,select{font-family:inherit}
 button{cursor:pointer}
-.app{
-width:100%;max-width:500px;min-height:100vh;margin:auto;
-background:var(--bg);position:relative
-}
-#login{
-min-height:100vh;display:flex;align-items:center;
-justify-content:center;padding:28px
-}
-.login-box{width:100%;text-align:center}
-.logo{
-width:82px;height:82px;border-radius:26px;margin:0 auto 22px;
-background:var(--gradient);display:flex;align-items:center;
-justify-content:center;font-size:38px;font-weight:800;
-box-shadow:0 20px 60px #7c5cff4d
-}
-.logo-title{font-size:42px;font-weight:800;margin-bottom:8px}
-.logo-sub{color:var(--muted);line-height:1.6;margin-bottom:28px}
-.input{
-width:100%;padding:15px 16px;background:var(--card);
-border:1px solid var(--border);border-radius:15px;color:white;
-outline:0;font-size:14px;margin-bottom:10px
-}
-.input:focus{border-color:var(--purple)}
-.primary{
-width:100%;border:0;border-radius:16px;padding:16px;color:white;
-font-weight:800;font-size:15px;background:var(--gradient)
-}
+.app{max-width:500px;min-height:100vh;margin:auto;background:#08090d;position:relative}
+#login{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:25px}
+.login-box{text-align:center;width:100%}
+.logo{width:82px;height:82px;border-radius:25px;margin:auto auto 20px;background:linear-gradient(135deg,#6d5dfc,#a855f7);display:flex;align-items:center;justify-content:center;font-size:38px;font-weight:900;box-shadow:0 20px 60px #7c5cff55}
+.logo-title{font-size:42px;font-weight:900;margin-bottom:8px}
+.logo-sub{color:#8d96aa;line-height:1.6;margin-bottom:25px}
+.input{width:100%;padding:15px;background:#12151e;border:1px solid #242938;border-radius:14px;color:white;outline:none;margin-bottom:10px}
+.input:focus{border-color:#7c5cff}
+.primary{width:100%;padding:16px;border:0;border-radius:15px;background:linear-gradient(135deg,#6d5dfc,#a855f7);color:#fff;font-weight:800;font-size:15px}
 .primary:disabled{opacity:.5}
-.lang-box{display:flex;gap:6px;margin-bottom:18px}
-.lang-btn{
-flex:1;border:1px solid var(--border);background:var(--card);
-color:#8992a5;padding:9px;border-radius:10px;font-size:10px;font-weight:700
-}
-.lang-btn.active{background:#29233e;color:white;border-color:#5541b4}
+.lang-box{display:flex;gap:6px;margin-bottom:15px}
+.lang-btn{flex:1;padding:9px;border-radius:10px;border:1px solid #242938;background:#12151e;color:#8992a5;font-size:10px;font-weight:bold}
+.lang-btn.active{background:#29233e;color:#fff;border-color:#5541b4}
+.small-note{color:#626b7d;font-size:11px;margin-top:15px}
 #mainApp{display:none;min-height:100vh;padding-bottom:90px}
 .screen{display:none;padding:20px 16px}
 .screen.active{display:block}
-.header{
-display:flex;justify-content:space-between;align-items:center;
-margin-bottom:20px
-}
-.header h1{font-size:24px;margin:0}
-.header p{margin:5px 0;color:var(--muted);font-size:12px}
-.avatar{
-width:42px;height:42px;border-radius:50%;background:var(--gradient);
-display:flex;align-items:center;justify-content:center;font-weight:800
-}
-.filters{
-display:flex;gap:8px;overflow-x:auto;margin-bottom:18px
-}
-.filter{
-white-space:nowrap;border:1px solid var(--border);
-background:var(--card);color:var(--muted);
-border-radius:20px;padding:9px 13px;font-size:11px;font-weight:700
-}
-.filter.active{color:white;background:#242039;border-color:#5541b4}
-.decision{
-background:var(--card);border:1px solid var(--border);
-border-radius:21px;padding:17px;margin-bottom:15px
-}
+.header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+.header h1{margin:0;font-size:24px}
+.header p{margin:5px 0;color:#8d96aa;font-size:12px}
+.avatar,.user-avatar,.profile-avatar,.rank-avatar{background:linear-gradient(135deg,#6d5dfc,#a855f7);display:flex;align-items:center;justify-content:center;font-weight:bold}
+.avatar{width:42px;height:42px;border-radius:50%}
+.ticker{background:#171328;border:1px solid #292342;border-radius:17px;padding:14px;margin-bottom:18px}
+.live{color:#c4b5fd;font-size:11px;font-weight:bold}
+.dot{display:inline-block;width:7px;height:7px;background:#22c55e;border-radius:50%;margin-right:6px}
+.filters{display:flex;gap:8px;overflow-x:auto;margin-bottom:18px}
+.filter{white-space:nowrap;border:1px solid #242938;background:#12151e;color:#8d96aa;border-radius:20px;padding:9px 13px;font-size:11px;font-weight:bold}
+.filter.active{color:#fff;background:#242039;border-color:#5541b4}
+.decision{background:#12151e;border:1px solid #242938;border-radius:20px;padding:17px;margin-bottom:15px}
 .decision-head{display:flex;align-items:center;gap:10px;margin-bottom:14px}
-.user-avatar{
-width:35px;height:35px;border-radius:50%;background:var(--gradient);
-display:flex;align-items:center;justify-content:center;font-size:12px
-}
-.author{font-size:12px;font-weight:700}
-.author span{display:block;color:var(--muted);font-size:10px;margin-top:3px}
-.category{
-margin-left:auto;color:#b8a9ff;background:#211d35;
-border-radius:10px;padding:6px 8px;font-size:9px
-}
-.question{font-size:16px;line-height:1.55;font-weight:700;margin-bottom:15px}
+.user-avatar{width:35px;height:35px;border-radius:50%;font-size:12px}
+.author{font-size:12px;font-weight:bold}
+.author span{display:block;color:#697386;font-size:10px;margin-top:3px}
+.category{margin-left:auto;color:#b8a9ff;background:#211d35;border-radius:10px;padding:6px 8px;font-size:9px}
+.question{font-size:16px;font-weight:bold;line-height:1.5;margin-bottom:15px}
 .options{display:grid;grid-template-columns:1fr 1fr;gap:9px}
-.option{
-border:1px solid var(--border);background:#171a23;color:white;
-border-radius:14px;padding:12px 9px;font-weight:700;font-size:12px
-}
-.option.voted{border-color:var(--purple);background:#211c3b}
-.percent{display:block;color:var(--muted);font-size:10px;margin-top:5px}
-.card-bottom{
-display:flex;justify-content:space-between;margin-top:13px;
-color:#697386;font-size:10px
-}
-.form-title{font-size:23px;font-weight:800;margin-bottom:5px}
-.form-sub{color:var(--muted);font-size:12px;line-height:1.5;margin-bottom:22px}
-textarea{
-width:100%;height:130px;resize:none;background:var(--card);
-border:1px solid var(--border);border-radius:17px;
-padding:16px;color:white;outline:0;font-size:14px
-}
-.field-label{color:#778196;font-size:10px;font-weight:700;margin:15px 0 7px}
-.category-select{
-width:100%;background:var(--card);color:white;
-border:1px solid var(--border);padding:14px;border-radius:14px
-}
-.add-option{
-border:1px dashed #3a4050;background:none;color:#9586ff;
-width:100%;padding:12px;border-radius:13px;font-size:11px;font-weight:700
-}
-.bottom-nav{
-position:fixed;bottom:0;left:50%;transform:translateX(-50%);
-width:100%;max-width:500px;height:76px;background:#0a0c11f2;
-backdrop-filter:blur(18px);border-top:1px solid var(--border);
-display:flex;justify-content:space-around;align-items:center;z-index:50
-}
-.nav{
-border:0;background:none;color:#697386;font-size:9px;font-weight:700;
-display:flex;flex-direction:column;align-items:center;gap:5px
-}
-.nav.active{color:#9a8cff}
-.nav-icon{font-size:20px}
-.nav-create{
-width:48px;height:48px;border-radius:16px;border:0;
-background:var(--gradient);color:white;font-size:25px
-}
-.toast{
-position:fixed;left:50%;bottom:92px;transform:translate(-50%,20px);
-background:#252a37;border:1px solid #3b4252;color:white;
-padding:11px 16px;border-radius:13px;font-size:11px;font-weight:700;
-opacity:0;pointer-events:none;transition:.3s;z-index:100;
-max-width:90%;text-align:center
-}
+.option{position:relative;overflow:hidden;border:1px solid #242938;background:#171a23;color:#fff;border-radius:14px;padding:12px 9px;font-weight:bold;font-size:12px;min-height:55px}
+.option.voted{border-color:#7c5cff;background:#211c3b}
+.percent{display:block;color:#8d96aa;font-size:10px;margin-top:5px}
+.option-bar{position:absolute;bottom:0;left:0;height:3px;background:linear-gradient(135deg,#6d5dfc,#a855f7)}
+.card-bottom{display:flex;justify-content:space-between;margin-top:13px;color:#697386;font-size:10px}
+.text-button{border:0;background:none;color:#7f8aa0;font-size:10px}
+.comments{display:none;margin-top:14px;padding-top:13px;border-top:1px solid #242938}
+.comments.show{display:block}
+.comment{display:flex;gap:8px;margin-bottom:10px}
+.comment-avatar{width:27px;height:27px;border-radius:50%;background:#292f40;display:flex;align-items:center;justify-content:center;font-size:9px}
+.comment-body{background:#191c26;border-radius:12px;padding:8px;font-size:11px}
+.trust{color:#8b7cff;font-size:8px;margin-top:3px}
+.form-title{font-size:23px;font-weight:900;margin-bottom:5px}
+.form-sub{color:#8d96aa;font-size:12px;line-height:1.5;margin-bottom:22px}
+textarea{width:100%;height:130px;resize:none;background:#12151e;border:1px solid #242938;border-radius:17px;padding:16px;color:#fff;outline:none}
+.field-label{color:#778196;font-size:10px;font-weight:bold;margin:15px 0 7px}
+.category-select{width:100%;background:#12151e;color:#fff;border:1px solid #242938;padding:14px;border-radius:14px}
+.add-option{border:1px dashed #3a4050;background:none;color:#9586ff;width:100%;padding:12px;border-radius:13px;font-size:11px}
+.result-info{margin-top:15px;padding:13px;background:#11151e;border:1px solid #242938;border-radius:14px;color:#798398;font-size:10px}
+.leader-hero{background:#1c1734;border:1px solid #302750;border-radius:22px;padding:20px;text-align:center;margin-bottom:18px}
+.crown{font-size:34px}.hero-name{font-size:19px;font-weight:bold;margin-top:5px}.hero-score{color:#a99bff;font-size:12px;margin-top:5px}
+.rank-tabs{display:flex;background:#11141c;border:1px solid #242938;border-radius:14px;padding:4px;margin-bottom:15px}
+.rank-tab{flex:1;border:0;background:none;color:#70798c;padding:10px 4px;border-radius:10px;font-size:10px;font-weight:bold}
+.rank-tab.active{color:#fff;background:#29233e}
+.rank-row{display:flex;align-items:center;gap:11px;background:#12151e;border:1px solid #242938;padding:13px;border-radius:15px;margin-bottom:8px}
+.rank-number{width:23px;text-align:center;font-weight:bold}
+.rank-avatar{width:36px;height:36px;border-radius:50%;font-size:10px}
+.rank-info{flex:1}.rank-info strong{font-size:11px}.rank-info span{display:block;color:#697387;font-size:9px;margin-top:3px}
+.rank-score{color:#9b8cff;font-size:12px;font-weight:bold;text-align:right}
+.rank-score small{display:block;color:#647085;font-size:8px}
+.profile-top{text-align:center;padding:10px 0 20px}
+.profile-avatar{width:76px;height:76px;border-radius:50%;font-size:24px;margin:auto}
+.profile-name{font-size:20px;font-weight:bold;margin-top:12px}
+.profile-title{color:#9d91ff;font-size:10px;margin-top:4px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:18px}
+.stat{background:#12151e;border:1px solid #242938;border-radius:15px;padding:14px 6px;text-align:center}
+.stat strong{display:block;font-size:17px}.stat span{color:#697386;font-size:8px}
+.section-title{font-size:14px;font-weight:bold;margin:20px 0 10px}
+.badges{display:flex;gap:8px;overflow-x:auto}
+.badge{min-width:86px;text-align:center;background:#12151e;border:1px solid #242938;border-radius:14px;padding:12px 7px}
+.badge-icon{font-size:22px}.badge span{display:block;font-size:8px;color:#788196;margin-top:6px}
+.pending{background:#17152a;border:1px solid #302b4d;border-radius:18px;padding:16px;margin-bottom:12px}
+.pending-label{color:#a99cff;font-size:9px;font-weight:bold;margin-bottom:8px}
+.pending-question{font-size:13px;font-weight:bold}
+.result-buttons{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:12px}
+.result-btn{border:1px solid #242938;background:#191c25;color:#aaa;padding:10px 4px;border-radius:10px;font-size:9px}
+.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:500px;height:76px;background:#0a0c11f5;backdrop-filter:blur(18px);border-top:1px solid #242938;display:flex;justify-content:space-around;align-items:center;z-index:50}
+.nav{border:0;background:none;color:#697386;font-size:9px;font-weight:bold;display:flex;flex-direction:column;align-items:center;gap:5px}
+.nav-icon{font-size:20px}.nav.active{color:#9a8cff}
+.nav-create{width:48px;height:48px;border-radius:16px;border:0;background:linear-gradient(135deg,#6d5dfc,#a855f7);color:#fff;font-size:25px}
+.toast{position:fixed;left:50%;bottom:92px;transform:translate(-50%,20px);background:#252a37;border:1px solid #3b4252;color:#fff;padding:11px 16px;border-radius:13px;font-size:11px;font-weight:bold;opacity:0;transition:.3s;z-index:100;max-width:90%;text-align:center}
 .toast.show{opacity:1;transform:translate(-50%,0)}
-.error{
-background:#241419;border:1px solid #5b2832;color:#ff9ca8;
-padding:15px;border-radius:14px;font-size:11px;line-height:1.5
-}
 .loading{text-align:center;padding:30px;color:#697386;font-size:12px}
+.error-box{background:#241419;border:1px solid #5b2832;border-radius:16px;padding:15px;color:#ff9ca8;font-size:11px;line-height:1.5;margin-bottom:15px;word-break:break-word}
+.connection-box{margin-top:15px;text-align:left}
+.connection-box button{margin-top:10px;width:100%;padding:10px;border-radius:10px;border:1px solid #444;background:#181b24;color:#fff}
 </style>
 </head>
 
 <body>
-
 <div class="app">
 
 <section id="login">
@@ -170,24 +125,22 @@ Sonucunu geri getir.<br>
 </div>
 
 <div class="lang-box">
-<button class="lang-btn active">🇹🇷 Türkçe</button>
-<button class="lang-btn">🇩🇪 Deutsch</button>
-<button class="lang-btn">🇬🇧 English</button>
+<button class="lang-btn active" onclick="setLang('tr')">🇹🇷 Türkçe</button>
+<button class="lang-btn" onclick="setLang('de')">🇩🇪 Deutsch</button>
+<button class="lang-btn" onclick="setLang('en')">🇬🇧 English</button>
 </div>
 
-<input id="username"
-class="input"
-maxlength="20"
-placeholder="Kullanıcı adın..."
-autocomplete="off">
+<input id="username" class="input" maxlength="20" placeholder="Kullanıcı adın..." autocomplete="off">
 
-<button id="loginButton" class="primary">
+<button id="loginButton" class="primary" onclick="login()">
 Nexus'a Gir →
 </button>
 
-<div style="color:#626b7d;font-size:11px;margin-top:16px">
-Üyelik gerektirmez • Güvenli bağlantı
+<div class="small-note">
+Üyelik gerektirmez • Doğrudan Bağlantı
 </div>
+
+<div id="connectionStatus"></div>
 
 </div>
 </section>
@@ -195,13 +148,17 @@ Nexus'a Gir →
 <main id="mainApp">
 
 <section id="home" class="screen active">
-
 <div class="header">
 <div>
 <h1>🔥 Nexus</h1>
 <p>Topluluk şu anda karar veriyor</p>
 </div>
 <div class="avatar" id="headerAvatar">N</div>
+</div>
+
+<div class="ticker">
+<div class="live"><span class="dot"></span> CANLI NEXUS</div>
+<div style="margin-top:7px;font-size:12px">Topluluk kararları</div>
 </div>
 
 <div class="filters">
@@ -213,29 +170,19 @@ Nexus'a Gir →
 </div>
 
 <div id="feed"></div>
-
 </section>
 
 <section id="create" class="screen">
-
 <div class="form-title">🧠 Kararını Fırlat</div>
+<div class="form-sub">Kararsız kaldığın şeyi Nexus'a bırak. Topluluk senin yerine karar versin.</div>
 
-<div class="form-sub">
-Kararsız kaldığın şeyi Nexus'a bırak.
-Topluluk senin yerine karar versin.
-</div>
-
-<textarea id="question"
-placeholder="Örn: Bu işi kabul etmeli miyim?"></textarea>
+<textarea id="question" placeholder="Örn: Bu işi kabul etmeli miyim?"></textarea>
 
 <div class="field-label">SEÇENEKLER</div>
-
 <input id="option1" class="input" placeholder="1. seçenek">
 <input id="option2" class="input" placeholder="2. seçenek">
 
-<button class="add-option" onclick="addThirdOption()">
-+ Üçüncü seçenek ekle
-</button>
+<button class="add-option" onclick="addThirdOption()">+ Üçüncü seçenek ekle</button>
 
 <div id="thirdOptionBox" style="display:none;margin-top:10px">
 <input id="option3" class="input" placeholder="3. seçenek">
@@ -252,16 +199,16 @@ placeholder="Örn: Bu işi kabul etmeli miyim?"></textarea>
 <option>Hayat</option>
 </select>
 
-<button id="createButton"
-class="primary"
-style="margin-top:18px">
+<div class="result-info">
+💡 Kararını uyguladıktan sonra sonucu bildir.
+</div>
+
+<button id="createButton" class="primary" style="margin-top:18px" onclick="createDecision()">
 🚀 Nexus'a Sor
 </button>
-
 </section>
 
 <section id="leaderboard" class="screen">
-
 <div class="header">
 <div>
 <h1>🏆 Liderlik</h1>
@@ -269,59 +216,59 @@ style="margin-top:18px">
 </div>
 </div>
 
-<div id="ranking"></div>
+<div class="leader-hero">
+<div class="crown">👑</div>
+<div class="hero-name" id="leaderHeroName">Henüz lider yok</div>
+<div class="hero-score" id="leaderHeroScore">—</div>
+</div>
 
+<div class="rank-tabs">
+<button class="rank-tab active" onclick="rankPeriod(this,'all')">Tümü</button>
+<button class="rank-tab" onclick="rankPeriod(this,'day')">Bugün</button>
+<button class="rank-tab" onclick="rankPeriod(this,'week')">Hafta</button>
+<button class="rank-tab" onclick="rankPeriod(this,'month')">Ay</button>
+</div>
+
+<div id="ranking"></div>
 </section>
 
 <section id="results" class="screen">
-
 <div class="header">
 <div>
 <h1>📊 Sonuçlarım</h1>
-<p>Verdiğin kararların sonuçlarını bildir</p>
+<p>Kararlarının sonucunu bildir</p>
 </div>
 </div>
-
 <div id="pendingResults"></div>
-
 </section>
 
 <section id="profile" class="screen">
 
-<div style="text-align:center;padding:20px">
-
-<div class="avatar"
-id="profileAvatar"
-style="width:76px;height:76px;margin:auto;font-size:24px">
-N
+<div class="profile-top">
+<div class="profile-avatar" id="profileAvatar">N</div>
+<div class="profile-name" id="profileName">@kullanici</div>
+<div class="profile-title">🎯 Karar Avcısı</div>
 </div>
 
-<h2 id="profileName">@kullanici</h2>
-
-<div style="color:#9d91ff;font-size:10px">
-🎯 Karar Avcısı
+<div class="lang-box">
+<button class="lang-btn" onclick="setLang('tr')">🇹🇷 TR</button>
+<button class="lang-btn" onclick="setLang('de')">🇩🇪 DE</button>
+<button class="lang-btn" onclick="setLang('en')">🇬🇧 EN</button>
 </div>
 
+<div class="stats">
+<div class="stat"><strong id="statScore">—</strong><span>GÜVENİLİRLİK</span></div>
+<div class="stat"><strong id="statDecisions">0</strong><span>KARAR</span></div>
+<div class="stat"><strong id="statCorrect">0</strong><span>İSABET</span></div>
 </div>
 
-<div class="stats"
-style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+<div class="section-title">🏅 Rozetler</div>
 
-<div class="decision" style="text-align:center">
-<strong id="statScore">—</strong>
-<div style="font-size:8px;color:#697386">GÜVENİLİRLİK</div>
-</div>
-
-<div class="decision" style="text-align:center">
-<strong id="statDecisions">0</strong>
-<div style="font-size:8px;color:#697386">KARAR</div>
-</div>
-
-<div class="decision" style="text-align:center">
-<strong id="statCorrect">0</strong>
-<div style="font-size:8px;color:#697386">İSABET</div>
-</div>
-
+<div class="badges">
+<div class="badge"><div class="badge-icon">🌱</div><span>İlk Karar</span></div>
+<div class="badge"><div class="badge-icon">🎯</div><span>İsabetçi</span></div>
+<div class="badge"><div class="badge-icon">🔥</div><span>Seri Karar</span></div>
+<div class="badge"><div class="badge-icon">👑</div><span>Lider</span></div>
 </div>
 
 </section>
@@ -329,25 +276,21 @@ style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
 <nav class="bottom-nav">
 
 <button class="nav active" onclick="showScreen('home',this)">
-<span class="nav-icon">🔥</span>
-Havuz
+<span class="nav-icon">🔥</span><span>Havuz</span>
 </button>
 
 <button class="nav" onclick="showScreen('leaderboard',this)">
-<span class="nav-icon">🏆</span>
-Liderlik
+<span class="nav-icon">🏆</span><span>Liderlik</span>
 </button>
 
 <button class="nav-create" onclick="showScreen('create',this)">+</button>
 
 <button class="nav" onclick="showScreen('results',this)">
-<span class="nav-icon">📊</span>
-Sonuçlar
+<span class="nav-icon">📊</span><span>Sonuçlar</span>
 </button>
 
 <button class="nav" onclick="showScreen('profile',this)">
-<span class="nav-icon">👤</span>
-Profil
+<span class="nav-icon">👤</span><span>Profil</span>
 </button>
 
 </nav>
@@ -360,64 +303,53 @@ Profil
 
 <script>
 
-/* =====================================================
-   SUPABASE
-   ===================================================== */
+/* =========================================================
+   NEXUS — TEK DOSYA SÜRÜMÜ
+   SUPABASE AYARLARI
+========================================================= */
 
 const SUPABASE_URL =
 "https://gdollkoewmtngxdoxnzn.supabase.co";
 
-/*
-  BURAYA SENİN PUBLISHABLE KEY'İN GELECEK.
-*/
 const SUPABASE_KEY =
-"BURAYA_SB_PUBLISHABLE_KEY_YAPISTIR";
+"sb_publishable_nboUtwCIJFUE3Zp2rmfcWw_nvLXQqRL";
+
+let supabaseClient = null;
+
+let currentUser = null;
+let userProfile = null;
+let decisions = [];
+let currentCategory = "all";
 
 
-let db=null;
-let currentUser=null;
-let userProfile=null;
-let decisions=[];
-let currentCategory="all";
-
-
-/* =====================================================
-   BAŞLAT
-   ===================================================== */
+/* =========================================================
+   SUPABASE BAŞLAT
+========================================================= */
 
 function initSupabase(){
 
 try{
 
-if(
-!window.supabase ||
-typeof window.supabase.createClient!=="function"
-){
-
+if(!window.supabase){
 throw new Error(
-"Supabase kütüphanesi yüklenemedi."
+"Supabase JavaScript kütüphanesi yüklenemedi."
 );
-
 }
 
-if(
-!SUPABASE_KEY ||
-SUPABASE_KEY==="BURAYA_SB_PUBLISHABLE_KEY_YAPISTIR"
-){
-
+if(typeof window.supabase.createClient !== "function"){
 throw new Error(
-"Supabase Publishable Key girilmemiş."
+"Supabase createClient bulunamadı."
 );
-
 }
 
-db=window.supabase.createClient(
+supabaseClient =
+window.supabase.createClient(
 SUPABASE_URL,
 SUPABASE_KEY,
 {
 auth:{
-persistSession:true,
-autoRefreshToken:true,
+persistSession:false,
+autoRefreshToken:false,
 detectSessionInUrl:false
 }
 }
@@ -425,11 +357,14 @@ detectSessionInUrl:false
 
 return true;
 
-}catch(e){
+}catch(error){
 
-console.error(e);
+console.error(error);
 
-showToast(e.message);
+showConnectionError(
+"Supabase başlatılamadı",
+error.message
+);
 
 return false;
 
@@ -438,40 +373,146 @@ return false;
 }
 
 
-/* =====================================================
-   AUTH
-   ===================================================== */
+/* =========================================================
+   GERÇEK BAĞLANTI TESTİ
+========================================================= */
 
-async function login(){
+async function testConnection(){
 
-const username=
-document.getElementById("username")
-.value.trim()
-.replace(/\s+/g,"")
-.substring(0,20);
-
-if(!username){
-
-showToast("Kullanıcı adını gir.");
-
-return;
-
+if(!supabaseClient){
+return {
+ok:false,
+message:"Supabase client oluşturulamadı."
+};
 }
-
-const button=
-document.getElementById("loginButton");
-
-button.disabled=true;
-button.innerText="Bağlanıyor...";
 
 try{
 
-if(!db){
+const response =
+await fetch(
+SUPABASE_URL +
+"/rest/v1/profiles?select=id&limit=1",
+{
+method:"GET",
+headers:{
+"apikey":SUPABASE_KEY,
+"Authorization":
+"Bearer "+SUPABASE_KEY
+}
+}
+);
 
-if(!initSupabase()){
+const text =
+await response.text();
 
-throw new Error(
-"Supabase bağlantısı kurulamadı."
+if(!response.ok){
+
+let message=text;
+
+try{
+
+const json=JSON.parse(text);
+
+message =
+json.message ||
+json.error_description ||
+json.error ||
+text;
+
+}catch(e){}
+
+return {
+ok:false,
+message:
+"HTTP "+response.status+
+": "+message
+};
+
+}
+
+return {
+ok:true,
+message:"Supabase bağlantısı başarılı."
+};
+
+}catch(error){
+
+return {
+ok:false,
+message:
+"İnternet/API bağlantısı başarısız: "+
+error.message
+};
+
+}
+
+}
+
+
+/* =========================================================
+   BAĞLANTI HATASI
+========================================================= */
+
+function showConnectionError(title,message){
+
+const box =
+document.getElementById(
+"connectionStatus"
+);
+
+if(!box)return;
+
+box.innerHTML=`
+
+<div class="error-box connection-box">
+
+<strong>${escapeHTML(title)}</strong>
+
+<br><br>
+
+${escapeHTML(message || "Bilinmeyen hata")}
+
+<button onclick="retryConnection()">
+🔄 Tekrar dene
+</button>
+
+</div>
+`;
+
+}
+
+
+/* =========================================================
+   TEKRAR DENE
+========================================================= */
+
+async function retryConnection(){
+
+const box =
+document.getElementById(
+"connectionStatus"
+);
+
+box.innerHTML =
+'<div style="color:#9d91ff;font-size:11px;margin-top:15px">Bağlantı test ediliyor...</div>';
+
+if(!initSupabase())return;
+
+const result =
+await testConnection();
+
+if(result.ok){
+
+box.innerHTML=
+'<div style="color:#22c55e;font-size:11px;margin-top:15px">✓ Supabase bağlantısı başarılı.</div>';
+
+showToast("Bağlantı başarılı ✓");
+
+}else{
+
+showConnectionError(
+"Supabase bağlantı hatası",
+result.message
 );
 
 }
@@ -479,116 +520,273 @@ throw new Error(
 }
 
 
-/*
- Anonymous Auth
-*/
+/* =========================================================
+   DOM
+========================================================= */
 
-let {
-data:authData,
-error:authError
-}=await db.auth.getSession();
+window.addEventListener(
+"DOMContentLoaded",
+async function(){
 
+initSupabase();
 
-if(authError){
+const result =
+await testConnection();
 
-throw authError;
+if(result.ok){
 
-}
+document.getElementById(
+"connectionStatus"
+).innerHTML=
+'<div style="color:#22c55e;font-size:11px;margin-top:15px">✓ Sunucu bağlantısı hazır</div>';
 
+}else{
 
-let session=
-authData?.session;
-
-
-if(!session){
-
-const result=
-await db.auth.signInAnonymously();
-
-if(result.error){
-
-throw result.error;
-
-}
-
-session=result.data.session;
-
-}
-
-
-if(!session || !session.user){
-
-throw new Error(
-"Supabase kullanıcı oturumu oluşturamadı."
+showConnectionError(
+"Supabase bağlantısı kurulamadı",
+result.message
 );
 
 }
 
+const saved =
+localStorage.getItem("nexus_user");
 
-currentUser=session.user;
+if(saved){
+
+try{
+
+currentUser =
+JSON.parse(saved);
+
+await ensureProfile();
+
+await startApp();
+
+}catch(error){
+
+console.error(error);
+
+localStorage.removeItem(
+"nexus_user"
+);
+
+}
+
+}
+
+});
 
 
-/*
- Profil oluştur / bul
-*/
+/* =========================================================
+   UUID
+========================================================= */
 
-const {data:profile,error:profileError}
-=await db
+function generateUUID(){
+
+if(
+window.crypto &&
+typeof window.crypto.randomUUID==="function"
+){
+
+return window.crypto.randomUUID();
+
+}
+
+return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(
+/[xy]/g,
+function(c){
+
+const r=Math.random()*16|0;
+
+const v =
+c==="x"
+?r
+:(r&0x3|0x8);
+
+return v.toString(16);
+
+});
+
+}
+
+
+/* =========================================================
+   PROFİL
+========================================================= */
+
+async function ensureProfile(){
+
+if(!supabaseClient){
+throw new Error("Supabase bağlantısı yok.");
+}
+
+if(!currentUser?.id){
+throw new Error("Kullanıcı ID bulunamadı.");
+}
+
+const username =
+currentUser.username || "@user";
+
+
+const {
+data,
+error
+} =
+await supabaseClient
 .from("profiles")
 .select("*")
 .eq("id",currentUser.id)
 .maybeSingle();
 
 
-if(profileError){
+if(error){
 
-throw profileError;
+throw new Error(
+"Profil kontrolü başarısız: "+
+error.message
+);
 
 }
 
 
-if(profile){
+if(data){
 
-userProfile=profile;
+userProfile=data;
 
-}else{
+return data;
 
-const {data:newProfile,error:newError}
-=await db
+}
+
+
+/* PROFİL YOKSA OLUŞTUR */
+
+const {
+data:newProfile,
+error:insertError
+} =
+await supabaseClient
 .from("profiles")
 .insert({
+
 id:currentUser.id,
-username:"@"+username,
+username:username,
 decisions_count:0,
 correct_count:0,
 votes_count:0,
 reliability_score:0
+
 })
 .select()
 .single();
 
 
-if(newError){
+if(insertError){
 
-throw newError;
+throw new Error(
+"Profil oluşturulamadı: "+
+insertError.message
+);
 
 }
 
 userProfile=newProfile;
 
+return newProfile;
+
 }
 
 
-updateUI();
+/* =========================================================
+   LOGIN
+========================================================= */
 
-document.getElementById("login").style.display="none";
-document.getElementById("mainApp").style.display="block";
+async function login(){
 
-await loadDecisions();
-await loadLeaderboard();
-await loadResults();
+const input =
+document
+.getElementById("username")
+.value
+.trim();
 
-showToast("Nexus'a hoş geldin 🚀");
+
+if(!input){
+
+showToast(
+"Kullanıcı adını gir."
+);
+
+return;
+
+}
+
+
+const button =
+document.getElementById(
+"loginButton"
+);
+
+button.disabled=true;
+button.innerText="Bağlanıyor...";
+
+
+try{
+
+/* Önce API'yi test et */
+
+const connection =
+await testConnection();
+
+
+if(!connection.ok){
+
+throw new Error(
+connection.message
+);
+
+}
+
+
+/* Kullanıcı */
+
+const username =
+"@"+
+input
+.replace(/\s+/g,"")
+.substring(0,20);
+
+
+currentUser={
+
+id:generateUUID(),
+
+username:username
+
+};
+
+
+/* Profil */
+
+await ensureProfile();
+
+
+/* Kaydet */
+
+localStorage.setItem(
+"nexus_user",
+JSON.stringify(currentUser)
+);
+
+
+/* Uygulamayı aç */
+
+await startApp();
+
+
+showToast(
+"Nexus'a hoş geldin 🚀"
+);
+
 
 }catch(error){
 
@@ -597,9 +795,15 @@ console.error(
 error
 );
 
+currentUser=null;
+
+showConnectionError(
+"Giriş başarısız",
+error.message
+);
+
 showToast(
-"Supabase: "+
-(error.message || "Bilinmeyen hata")
+"Giriş başarısız"
 );
 
 }finally{
@@ -612,123 +816,121 @@ button.innerText="Nexus'a Gir →";
 }
 
 
-/* =====================================================
-   OTURUMU KONTROL ET
-   ===================================================== */
+/* =========================================================
+   START
+========================================================= */
 
-async function restoreSession(){
+async function startApp(){
 
-try{
+document.getElementById(
+"login"
+).style.display="none";
 
-if(!db)return;
+document.getElementById(
+"mainApp"
+).style.display="block";
 
-const {
-data,
-error
-}=await db.auth.getSession();
-
-if(error)throw error;
-
-if(
-data &&
-data.session &&
-data.session.user
-){
-
-currentUser=data.session.user;
-
-const {
-data:profile,
-error:profileError
-}=await db
-.from("profiles")
-.select("*")
-.eq("id",currentUser.id)
-.maybeSingle();
-
-if(profileError)throw profileError;
-
-if(profile){
-
-userProfile=profile;
-
-updateUI();
-
-document.getElementById("login").style.display="none";
-document.getElementById("mainApp").style.display="block";
+updateUserUI();
 
 await loadDecisions();
+
 await loadLeaderboard();
+
 await loadResults();
 
 }
 
+
+/* =========================================================
+   USER UI
+========================================================= */
+
+function updateUserUI(){
+
+if(!currentUser)return;
+
+const username =
+currentUser.username || "@user";
+
+const clean =
+username.replace("@","");
+
+const letter =
+clean.substring(0,1).toUpperCase();
+
+document.getElementById(
+"headerAvatar"
+).innerText=letter;
+
+document.getElementById(
+"profileAvatar"
+).innerText=letter;
+
+document.getElementById(
+"profileName"
+).innerText=username;
+
+updateProfileStats();
+
 }
 
-}catch(error){
 
-console.error(
-"SESSION ERROR:",
-error
-);
+/* =========================================================
+   STATS
+========================================================= */
 
-}
-
-}
-
-
-/* =====================================================
-   UI
-   ===================================================== */
-
-function updateUI(){
+function updateProfileStats(){
 
 if(!userProfile)return;
 
-const name=
-userProfile.username || "@user";
+const score =
+Number(userProfile.reliability_score || 0);
 
-const letter=
-name.replace("@","")
-.charAt(0)
-.toUpperCase();
+document.getElementById(
+"statScore"
+).innerText=
+score>0 ? "%"+score : "—";
 
-document.getElementById("headerAvatar").innerText=letter;
-document.getElementById("profileAvatar").innerText=letter;
-document.getElementById("profileName").innerText=name;
+document.getElementById(
+"statDecisions"
+).innerText=
+userProfile.decisions_count || 0;
 
-document.getElementById("statScore").innerText=
-userProfile.reliability_score
-? "%"+userProfile.reliability_score
-:"—";
-
-document.getElementById("statDecisions").innerText=
-userProfile.decisions_count||0;
-
-document.getElementById("statCorrect").innerText=
-userProfile.correct_count||0;
+document.getElementById(
+"statCorrect"
+).innerText=
+userProfile.correct_count || 0;
 
 }
 
 
-/* =====================================================
-   KARARLAR
-   ===================================================== */
+/* =========================================================
+   LOAD DECISIONS
+========================================================= */
 
 async function loadDecisions(category="all"){
 
 currentCategory=category;
 
-const feed=
+const feed =
 document.getElementById("feed");
+
+if(!supabaseClient){
+
+feed.innerHTML=
+'<div class="error-box">Supabase bağlantısı yok.</div>';
+
+return;
+
+}
 
 feed.innerHTML=
 '<div class="loading">Kararlar yükleniyor...</div>';
 
 try{
 
-let query=
-db
+let query =
+supabaseClient
 .from("decisions")
 .select(`
 id,
@@ -739,108 +941,279 @@ status,
 result,
 created_at,
 profiles(username,reliability_score),
-options(id,option_text,position)
+options(id,option_text,position),
+comments(
+id,
+user_id,
+comment_text,
+created_at,
+profiles(username,reliability_score)
+)
 `)
-.order("created_at",{ascending:false})
+.order(
+"created_at",
+{ascending:false}
+)
 .limit(50);
+
 
 if(category!=="all"){
 
-query=query.eq("category",category);
+query=query.eq(
+"category",
+category
+);
 
 }
 
-const {data,error}=await query;
+
+const {
+data,
+error
+}=
+await query;
+
 
 if(error)throw error;
 
-const rows=data||[];
 
-if(!rows.length){
+const ids =
+(data||[]).map(d=>d.id);
 
-feed.innerHTML=
-`<div class="decision">
-<div style="text-align:center;padding:30px;color:#697386">
-Henüz karar yok. İlk kararı sen oluştur. 🧠
-</div>
-</div>`;
+let votes=[];
 
-return;
+if(ids.length){
+
+const {
+data:voteData,
+error:voteError
+}=
+await supabaseClient
+.from("votes")
+.select(
+"decision_id,option_id,user_id"
+)
+.in(
+"decision_id",
+ids
+);
+
+if(voteError)throw voteError;
+
+votes=voteData||[];
 
 }
 
-decisions=rows;
 
-renderFeed();
+decisions=(data||[]).map(d=>{
+
+const dv =
+votes.filter(
+v=>v.decision_id===d.id
+);
+
+const options =
+(d.options||[])
+.sort(
+(a,b)=>a.position-b.position
+)
+.map(o=>{
+
+const count =
+dv.filter(
+v=>v.option_id===o.id
+).length;
+
+return{
+
+id:o.id,
+text:o.option_text,
+votes:count
+
+};
+
+});
+
+
+return{
+
+id:d.id,
+user:d.profiles?.username||"@user",
+avatar:
+(d.profiles?.username||"U")
+.replace("@","")
+.substring(0,1)
+.toUpperCase(),
+trust:d.profiles?.reliability_score||0,
+category:d.category,
+question:d.question,
+options:options,
+totalVotes:dv.length,
+comments:d.comments||[],
+voted:dv.some(
+v=>v.user_id===currentUser?.id
+),
+status:d.status,
+result:d.result,
+createdAt:d.created_at,
+userId:d.user_id
+
+};
+
+});
+
+
+renderFeed(category);
 
 }catch(error){
 
 console.error(error);
 
-feed.innerHTML=
-`<div class="error">
+feed.innerHTML=`
+
+<div class="error-box">
+
 <strong>Kararlar yüklenemedi.</strong>
+
 <br><br>
+
 ${escapeHTML(error.message)}
-</div>`;
+
+</div>
+
+`;
 
 }
 
 }
 
 
-/* =====================================================
+/* =========================================================
    FEED
-   ===================================================== */
+========================================================= */
 
-function renderFeed(){
+function renderFeed(filter="all"){
 
-const feed=
+const feed =
 document.getElementById("feed");
+
+const list =
+decisions.filter(
+d=>filter==="all"||d.category===filter
+);
+
+if(!list.length){
+
+feed.innerHTML=`
+
+<div class="decision">
+
+<div style="text-align:center;padding:35px;color:#687286">
+
+Henüz karar yok. 🧠
+
+</div>
+
+</div>
+
+`;
+
+return;
+
+}
 
 feed.innerHTML="";
 
-decisions.forEach(d=>{
+list.forEach(d=>{
 
-const name=
-d.profiles?.username||"@user";
-
-const avatar=
-name.replace("@","").charAt(0).toUpperCase();
-
-const options=
-(d.options||[])
-.sort((a,b)=>a.position-b.position);
-
-const card=
+const card =
 document.createElement("div");
 
 card.className="decision";
 
 let optionsHTML="";
 
-options.forEach(o=>{
+d.options.forEach(o=>{
+
+const percent =
+d.totalVotes>0
+?Math.round(o.votes/d.totalVotes*100)
+:0;
 
 optionsHTML+=`
-<button class="option"
-onclick="vote('${d.id}','${o.id}')">
-${escapeHTML(o.option_text)}
+
+<button
+class="option ${d.voted?"voted":""}"
+onclick="vote('${d.id}','${o.id}')"
+>
+
+${escapeHTML(o.text)}
+
+<span class="percent">
+${percent}%
+</span>
+
+<span
+class="option-bar"
+style="width:${percent}%"
+></span>
+
 </button>
+
 `;
 
 });
+
+
+let commentsHTML="";
+
+d.comments.forEach(c=>{
+
+const name =
+c.profiles?.username||"@user";
+
+commentsHTML+=`
+
+<div class="comment">
+
+<div class="comment-avatar">
+${name.replace("@","").substring(0,1).toUpperCase()}
+</div>
+
+<div class="comment-body">
+
+<strong>${escapeHTML(name)}</strong>
+
+<br>
+
+${escapeHTML(c.comment_text)}
+
+<div class="trust">
+🎯 ${c.profiles?.reliability_score||0}% güvenilirlik
+</div>
+
+</div>
+
+</div>
+
+`;
+
+});
+
 
 card.innerHTML=`
 
 <div class="decision-head">
 
-<div class="user-avatar">${avatar}</div>
+<div class="user-avatar">
+${d.avatar}
+</div>
 
 <div class="author">
 
-${escapeHTML(name)}
+${escapeHTML(d.user)}
 
-<span>${timeAgo(d.created_at)}</span>
+<span>${timeAgo(d.createdAt)}</span>
 
 </div>
 
@@ -859,10 +1232,44 @@ ${optionsHTML}
 </div>
 
 <div class="card-bottom">
-<span>👥 Nexus</span>
-<span>${d.status==="completed"?"✅ Tamamlandı":"🟢 Açık"}</span>
+
+<span>👥 ${d.totalVotes} oy</span>
+
+<button
+class="text-button"
+onclick="toggleComments('${d.id}')"
+>
+💬 ${d.comments.length}
+</button>
+
 </div>
 
+<div
+class="comments"
+id="comments-${d.id}"
+>
+
+${commentsHTML}
+
+<div style="display:flex;gap:7px;margin-top:10px">
+
+<input
+id="comment-${d.id}"
+class="input"
+style="margin:0;padding:10px;font-size:10px"
+placeholder="Yorum yaz..."
+>
+
+<button
+onclick="addComment('${d.id}')"
+style="border:0;background:linear-gradient(135deg,#6d5dfc,#a855f7);color:#fff;border-radius:10px;padding:0 12px;font-weight:bold"
+>
+→
+</button>
+
+</div>
+
+</div>
 `;
 
 feed.appendChild(card);
@@ -872,15 +1279,51 @@ feed.appendChild(card);
 }
 
 
-/* =====================================================
-   OY
-   ===================================================== */
+/* =========================================================
+   FILTER
+========================================================= */
+
+function filterFeed(button,category){
+
+document
+.querySelectorAll(".filter")
+.forEach(
+x=>x.classList.remove("active")
+);
+
+button.classList.add("active");
+
+loadDecisions(category);
+
+}
+
+
+/* =========================================================
+   VOTE
+========================================================= */
 
 async function vote(decisionId,optionId){
 
 if(!currentUser){
 
-showToast("Önce giriş yapmalısın.");
+showToast("Giriş yapmalısın.");
+
+return;
+
+}
+
+const decision =
+decisions.find(
+d=>d.id===decisionId
+);
+
+if(!decision)return;
+
+if(decision.voted){
+
+showToast(
+"Bu karara zaten oy verdin."
+);
 
 return;
 
@@ -888,20 +1331,27 @@ return;
 
 try{
 
-const {error}=
-await db
+const {
+error
+}=
+await supabaseClient
 .from("votes")
 .insert({
+
 decision_id:decisionId,
 option_id:optionId,
 user_id:currentUser.id
+
 });
+
 
 if(error){
 
 if(error.code==="23505"){
 
-showToast("Bu karara zaten oy verdin.");
+showToast(
+"Bu karara zaten oy verdin."
+);
 
 return;
 
@@ -911,9 +1361,27 @@ throw error;
 
 }
 
-showToast("Oyun kaydedildi 🎯");
 
-await loadDecisions(currentCategory);
+await supabaseClient
+.from("profiles")
+.update({
+
+votes_count:
+Number(userProfile.votes_count||0)+1
+
+})
+.eq(
+"id",
+currentUser.id
+);
+
+await ensureProfile();
+
+await loadDecisions(
+currentCategory
+);
+
+showToast("Oyun kaydedildi 🎯");
 
 }catch(error){
 
@@ -929,26 +1397,124 @@ error.message
 }
 
 
-/* =====================================================
-   KARAR OLUŞTUR
-   ===================================================== */
+/* =========================================================
+   COMMENT
+========================================================= */
+
+function toggleComments(id){
+
+const el =
+document.getElementById(
+"comments-"+id
+);
+
+if(el){
+
+el.classList.toggle("show");
+
+}
+
+}
+
+
+async function addComment(id){
+
+const input =
+document.getElementById(
+"comment-"+id
+);
+
+if(!input)return;
+
+const text =
+input.value.trim();
+
+if(!text){
+
+showToast("Yorumunu yaz.");
+
+return;
+
+}
+
+try{
+
+const {
+error
+}=
+await supabaseClient
+.from("comments")
+.insert({
+
+decision_id:id,
+user_id:currentUser.id,
+comment_text:text
+
+});
+
+if(error)throw error;
+
+input.value="";
+
+await loadDecisions(
+currentCategory
+);
+
+showToast(
+"Yorum yayınlandı 💬"
+);
+
+}catch(error){
+
+showToast(
+"Yorum gönderilemedi: "+
+error.message
+);
+
+}
+
+}
+
+
+/* =========================================================
+   CREATE
+========================================================= */
+
+function addThirdOption(){
+
+document.getElementById(
+"thirdOptionBox"
+).style.display="block";
+
+}
+
 
 async function createDecision(){
 
-const question=
-document.getElementById("question").value.trim();
+const question =
+document.getElementById(
+"question"
+).value.trim();
 
-const option1=
-document.getElementById("option1").value.trim();
+const option1 =
+document.getElementById(
+"option1"
+).value.trim();
 
-const option2=
-document.getElementById("option2").value.trim();
+const option2 =
+document.getElementById(
+"option2"
+).value.trim();
 
-const option3=
-document.getElementById("option3").value.trim();
+const option3 =
+document.getElementById(
+"option3"
+).value.trim();
 
-const category=
-document.getElementById("category").value;
+const category =
+document.getElementById(
+"category"
+).value;
 
 if(!question||!option1||!option2){
 
@@ -960,18 +1526,31 @@ return;
 
 }
 
+const button =
+document.getElementById(
+"createButton"
+);
+
+button.disabled=true;
+button.innerText="Kaydediliyor...";
+
 try{
+
+await ensureProfile();
 
 const {
 data:decision,
 error
-}=await db
+}=
+await supabaseClient
 .from("decisions")
 .insert({
+
 user_id:currentUser.id,
-question,
-category,
+question:question,
+category:category,
 status:"open"
+
 })
 .select()
 .single();
@@ -1003,47 +1582,51 @@ position:3
 
 const {
 error:optionError
-}=await db
+}=
+await supabaseClient
 .from("options")
 .insert(options);
 
-if(optionError)throw optionError;
+if(optionError){
 
-await db
-.from("profiles")
-.update({
-decisions_count:
-Number(userProfile.decisions_count||0)+1
-})
-.eq("id",currentUser.id);
+await supabaseClient
+.from("decisions")
+.delete()
+.eq("id",decision.id);
 
-const {
-data:updatedProfile
-}=await db
-.from("profiles")
-.select("*")
-.eq("id",currentUser.id)
-.single();
-
-if(updatedProfile){
-
-userProfile=updatedProfile;
+throw optionError;
 
 }
 
-updateUI();
+await supabaseClient
+.from("profiles")
+.update({
+
+decisions_count:
+Number(userProfile.decisions_count||0)+1
+
+})
+.eq(
+"id",
+currentUser.id
+);
+
+await ensureProfile();
 
 document.getElementById("question").value="";
 document.getElementById("option1").value="";
 document.getElementById("option2").value="";
 document.getElementById("option3").value="";
-
 document.getElementById("thirdOptionBox").style.display="none";
 
 await loadDecisions();
+
 await loadLeaderboard();
 
-showScreen("home");
+showScreen(
+"home",
+document.querySelector(".nav")
+);
 
 showToast(
 "Kararın Nexus'a gönderildi 🚀"
@@ -1058,183 +1641,119 @@ showToast(
 error.message
 );
 
-}
+}finally{
+
+button.disabled=false;
+button.innerText="🚀 Nexus'a Sor";
 
 }
 
+}
 
-/* =====================================================
-   LİDERLİK
-   ===================================================== */
 
-async function loadLeaderboard(){
+/* =========================================================
+   RESULTS
+========================================================= */
 
-const box=
-document.getElementById("ranking");
+async function loadResults(){
+
+const box =
+document.getElementById(
+"pendingResults"
+);
+
+if(!box||!currentUser)return;
 
 try{
 
 const {
 data,
 error
-}=await db
-.from("profiles")
+}=
+await supabaseClient
+.from("decisions")
 .select(
-"username,decisions_count,reliability_score"
+"id,question,category,status,created_at"
+)
+.eq(
+"user_id",
+currentUser.id
+)
+.eq(
+"status",
+"open"
 )
 .order(
-"reliability_score",
+"created_at",
 {ascending:false}
-)
-.limit(50);
+);
 
 if(error)throw error;
 
-box.innerHTML="";
-
 if(!data?.length){
 
-box.innerHTML=
-`<div class="decision">
-<div style="text-align:center;padding:30px;color:#697386">
-Henüz lider yok.
-</div>
-</div>`;
+box.innerHTML=`
 
-return;
+<div class="decision">
 
-}
+<div style="text-align:center;padding:30px;color:#687286">
 
-data.forEach((u,i)=>{
-
-const row=
-document.createElement("div");
-
-row.className="decision";
-
-row.style.display="flex";
-row.style.alignItems="center";
-row.style.gap="12px";
-
-row.innerHTML=`
-
-<div style="font-weight:800">
-${i+1}
-</div>
-
-<div class="user-avatar">
-${(u.username||"U")
-.replace("@","")
-.charAt(0)
-.toUpperCase()}
-</div>
-
-<div style="flex:1">
-
-<strong>
-${escapeHTML(u.username||"@user")}
-</strong>
-
-<div style="font-size:9px;color:#697386">
-${u.decisions_count||0} karar
-</div>
+🎯 Sonuç bekleyen kararın yok.
 
 </div>
 
-<div style="color:#9b8cff;font-weight:800">
-%${u.reliability_score||0}
 </div>
 
 `;
 
-box.appendChild(row);
-
-});
-
-}catch(error){
-
-box.innerHTML=
-`<div class="error">
-Liderlik yüklenemedi.<br><br>
-${escapeHTML(error.message)}
-</div>`;
-
-}
-
-}
-
-
-/* =====================================================
-   SONUÇLAR
-   ===================================================== */
-
-async function loadResults(){
-
-const box=
-document.getElementById("pendingResults");
-
-if(!currentUser)return;
-
-try{
-
-const {
-data,error
-}=await db
-.from("decisions")
-.select("id,question,category")
-.eq("user_id",currentUser.id)
-.eq("status","open")
-.order("created_at",{ascending:false});
-
-if(error)throw error;
-
-box.innerHTML="";
-
-if(!data?.length){
-
-box.innerHTML=
-`<div class="decision">
-<div style="text-align:center;padding:30px;color:#697386">
-🎯 Sonuç bekleyen kararın yok.
-</div>
-</div>`;
-
 return;
 
 }
 
+box.innerHTML="";
+
 data.forEach(d=>{
 
-const el=
+const el =
 document.createElement("div");
 
-el.className="decision";
+el.className="pending";
 
 el.innerHTML=`
 
-<div style="font-size:9px;color:#a99cff">
+<div class="pending-label">
 🔔 SONUÇ BEKLİYOR
 </div>
 
-<div style="font-weight:700;margin:10px 0">
+<div class="pending-question">
 ${escapeHTML(d.question)}
 </div>
 
-<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px">
+<div style="color:#6e788b;font-size:9px;margin-top:7px">
+${escapeHTML(d.category)}
+</div>
 
-<button class="option"
-onclick="setResult('${d.id}','good')">
-🟢 İyi
+<div class="result-buttons">
+
+<button
+class="result-btn"
+onclick="setResult('${d.id}','good')"
+>
+🟢 İyi oldu
 </button>
 
-<button class="option"
-onclick="setResult('${d.id}','same')">
-🟡 Aynı
+<button
+class="result-btn"
+onclick="setResult('${d.id}','same')"
+>
+🟡 Beklediğim gibi
 </button>
 
-<button class="option"
-onclick="setResult('${d.id}','bad')">
-🔴 Kötü
+<button
+class="result-btn"
+onclick="setResult('${d.id}','bad')"
+>
+🔴 Kötü oldu
 </button>
 
 </div>
@@ -1247,44 +1766,62 @@ box.appendChild(el);
 
 }catch(error){
 
-box.innerHTML=
-`<div class="error">
+box.innerHTML=`
+
+<div class="error-box">
+
 ${escapeHTML(error.message)}
-</div>`;
+
+</div>
+
+`;
 
 }
 
 }
 
 
-/* =====================================================
-   SONUÇ KAYDET
-   ===================================================== */
+/* =========================================================
+   RESULT SAVE
+========================================================= */
 
 async function setResult(id,result){
 
 try{
 
-const {error}=
-await db
+const {
+error
+}=
+await supabaseClient
 .from("decisions")
 .update({
+
 result:result,
 status:"completed"
+
 })
-.eq("id",id)
-.eq("user_id",currentUser.id);
+.eq(
+"id",
+id
+)
+.eq(
+"user_id",
+currentUser.id
+);
 
 if(error)throw error;
 
 await recalculateProfile();
 
 await loadResults();
+
 await loadLeaderboard();
 
-updateUI();
+updateProfileStats();
 
-showToast("Sonucun kaydedildi 🧠");
+showToast(
+"Sonucun kaydedildi 🧠"
+);
 
 }catch(error){
 
@@ -1298,44 +1835,62 @@ error.message
 }
 
 
-/* =====================================================
-   PROFİL HESAPLA
-   ===================================================== */
+/* =========================================================
+   PROFILE RECALCULATE
+========================================================= */
 
 async function recalculateProfile(){
 
 const {
-data,error
-}=await db
+data,
+error
+}=
+await supabaseClient
 .from("decisions")
-.select("result")
-.eq("user_id",currentUser.id);
+.select("id,result")
+.eq(
+"user_id",
+currentUser.id
+);
 
 if(error)throw error;
 
-const all=data||[];
+const rows=data||[];
 
-const completed=
-all.filter(x=>x.result!==null);
+const completed =
+rows.filter(
+x=>x.result!==null
+);
 
-const good=
-completed.filter(x=>x.result==="good");
+const good =
+completed.filter(
+x=>x.result==="good"
+).length;
 
-const score=
+const score =
 completed.length
-?Math.round(good.length/completed.length*100)
+?Math.round(
+good/completed.length*100
+)
 :0;
 
 const {
-data:updated,error:updateError
-}=await db
+data:updated,
+error:updateError
+}=
+await supabaseClient
 .from("profiles")
 .update({
-decisions_count:all.length,
-correct_count:good.length,
+
+decisions_count:rows.length,
+correct_count:good,
 reliability_score:score
+
 })
-.eq("id",currentUser.id)
+.eq(
+"id",
+currentUser.id
+)
 .select()
 .single();
 
@@ -1346,68 +1901,218 @@ userProfile=updated;
 }
 
 
-/* =====================================================
-   NAVIGATION
-   ===================================================== */
+/* =========================================================
+   LEADERBOARD
+========================================================= */
 
-function showScreen(id,button){
+async function loadLeaderboard(){
+
+const box =
+document.getElementById(
+"ranking"
+);
+
+if(!box)return;
+
+try{
+
+const {
+data,
+error
+}=
+await supabaseClient
+.from("profiles")
+.select(
+"id,username,decisions_count,correct_count,reliability_score"
+)
+.order(
+"reliability_score",
+{ascending:false}
+)
+.limit(50);
+
+if(error)throw error;
+
+box.innerHTML="";
+
+if(!data?.length){
+
+document.getElementById(
+"leaderHeroName"
+).innerText="Henüz lider yok";
+
+return;
+
+}
+
+const leader=data[0];
+
+document.getElementById(
+"leaderHeroName"
+).innerText=
+leader.username||"@user";
+
+document.getElementById(
+"leaderHeroScore"
+).innerText=
+"%"+
+(leader.reliability_score||0)+
+" güvenilirlik";
+
+data.forEach((u,i)=>{
+
+const username =
+u.username||"@user";
+
+const row =
+document.createElement("div");
+
+row.className="rank-row";
+
+row.innerHTML=`
+
+<div class="rank-number">
+${i===0?"🥇":i===1?"🥈":i===2?"🥉":i+1}
+</div>
+
+<div class="rank-avatar">
+${username.replace("@","").substring(0,1).toUpperCase()}
+</div>
+
+<div class="rank-info">
+
+<strong>
+${escapeHTML(username)}
+</strong>
+
+<span>
+${u.decisions_count||0} karar
+</span>
+
+</div>
+
+<div class="rank-score">
+
+%${u.reliability_score||0}
+
+<small>güvenilirlik</small>
+
+</div>
+
+`;
+
+box.appendChild(row);
+
+});
+
+}catch(error){
+
+box.innerHTML=`
+
+<div class="error-box">
+
+Liderlik yüklenemedi.
+
+<br><br>
+
+${escapeHTML(error.message)}
+
+</div>
+
+`;
+
+}
+
+}
+
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
+
+function showScreen(id,btn){
 
 document
 .querySelectorAll(".screen")
-.forEach(x=>x.classList.remove("active"));
+.forEach(
+x=>x.classList.remove("active")
+);
 
-const target=
+const target =
 document.getElementById(id);
 
 if(target)target.classList.add("active");
 
 document
 .querySelectorAll(".nav")
-.forEach(x=>x.classList.remove("active"));
+.forEach(
+x=>x.classList.remove("active")
+);
 
-if(button)button.classList.add("active");
+if(
+btn &&
+btn.classList.contains("nav")
+){
 
-if(id==="leaderboard")loadLeaderboard();
+btn.classList.add("active");
+
+}
+
 if(id==="results")loadResults();
 
-window.scrollTo(0,0);
+if(id==="leaderboard")loadLeaderboard();
+
+if(id==="profile")updateProfileStats();
+
+window.scrollTo({
+top:0,
+behavior:"smooth"
+});
 
 }
 
 
-/* =====================================================
-   FILTER
-   ===================================================== */
+/* =========================================================
+   LANGUAGE
+========================================================= */
 
-function filterFeed(button,category){
+function setLang(lang){
+
+localStorage.setItem(
+"nexus_lang",
+lang
+);
 
 document
-.querySelectorAll(".filter")
-.forEach(x=>x.classList.remove("active"));
+.querySelectorAll(".lang-btn")
+.forEach(
+b=>b.classList.remove("active")
+);
 
-button.classList.add("active");
+document
+.querySelectorAll(".lang-btn")
+.forEach(b=>{
 
-loadDecisions(category);
+const text=b.innerText;
+
+if(
+(lang==="tr"&&(text.includes("TR")||text.includes("Türkçe")))||
+(lang==="de"&&(text.includes("DE")||text.includes("Deutsch")))||
+(lang==="en"&&(text.includes("EN")||text.includes("English")))
+){
+
+b.classList.add("active");
+
+}
+
+});
 
 }
 
 
-/* =====================================================
-   3. SEÇENEK
-   ===================================================== */
-
-function addThirdOption(){
-
-document.getElementById(
-"thirdOptionBox"
-).style.display="block";
-
-}
-
-
-/* =====================================================
-   YARDIMCI
-   ===================================================== */
+/* =========================================================
+   HELPERS
+========================================================= */
 
 function escapeHTML(str){
 
@@ -1419,6 +2124,7 @@ return String(str??"")
 .replace(/'/g,"&#039;");
 
 }
+
 
 function timeAgo(date){
 
@@ -1443,53 +2149,44 @@ return Math.floor(hours/24)+" gün";
 
 }
 
+
 function showToast(message){
 
-const toast=
+const toast =
 document.getElementById("toast");
 
 toast.innerText=message;
 
 toast.classList.add("show");
 
-clearTimeout(window.__toast);
+clearTimeout(
+window.toastTimer
+);
 
-window.__toast=
+window.toastTimer=
 setTimeout(
 ()=>toast.classList.remove("show"),
-3500
+3000
 );
 
 }
 
 
-/* =====================================================
-   LOGIN BUTTON
-   ===================================================== */
+/* =========================================================
+   DİL
+========================================================= */
 
-document
-.getElementById("loginButton")
-.addEventListener("click",login);
+const savedLang =
+localStorage.getItem("nexus_lang");
 
-document
-.getElementById("createButton")
-.addEventListener("click",createDecision);
+if(savedLang){
 
-
-/* =====================================================
-   START
-   ===================================================== */
-
-window.addEventListener(
-"DOMContentLoaded",
-async()=>{
-
-if(!initSupabase())return;
-
-await restoreSession();
+setTimeout(
+()=>setLang(savedLang),
+200
+);
 
 }
-);
 
 </script>
 
