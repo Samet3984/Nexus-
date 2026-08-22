@@ -81,7 +81,6 @@ button{cursor:pointer}
 .comment{display:flex;gap:9px;margin-bottom:12px}
 .comment-avatar{width:27px;height:27px;flex:none;border-radius:50%;background:#292f40;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800}
 .comment-body{background:#191c26;border-radius:12px;padding:8px 10px;font-size:11px;line-height:1.4}
-.trust{color:#8b7cff;font-size:8px;font-weight:700;margin-top:3px}
 
 /* CREATE & PROFILE */
 .form-title{font-size:23px;font-weight:800;margin-bottom:5px}
@@ -270,7 +269,7 @@ try {
     supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
   }
 } catch (e) {
-  console.error("Supabase yüklenirken hata:", e);
+  console.error("Supabase hata:", e);
 }
 
 let currentUser = null;
@@ -297,7 +296,7 @@ async function login() {
 
   let userId = localStorage.getItem("nexus_user_id");
   if (!userId) {
-    userId = crypto.randomUUID();
+    userId = 'user_' + Math.random().toString(36).substring(2, 10);
     localStorage.setItem("nexus_user_id", userId);
   }
 
@@ -362,7 +361,7 @@ async function loadDecisions(cat = "all") {
   try {
     let query = supabaseClient
       .from("decisions")
-      .select(`id, user_id, question, category, status, result, created_at, profiles(username, reliability_score), options(id, option_text, position), comments(id, user_id, comment_text, created_at, profiles(username, reliability_score))`)
+      .select(`id, user_id, question, category, status, result, created_at, options(id, option_text, position), comments(id, user_id, comment_text, created_at)`)
       .order("created_at", { ascending: false })
       .limit(50);
 
@@ -387,8 +386,8 @@ async function loadDecisions(cat = "all") {
         id: o.id, text: o.option_text, votes: dVotes.filter(v => v.option_id === o.id).length
       }));
       return {
-        id: d.id, user: d.profiles?.username || "@user",
-        avatar: (d.profiles?.username || "U").replace("@","")[0].toUpperCase(),
+        id: d.id, user: "@kullanici",
+        avatar: "K",
         category: d.category, question: d.question, options: opts,
         totalVotes: dVotes.length, comments: d.comments || [],
         voted: dVotes.some(v => v.user_id === currentUser?.id),
@@ -427,11 +426,10 @@ function renderFeed() {
 
     let commHTML = "";
     (d.comments || []).forEach(c => {
-      const cUser = c.profiles?.username || "@user";
       commHTML += `
         <div class="comment">
-          <div class="comment-avatar">${escapeHTML(cUser.replace("@","")[0].toUpperCase())}</div>
-          <div><div class="comment-body"><strong>${escapeHTML(cUser)}</strong><br>${escapeHTML(c.comment_text)}</div></div>
+          <div class="comment-avatar">U</div>
+          <div><div class="comment-body"><strong>@kullanici</strong><br>${escapeHTML(c.comment_text)}</div></div>
         </div>
       `;
     });
@@ -524,7 +522,10 @@ async function createDecision() {
       user_id: currentUser.id, question: q, category: cat, status: "open"
     }).select().single();
 
-    if (error || !dec) return;
+    if (error) {
+      alert("Hata (Decisions): " + JSON.stringify(error));
+      return;
+    }
 
     let opts = [
       { decision_id: dec.id, option_text: o1, position: 1 },
@@ -532,7 +533,12 @@ async function createDecision() {
     ];
     if (o3) opts.push({ decision_id: dec.id, option_text: o3, position: 3 });
 
-    await supabaseClient.from("options").insert(opts);
+    const { error: optError } = await supabaseClient.from("options").insert(opts);
+    if (optError) {
+      alert("Hata (Options): " + JSON.stringify(optError));
+      return;
+    }
+
     document.getElementById("question").value = "";
     document.getElementById("option1").value = "";
     document.getElementById("option2").value = "";
@@ -542,19 +548,21 @@ async function createDecision() {
     showScreen("home", document.querySelector(".nav"));
     await loadDecisions("all");
     showToast("Karar yayınlandı 🚀");
-  } catch(e) {}
+  } catch(e) {
+    alert("Beklenmeyen hata: " + e.message);
+  }
 }
 
 async function loadLeaderboard() {
   const container = document.getElementById("ranking");
   if (!container || !supabaseClient) return;
   try {
-    const { data } = await supabaseClient.from("profiles").select("*").order("reliability_score", { ascending: false }).limit(20);
+    const { data } = await supabaseClient.from("profiles").select("*").limit(20);
     if (!data || !data.length) {
       container.innerHTML = `<div class="decision"><div class="empty">Henüz lider yok.</div></div>`;
       return;
     }
-    document.getElementById("leaderHeroName").innerText = data[0].username;
+    document.getElementById("leaderHeroName").innerText = data[0].username || "@kullanici";
     document.getElementById("leaderHeroScore").innerText = `%${data[0].reliability_score || 0} güvenilirlik`;
 
     container.innerHTML = "";
@@ -564,8 +572,8 @@ async function loadLeaderboard() {
       const medal = i === 0 ? "🥇" : i === 1 ? "🥈" : i === 2 ? "🥉" : i + 1;
       row.innerHTML = `
         <div class="rank-number">${medal}</div>
-        <div class="rank-avatar">${(u.username || "U")[1].toUpperCase()}</div>
-        <div class="rank-info"><strong>${escapeHTML(u.username)}</strong><span>${u.decisions_count || 0} karar</span></div>
+        <div class="rank-avatar">U</div>
+        <div class="rank-info"><strong>${escapeHTML(u.username || "@kullanici")}</strong><span>${u.decisions_count || 0} karar</span></div>
         <div class="rank-score">%${u.reliability_score || 0}<small>puan</small></div>
       `;
       container.appendChild(row);
