@@ -6,1719 +6,453 @@
 <meta name="theme-color" content="#08090d">
 <title>Nexus — Kararların Gücü</title>
 
+<!-- Supabase CDN (Kararlı v2 sürümü) -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
 
 :root{
---bg:#08090d;
---card:#12151e;
---card2:#171a24;
---border:#242938;
---purple:#7c5cff;
---purple2:#a855f7;
---green:#22c55e;
---red:#ef4444;
---yellow:#eab308;
---text:#f8fafc;
---muted:#8d96aa;
+--bg:#08090d;--card:#12151e;--card2:#171a24;--border:#242938;--purple:#7c5cff;--purple2:#a855f7;
+--green:#22c55e;--red:#ef4444;--yellow:#eab308;--text:#f8fafc;--muted:#8d96aa;
 --gradient:linear-gradient(135deg,#6d5dfc,#a855f7)
 }
 
-*{
-box-sizing:border-box;
--webkit-tap-highlight-color:transparent
-}
-
-html,body{
-margin:0;
-padding:0;
-background:#050609;
-color:var(--text);
-font-family:'Plus Jakarta Sans',sans-serif
-}
-
-body{
-min-height:100vh
-}
-
-button,input,textarea,select{
-font-family:inherit
-}
-
-button{
-cursor:pointer
-}
-
-.app{
-width:100%;
-max-width:500px;
-min-height:100vh;
-margin:auto;
-background:var(--bg);
-position:relative;
-overflow:hidden
-}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0;background:#050609;color:var(--text);font-family:'Plus Jakarta Sans',sans-serif}
+body{min-height:100vh}
+button,input,textarea,select{font-family:inherit}
+button{cursor:pointer}
+.app{width:100%;max-width:500px;min-height:100vh;margin:auto;background:var(--bg);position:relative;overflow:hidden}
 
 /* LOGIN */
-
-#login{
-min-height:100vh;
-display:flex;
-align-items:center;
-justify-content:center;
-padding:28px
-}
-
-.login-box{
-width:100%;
-text-align:center
-}
-
-.logo{
-width:82px;
-height:82px;
-border-radius:26px;
-margin:0 auto 22px;
-background:var(--gradient);
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:38px;
-font-weight:800;
-box-shadow:0 20px 60px #7c5cff4d
-}
-
-.logo-title{
-font-size:42px;
-font-weight:800;
-letter-spacing:-2px;
-margin-bottom:8px
-}
-
-.logo-sub{
-color:var(--muted);
-line-height:1.6;
-margin-bottom:35px
-}
-
-.input{
-width:100%;
-padding:15px 16px;
-background:var(--card);
-border:1px solid var(--border);
-border-radius:15px;
-color:white;
-outline:0;
-font-size:14px;
-margin-bottom:10px
-}
-
-.input:focus,
-textarea:focus,
-select:focus{
-border-color:var(--purple)
-}
-
-.primary{
-width:100%;
-border:0;
-border-radius:16px;
-padding:16px;
-color:white;
-font-weight:800;
-font-size:15px;
-background:var(--gradient);
-box-shadow:0 12px 30px #7c5cff40
-}
-
-.small-note{
-color:#626b7d;
-font-size:11px;
-margin-top:16px
-}
+#login{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:28px}
+.login-box{width:100%;text-align:center}
+.logo{width:82px;height:82px;border-radius:26px;margin:0 auto 22px;background:var(--gradient);display:flex;align-items:center;justify-content:center;font-size:38px;font-weight:800;box-shadow:0 20px 60px #7c5cff4d}
+.logo-title{font-size:42px;font-weight:800;letter-spacing:-2px;margin-bottom:8px}
+.logo-sub{color:var(--muted);line-height:1.6;margin-bottom:35px}
+.input{width:100%;padding:15px 16px;background:var(--card);border:1px solid var(--border);border-radius:15px;color:white;outline:0;font-size:14px;margin-bottom:10px}
+.input:focus,textarea:focus,select:focus{border-color:var(--purple)}
+.primary{width:100%;border:0;border-radius:16px;padding:16px;color:white;font-weight:800;font-size:15px;background:var(--gradient);box-shadow:0 12px 30px #7c5cff40}
+.small-note{color:#626b7d;font-size:11px;margin-top:16px}
 
 /* MAIN */
-
-#mainApp{
-display:none;
-min-height:100vh;
-padding-bottom:92px
-}
-
-.screen{
-display:none;
-padding:20px 16px;
-animation:fade .2s ease
-}
-
-.screen.active{
-display:block
-}
-
-@keyframes fade{
-from{
-opacity:0;
-transform:translateY(7px)
-}
-to{
-opacity:1;
-transform:none
-}
-}
+#mainApp{display:none;min-height:100vh;padding-bottom:92px}
+.screen{display:none;padding:20px 16px}
+.screen.active{display:block}
 
 /* HEADER */
+.header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+.header h1{font-size:24px;margin:0;letter-spacing:-.8px}
+.header p{margin:5px 0 0;color:var(--muted);font-size:12px}
+.avatar,.profile-avatar,.user-avatar,.rank-avatar{background:var(--gradient);display:flex;align-items:center;justify-content:center;font-weight:800}
+.avatar{width:42px;height:42px;border-radius:50%}
 
-.header{
-display:flex;
-justify-content:space-between;
-align-items:center;
-margin-bottom:20px
-}
+/* TICKER & FILTERS */
+.ticker{background:linear-gradient(135deg,#171328,#151321);border:1px solid #292342;border-radius:17px;padding:14px;margin-bottom:18px}
+.ticker-top{display:flex;justify-content:space-between}
+.live{display:flex;align-items:center;gap:7px;color:#c4b5fd;font-size:11px;font-weight:700}
+.dot{width:7px;height:7px;background:#22c55e;border-radius:50%;box-shadow:0 0 10px #22c55e}
+.filters{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin-bottom:18px}
+.filters::-webkit-scrollbar{display:none}
+.filter{white-space:nowrap;border:1px solid var(--border);background:var(--card);color:var(--muted);border-radius:20px;padding:9px 13px;font-size:11px;font-weight:700}
+.filter.active{color:white;background:#242039;border-color:#5541b4}
 
-.header h1{
-font-size:24px;
-margin:0;
-letter-spacing:-.8px
-}
-
-.header p{
-margin:5px 0 0;
-color:var(--muted);
-font-size:12px
-}
-
-.avatar,
-.profile-avatar,
-.user-avatar,
-.rank-avatar{
-background:var(--gradient);
-display:flex;
-align-items:center;
-justify-content:center;
-font-weight:800
-}
-
-.avatar{
-width:42px;
-height:42px;
-border-radius:50%
-}
-
-/* LIVE */
-
-.ticker{
-background:linear-gradient(135deg,#171328,#151321);
-border:1px solid #292342;
-border-radius:17px;
-padding:14px;
-margin-bottom:18px
-}
-
-.ticker-top{
-display:flex;
-justify-content:space-between
-}
-
-.live{
-display:flex;
-align-items:center;
-gap:7px;
-color:#c4b5fd;
-font-size:11px;
-font-weight:700
-}
-
-.dot{
-width:7px;
-height:7px;
-background:#22c55e;
-border-radius:50%;
-box-shadow:0 0 10px #22c55e
-}
-
-.ticker strong{
-font-size:12px
-}
-
-/* FILTERS */
-
-.filters{
-display:flex;
-gap:8px;
-overflow-x:auto;
-scrollbar-width:none;
-margin-bottom:18px
-}
-
-.filters::-webkit-scrollbar{
-display:none
-}
-
-.filter{
-white-space:nowrap;
-border:1px solid var(--border);
-background:var(--card);
-color:var(--muted);
-border-radius:20px;
-padding:9px 13px;
-font-size:11px;
-font-weight:700
-}
-
-.filter.active{
-color:white;
-background:#242039;
-border-color:#5541b4
-}
-
-/* DECISION */
-
-.decision{
-background:var(--card);
-border:1px solid var(--border);
-border-radius:21px;
-padding:17px;
-margin-bottom:15px;
-box-shadow:0 10px 30px #00000026
-}
-
-.decision-head{
-display:flex;
-align-items:center;
-gap:10px;
-margin-bottom:14px
-}
-
-.user-avatar{
-width:35px;
-height:35px;
-border-radius:50%;
-font-size:12px
-}
-
-.author{
-font-size:12px;
-font-weight:700
-}
-
-.author span{
-display:block;
-color:var(--muted);
-font-size:10px;
-font-weight:500;
-margin-top:3px
-}
-
-.category{
-margin-left:auto;
-color:#b8a9ff;
-background:#211d35;
-border-radius:10px;
-padding:6px 8px;
-font-size:9px;
-font-weight:700
-}
-
-.question{
-font-size:16px;
-line-height:1.55;
-font-weight:700;
-margin-bottom:15px
-}
-
-.options{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:9px
-}
-
-.option{
-position:relative;
-overflow:hidden;
-border:1px solid var(--border);
-background:#171a23;
-color:white;
-border-radius:14px;
-padding:12px 9px;
-font-weight:700;
-font-size:12px;
-min-height:55px
-}
-
-.option.voted{
-border-color:var(--purple);
-background:#211c3b
-}
-
-.option-bar{
-position:absolute;
-left:0;
-bottom:0;
-height:3px;
-background:var(--gradient);
-width:0;
-transition:.4s
-}
-
-.percent{
-display:block;
-color:var(--muted);
-font-size:10px;
-margin-top:5px
-}
-
-.card-bottom{
-display:flex;
-justify-content:space-between;
-margin-top:13px;
-color:#697386;
-font-size:10px
-}
-
-.card-links{
-display:flex;
-gap:14px
-}
-
-.text-button{
-border:0;
-background:none;
-color:#7f8aa0;
-padding:0;
-font-size:10px;
-font-weight:700
-}
+/* DECISION CARD */
+.decision{background:var(--card);border:1px solid var(--border);border-radius:21px;padding:17px;margin-bottom:15px;box-shadow:0 10px 30px #00000026}
+.decision-head{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.user-avatar{width:35px;height:35px;border-radius:50%;font-size:12px}
+.author{font-size:12px;font-weight:700}
+.author span{display:block;color:var(--muted);font-size:10px;font-weight:500;margin-top:3px}
+.category{margin-left:auto;color:#b8a9ff;background:#211d35;border-radius:10px;padding:6px 8px;font-size:9px;font-weight:700}
+.question{font-size:16px;line-height:1.55;font-weight:700;margin-bottom:15px}
+.options{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.option{position:relative;overflow:hidden;border:1px solid var(--border);background:#171a23;color:white;border-radius:14px;padding:12px 9px;font-weight:700;font-size:12px;min-height:55px;text-align:left}
+.option.voted{border-color:var(--purple);background:#211c3b}
+.option-bar{position:absolute;left:0;bottom:0;height:3px;background:var(--gradient);width:0;transition:.4s}
+.percent{display:block;color:var(--muted);font-size:10px;margin-top:5px}
+.card-bottom{display:flex;justify-content:space-between;margin-top:13px;color:#697386;font-size:10px}
+.card-links{display:flex;gap:14px}
+.text-button{border:0;background:none;color:#7f8aa0;padding:0;font-size:10px;font-weight:700}
 
 /* COMMENTS */
-
-.comments{
-display:none;
-margin-top:14px;
-padding-top:13px;
-border-top:1px solid var(--border)
-}
-
-.comments.show{
-display:block
-}
-
-.comment{
-display:flex;
-gap:9px;
-margin-bottom:12px
-}
-
-.comment-avatar{
-width:27px;
-height:27px;
-flex:none;
-border-radius:50%;
-background:#292f40;
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:9px;
-font-weight:800
-}
-
-.comment-body{
-background:#191c26;
-border-radius:12px;
-padding:8px 10px;
-font-size:11px;
-line-height:1.4
-}
-
-.trust{
-color:#8b7cff;
-font-size:8px;
-font-weight:700;
-margin-top:3px
-}
-
-/* CREATE */
-
-.form-title{
-font-size:23px;
-font-weight:800;
-margin-bottom:5px
-}
-
-.form-sub{
-color:var(--muted);
-font-size:12px;
-line-height:1.5;
-margin-bottom:22px
-}
-
-textarea{
-width:100%;
-height:130px;
-resize:none;
-background:var(--card);
-border:1px solid var(--border);
-border-radius:17px;
-padding:16px;
-color:white;
-outline:0;
-font-size:14px
-}
-
-.field-label{
-color:#778196;
-font-size:10px;
-font-weight:700;
-margin:15px 0 7px
-}
-
-.category-select{
-width:100%;
-background:var(--card);
-color:white;
-border:1px solid var(--border);
-padding:14px;
-border-radius:14px;
-outline:0
-}
-
-.add-option{
-border:1px dashed #3a4050;
-background:none;
-color:#9586ff;
-width:100%;
-padding:12px;
-border-radius:13px;
-margin-top:2px;
-font-size:11px;
-font-weight:700
-}
-
-.result-info{
-margin-top:15px;
-padding:13px;
-background:#11151e;
-border:1px solid var(--border);
-border-radius:14px;
-color:#798398;
-font-size:10px;
-line-height:1.5
-}
-
-/* LEADERBOARD */
-
-.leader-hero{
-background:linear-gradient(145deg,#1c1734,#13151e);
-border:1px solid #302750;
-border-radius:22px;
-padding:20px;
-text-align:center;
-margin-bottom:18px
-}
-
-.crown{
-font-size:34px
-}
-
-.hero-name{
-font-size:19px;
-font-weight:800;
-margin-top:5px
-}
-
-.hero-score{
-color:#a99bff;
-font-size:12px;
-margin-top:5px
-}
-
-.rank-tabs{
-display:flex;
-background:#11141c;
-border:1px solid var(--border);
-border-radius:14px;
-padding:4px;
-margin-bottom:15px
-}
-
-.rank-tab{
-flex:1;
-border:0;
-background:none;
-color:#70798c;
-padding:10px 4px;
-border-radius:10px;
-font-size:10px;
-font-weight:700
-}
-
-.rank-tab.active{
-color:white;
-background:#29233e
-}
-
-.rank-row{
-display:flex;
-align-items:center;
-gap:11px;
-background:var(--card);
-border:1px solid var(--border);
-padding:13px;
-border-radius:15px;
-margin-bottom:8px
-}
-
-.rank-number{
-width:23px;
-text-align:center;
-font-weight:800;
-font-size:12px
-}
-
-.rank-avatar{
-width:36px;
-height:36px;
-border-radius:50%;
-font-size:10px
-}
-
-.rank-info{
-flex:1
-}
-
-.rank-info strong{
-font-size:11px
-}
-
-.rank-info span{
-display:block;
-color:#697387;
-font-size:9px;
-margin-top:3px
-}
-
-.rank-score{
-text-align:right;
-color:#9b8cff;
-font-size:12px;
-font-weight:800
-}
-
-.rank-score small{
-display:block;
-color:#647085;
-font-size:8px
-}
-
-/* PROFILE */
-
-.profile-top{
-text-align:center;
-padding:10px 0 20px
-}
-
-.profile-avatar{
-width:76px;
-height:76px;
-border-radius:50%;
-font-size:24px;
-margin:auto;
-box-shadow:0 15px 40px #7c5cff33
-}
-
-.profile-name{
-font-size:20px;
-font-weight:800;
-margin-top:12px
-}
-
-.profile-title{
-color:#9d91ff;
-font-size:10px;
-margin-top:4px
-}
-
-.stats{
-display:grid;
-grid-template-columns:repeat(3,1fr);
-gap:8px;
-margin-bottom:18px
-}
-
-.stat{
-background:var(--card);
-border:1px solid var(--border);
-border-radius:15px;
-padding:14px 6px;
-text-align:center
-}
-
-.stat strong{
-display:block;
-font-size:17px
-}
-
-.stat span{
-color:#697386;
-font-size:8px;
-margin-top:4px;
-display:block
-}
-
-.section-title{
-font-size:14px;
-font-weight:800;
-margin:20px 0 10px
-}
-
-.badges{
-display:flex;
-gap:8px;
-overflow-x:auto
-}
-
-.badge{
-min-width:86px;
-text-align:center;
-background:var(--card);
-border:1px solid var(--border);
-border-radius:14px;
-padding:12px 7px
-}
-
-.badge-icon{
-font-size:22px
-}
-
-.badge span{
-display:block;
-font-size:8px;
-color:#788196;
-margin-top:6px
-}
-
-/* RESULTS */
-
-.pending{
-background:linear-gradient(135deg,#17152a,#11141d);
-border:1px solid #302b4d;
-border-radius:18px;
-padding:16px;
-margin-bottom:12px
-}
-
-.pending-label{
-color:#a99cff;
-font-size:9px;
-font-weight:800;
-margin-bottom:8px
-}
-
-.pending-question{
-font-size:13px;
-font-weight:700;
-line-height:1.4
-}
-
-.result-buttons{
-display:grid;
-grid-template-columns:repeat(3,1fr);
-gap:7px;
-margin-top:12px
-}
-
-.result-btn{
-border:1px solid var(--border);
-background:#191c25;
-color:#aaa;
-padding:10px 4px;
-border-radius:10px;
-font-size:9px;
-font-weight:700
-}
-
-/* NAV */
-
-.bottom-nav{
-position:fixed;
-bottom:0;
-left:50%;
-transform:translateX(-50%);
-width:100%;
-max-width:500px;
-height:76px;
-background:#0a0c11f2;
-backdrop-filter:blur(18px);
-border-top:1px solid var(--border);
-display:flex;
-justify-content:space-around;
-align-items:center;
-z-index:50
-}
-
-.nav{
-border:0;
-background:none;
-color:#697386;
-font-size:9px;
-font-weight:700;
-display:flex;
-flex-direction:column;
-align-items:center;
-gap:5px
-}
-
-.nav-icon{
-font-size:20px
-}
-
-.nav.active{
-color:#9a8cff
-}
-
-.nav-create{
-width:48px;
-height:48px;
-border-radius:16px;
-border:0;
-background:var(--gradient);
-color:white;
-font-size:25px;
-box-shadow:0 10px 25px #7c5cff4d
-}
-
-/* LANG */
-
-.lang-box{
-display:flex;
-gap:6px;
-margin:0 0 18px
-}
-
-.lang-btn{
-flex:1;
-border:1px solid var(--border);
-background:var(--card);
-color:#8992a5;
-padding:9px;
-border-radius:10px;
-font-size:10px;
-font-weight:700
-}
-
-.lang-btn.active{
-background:#29233e;
-color:white;
-border-color:#5541b4
-}
-
-/* TOAST */
-
-.toast{
-position:fixed;
-left:50%;
-bottom:92px;
-transform:translate(-50%,20px);
-background:#252a37;
-border:1px solid #3b4252;
-color:white;
-padding:11px 16px;
-border-radius:13px;
-font-size:11px;
-font-weight:700;
-opacity:0;
-pointer-events:none;
-transition:.3s;
-z-index:100;
-white-space:nowrap
-}
-
-.toast.show{
-opacity:1;
-transform:translate(-50%,0)
-}
-
-/* LOADING */
-
-.loading{
-text-align:center;
-padding:35px;
-color:#687286;
-font-size:12px
-}
-
-.empty{
-text-align:center;
-padding:35px 10px;
-color:#687286;
-font-size:12px
-}
-
-@media(min-width:700px){
-body{
-padding:20px 0
-}
-
-.app{
-border-radius:25px;
-min-height:calc(100vh - 40px);
-box-shadow:0 0 70px #0008
-}
-
-.bottom-nav{
-bottom:20px;
-border-radius:20px;
-width:460px;
-border:1px solid var(--border)
-}
-}
+.comments{display:none;margin-top:14px;padding-top:13px;border-top:1px solid var(--border)}
+.comments.show{display:block}
+.comment{display:flex;gap:9px;margin-bottom:12px}
+.comment-avatar{width:27px;height:27px;flex:none;border-radius:50%;background:#292f40;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800}
+.comment-body{background:#191c26;border-radius:12px;padding:8px 10px;font-size:11px;line-height:1.4}
+.trust{color:#8b7cff;font-size:8px;font-weight:700;margin-top:3px}
+
+/* CREATE & PROFILE */
+.form-title{font-size:23px;font-weight:800;margin-bottom:5px}
+.form-sub{color:var(--muted);font-size:12px;line-height:1.5;margin-bottom:22px}
+textarea{width:100%;height:130px;resize:none;background:var(--card);border:1px solid var(--border);border-radius:17px;padding:16px;color:white;outline:0;font-size:14px}
+.field-label{color:#778196;font-size:10px;font-weight:700;margin:15px 0 7px}
+.category-select{width:100%;background:var(--card);color:white;border:1px solid var(--border);padding:14px;border-radius:14px;outline:0}
+.add-option{border:1px dashed #3a4050;background:none;color:#9586ff;width:100%;padding:12px;border-radius:13px;margin-top:2px;font-size:11px;font-weight:700}
+.result-info{margin-top:15px;padding:13px;background:#11151e;border:1px solid var(--border);border-radius:14px;color:#798398;font-size:10px;line-height:1.5}
+.profile-top{text-align:center;padding:10px 0 20px}
+.profile-avatar{width:76px;height:76px;border-radius:50%;font-size:24px;margin:auto;box-shadow:0 15px 40px #7c5cff33}
+.profile-name{font-size:20px;font-weight:800;margin-top:12px}
+.profile-title{color:#9d91ff;font-size:10px;margin-top:4px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:18px}
+.stat{background:var(--card);border:1px solid var(--border);border-radius:15px;padding:14px 6px;text-align:center}
+.stat strong{display:block;font-size:17px}
+.stat span{color:#697386;font-size:8px;margin-top:4px;display:block}
+.section-title{font-size:14px;font-weight:800;margin:20px 0 10px}
+.badges{display:flex;gap:8px;overflow-x:auto}
+.badge{min-width:86px;text-align:center;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:12px 7px}
+.badge-icon{font-size:22px}
+.badge span{display:block;font-size:8px;color:#788196;margin-top:6px}
+
+/* RANKING & PENDING */
+.leader-hero{background:linear-gradient(145deg,#1c1734,#13151e);border:1px solid #302750;border-radius:22px;padding:20px;text-align:center;margin-bottom:18px}
+.crown{font-size:34px}
+.hero-name{font-size:19px;font-weight:800;margin-top:5px}
+.hero-score{color:#a99bff;font-size:12px;margin-top:5px}
+.rank-tabs{display:flex;background:#11141c;border:1px solid var(--border);border-radius:14px;padding:4px;margin-bottom:15px}
+.rank-tab{flex:1;border:0;background:none;color:#70798c;padding:10px 4px;border-radius:10px;font-size:10px;font-weight:700}
+.rank-tab.active{color:white;background:#29233e}
+.rank-row{display:flex;align-items:center;gap:11px;background:var(--card);border:1px solid var(--border);padding:13px;border-radius:15px;margin-bottom:8px}
+.rank-number{width:23px;text-align:center;font-weight:800;font-size:12px}
+.rank-avatar{width:36px;height:36px;border-radius:50%;font-size:10px}
+.rank-info{flex:1}
+.rank-info strong{font-size:11px}
+.rank-info span{display:block;color:#697387;font-size:9px;margin-top:3px}
+.rank-score{text-align:right;color:#9b8cff;font-size:12px;font-weight:800}
+.rank-score small{display:block;color:#647085;font-size:8px}
+.pending{background:linear-gradient(135deg,#17152a,#11141d);border:1px solid #302b4d;border-radius:18px;padding:16px;margin-bottom:12px}
+.pending-label{color:#a99cff;font-size:9px;font-weight:800;margin-bottom:8px}
+.pending-question{font-size:13px;font-weight:700;line-height:1.4}
+.result-buttons{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:12px}
+.result-btn{border:1px solid var(--border);background:#191c25;color:#aaa;padding:10px 4px;border-radius:10px;font-size:9px;font-weight:700}
+
+/* NAV & TOAST */
+.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:500px;height:76px;background:#0a0c11f2;backdrop-filter:blur(18px);border-top:1px solid var(--border);display:flex;justify-content:space-around;align-items:center;z-index:50}
+.nav{border:0;background:none;color:#697386;font-size:9px;font-weight:700;display:flex;flex-direction:column;align-items:center;gap:5px}
+.nav-icon{font-size:20px}
+.nav.active{color:#9a8cff}
+.nav-create{width:48px;height:48px;border-radius:16px;border:0;background:var(--gradient);color:white;font-size:25px;box-shadow:0 10px 25px #7c5cff4d}
+.lang-box{display:flex;gap:6px;margin:0 0 18px}
+.lang-btn{flex:1;border:1px solid var(--border);background:var(--card);color:#8992a5;padding:9px;border-radius:10px;font-size:10px;font-weight:700}
+.lang-btn.active{background:#29233e;color:white;border-color:#5541b4}
+.toast{position:fixed;left:50%;bottom:92px;transform:translate(-50%,20px);background:#252a37;border:1px solid #3b4252;color:white;padding:11px 16px;border-radius:13px;font-size:11px;font-weight:700;opacity:0;pointer-events:none;transition:.3s;z-index:100;white-space:nowrap}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.loading,.empty{text-align:center;padding:35px 10px;color:#687286;font-size:12px}
 </style>
 </head>
 
 <body>
-
 <div class="app">
 
 <!-- LOGIN -->
-
 <section id="login">
-
 <div class="login-box">
-
 <div class="logo">N</div>
-
-<div class="logo-title">
-Nexus
-</div>
-
-<div class="logo-sub">
-Kararını topluluğa bırak.<br>
-Sonucunu geri getir.<br>
-<strong>Kim daha iyi karar veriyor?</strong>
-</div>
-
+<div class="logo-title">Nexus</div>
+<div class="logo-sub">Kararını topluluğa bırak.<br>Sonucunu geri getir.<br><strong>Kim daha iyi karar veriyor?</strong></div>
 <div class="lang-box">
-
-<button class="lang-btn active" onclick="setLang('tr')">
-🇹🇷 Türkçe
-</button>
-
-<button class="lang-btn" onclick="setLang('de')">
-🇩🇪 Deutsch
-</button>
-
-<button class="lang-btn" onclick="setLang('en')">
-🇬🇧 English
-</button>
-
+<button class="lang-btn active" onclick="setLang('tr')">🇹🇷 Türkçe</button>
+<button class="lang-btn" onclick="setLang('de')">🇩🇪 Deutsch</button>
+<button class="lang-btn" onclick="setLang('en')">🇬🇧 English</button>
 </div>
-
-<input
-id="username"
-class="input"
-maxlength="20"
-placeholder="Kullanıcı adın..."
->
-
-<button
-class="primary"
-onclick="login()"
->
-Nexus'a Gir →
-</button>
-
-<div class="small-note">
-Üyelik gerektirmez • Nexus hesabın otomatik oluşturulur
+<input id="username" class="input" maxlength="20" placeholder="Kullanıcı adın...">
+<button class="primary" onclick="login()">Nexus'a Gir →</button>
+<div class="small-note">Üyelik gerektirmez • Nexus hesabın otomatik oluşturulur</div>
 </div>
-
-</div>
-
 </section>
 
-
-<!-- MAIN -->
-
+<!-- MAIN APP -->
 <main id="mainApp">
 
-
 <!-- HOME -->
-
 <section id="home" class="screen active">
-
 <div class="header">
-
-<div>
-<h1>🔥 Nexus</h1>
-<p>Topluluk şu anda karar veriyor</p>
+<div><h1>🔥 Nexus</h1><p>Topluluk şu anda karar veriyor</p></div>
+<div class="avatar" id="headerAvatar">N</div>
 </div>
-
-<div class="avatar" id="headerAvatar">
-N
-</div>
-
-</div>
-
-
-<div class="ticker">
-
-<div class="ticker-top">
-
-<div class="live">
-<span class="dot"></span>
-CANLI NEXUS
-</div>
-
-<strong id="liveCount">
-0 kişi aktif
-</strong>
-
-</div>
-
-</div>
-
-
+<div class="ticker"><div class="ticker-top"><div class="live"><span class="dot"></span>CANLI NEXUS</div><strong id="liveCount">0 kişi aktif</strong></div></div>
 <div class="filters">
-
-<button
-class="filter active"
-onclick="filterFeed(this,'all')"
->
-🔥 Tümü
-</button>
-
-<button
-class="filter"
-onclick="filterFeed(this,'İş')"
->
-💼 İş
-</button>
-
-<button
-class="filter"
-onclick="filterFeed(this,'Aşk')"
->
-❤️ Aşk
-</button>
-
-<button
-class="filter"
-onclick="filterFeed(this,'Günlük')"
->
-☕ Günlük
-</button>
-
-<button
-class="filter"
-onclick="filterFeed(this,'Alışveriş')"
->
-🛍️ Alışveriş
-</button>
-
-<button
-class="filter"
-onclick="filterFeed(this,'Hayat')"
->
-🌍 Hayat
-</button>
-
+<button class="filter active" onclick="filterFeed(this,'all')">🔥 Tümü</button>
+<button class="filter" onclick="filterFeed(this,'İş')">💼 İş</button>
+<button class="filter" onclick="filterFeed(this,'Aşk')">❤️ Aşk</button>
+<button class="filter" onclick="filterFeed(this,'Günlük')">☕ Günlük</button>
+<button class="filter" onclick="filterFeed(this,'Alışveriş')">🛍️ Alışveriş</button>
+<button class="filter" onclick="filterFeed(this,'Hayat')">🌍 Hayat</button>
 </div>
-
-<div id="feed">
-<div class="loading">
-Nexus yükleniyor...
-</div>
-</div>
-
+<div id="feed"><div class="loading">Nexus yükleniyor...</div></div>
 </section>
-
 
 <!-- CREATE -->
-
 <section id="create" class="screen">
-
-<div class="form-title">
-🧠 Kararını Fırlat
-</div>
-
-<div class="form-sub">
-Kararsız kaldığın şeyi Nexus'a bırak.
-Topluluk senin yerine karar versin.
-</div>
-
-<textarea
-id="question"
-placeholder="Örn: Bu işi kabul etmeli miyim?"
-></textarea>
-
-<div class="field-label">
-SEÇENEKLER
-</div>
-
-<input
-id="option1"
-class="input"
-placeholder="1. seçenek"
->
-
-<input
-id="option2"
-class="input"
-placeholder="2. seçenek"
->
-
-<button
-class="add-option"
-onclick="addThirdOption()"
->
-+ Üçüncü seçenek ekle
-</button>
-
-<div
-id="thirdOptionBox"
-style="display:none;margin-top:10px"
->
-
-<input
-id="option3"
-class="input"
-placeholder="3. seçenek"
->
-
-</div>
-
-<div class="field-label">
-KATEGORİ
-</div>
-
-<select
-id="category"
-class="category-select"
->
-
-<option>Günlük</option>
-<option>İş</option>
-<option>Aşk</option>
-<option>Alışveriş</option>
-<option>Arkadaşlık</option>
-<option>Hayat</option>
-
+<div class="form-title">🧠 Kararını Fırlat</div>
+<div class="form-sub">Kararsız kaldığın şeyi Nexus'a bırak. Topluluk senin yerine karar versin.</div>
+<textarea id="question" placeholder="Örn: Bu işi kabul etmeli miyim?"></textarea>
+<div class="field-label">SEÇENEKLER</div>
+<input id="option1" class="input" placeholder="1. seçenek">
+<input id="option2" class="input" placeholder="2. seçenek">
+<button class="add-option" onclick="addThirdOption()">+ Üçüncü seçenek ekle</button>
+<div id="thirdOptionBox" style="display:none;margin-top:10px"><input id="option3" class="input" placeholder="3. seçenek"></div>
+<div class="field-label">KATEGORİ</div>
+<select id="category" class="category-select">
+<option>Günlük</option><option>İş</option><option>Aşk</option><option>Alışveriş</option><option>Arkadaşlık</option><option>Hayat</option>
 </select>
-
-<div class="result-info">
-
-💡 Kararını uyguladıktan sonra sonucu bildir.
-Sonucun senin güvenilirlik puanını ve sana oy veren kişilerin karar isabetini etkileyebilir.
-
-</div>
-
-<button
-class="primary"
-style="margin-top:18px"
-onclick="createDecision()"
->
-🚀 Nexus'a Sor
-</button>
-
+<div class="result-info">💡 Kararını uyguladıktan sonra sonucu bildir. Sonucun güvenilirlik puanını etkiler.</div>
+<button class="primary" style="margin-top:18px" onclick="createDecision()">🚀 Nexus'a Sor</button>
 </section>
-
 
 <!-- LEADERBOARD -->
-
 <section id="leaderboard" class="screen">
-
-<div class="header">
-
-<div>
-<h1>🏆 Liderlik</h1>
-<p>Kim daha iyi karar veriyor?</p>
-</div>
-
-</div>
-
+<div class="header"><div><h1>🏆 Liderlik</h1><p>Kim daha iyi karar veriyor?</p></div></div>
 <div class="leader-hero">
-
-<div class="crown">
-👑
+<div class="crown">👑</div>
+<div class="hero-name" id="leaderHeroName">Henüz lider yok</div>
+<div class="hero-score" id="leaderHeroScore">İlk karar veren sen ol</div>
 </div>
-
-<div
-class="hero-name"
-id="leaderHeroName"
->
-Henüz lider yok
-</div>
-
-<div
-class="hero-score"
-id="leaderHeroScore"
->
-İlk karar veren sen ol
-</div>
-
-</div>
-
 <div class="rank-tabs">
-
-<button
-class="rank-tab active"
-onclick="rankPeriod(this,'day')"
->
-Bugün
-</button>
-
-<button
-class="rank-tab"
-onclick="rankPeriod(this,'week')"
->
-Hafta
-</button>
-
-<button
-class="rank-tab"
-onclick="rankPeriod(this,'month')"
->
-Ay
-</button>
-
-<button
-class="rank-tab"
-onclick="rankPeriod(this,'all')"
->
-Tümü
-</button>
-
+<button class="rank-tab active" onclick="rankPeriod(this,'day')">Bugün</button>
+<button class="rank-tab" onclick="rankPeriod(this,'week')">Hafta</button>
+<button class="rank-tab" onclick="rankPeriod(this,'month')">Ay</button>
+<button class="rank-tab" onclick="rankPeriod(this,'all')">Tümü</button>
 </div>
-
 <div id="ranking"></div>
-
 </section>
-
 
 <!-- RESULTS -->
-
 <section id="results" class="screen">
-
-<div class="header">
-
-<div>
-<h1>📊 Sonuçlarım</h1>
-<p>Verdiğin kararların sonuçlarını bildir</p>
-</div>
-
-</div>
-
+<div class="header"><div><h1>📊 Sonuçlarım</h1><p>Verdiğin kararların sonuçlarını bildir</p></div></div>
 <div id="pendingResults"></div>
-
 </section>
-
 
 <!-- PROFILE -->
-
 <section id="profile" class="screen">
-
 <div class="profile-top">
-
-<div
-class="profile-avatar"
-id="profileAvatar"
->
-N
+<div class="profile-avatar" id="profileAvatar">N</div>
+<div class="profile-name" id="profileName">@kullanici</div>
+<div class="profile-title">🎯 Karar Avcısı</div>
 </div>
-
-<div
-class="profile-name"
-id="profileName"
->
-@kullanici
-</div>
-
-<div class="profile-title">
-🎯 Karar Avcısı
-</div>
-
-</div>
-
-
-<div class="lang-box">
-
-<button
-class="lang-btn"
-onclick="setLang('tr')"
->
-🇹🇷 TR
-</button>
-
-<button
-class="lang-btn"
-onclick="setLang('de')"
->
-🇩🇪 DE
-</button>
-
-<button
-class="lang-btn"
-onclick="setLang('en')"
->
-🇬🇧 EN
-</button>
-
-</div>
-
-
 <div class="stats">
-
-<div class="stat">
-
-<strong id="statScore">
-—
-</strong>
-
-<span>
-GÜVENİLİRLİK
-</span>
-
+<div class="stat"><strong id="statScore">—</strong><span>GÜVENİLİRLİK</span></div>
+<div class="stat"><strong id="statDecisions">0</strong><span>KARAR</span></div>
+<div class="stat"><strong id="statCorrect">0</strong><span>İSABET</span></div>
 </div>
-
-<div class="stat">
-
-<strong id="statDecisions">
-0
-</strong>
-
-<span>
-KARAR
-</span>
-
-</div>
-
-<div class="stat">
-
-<strong id="statCorrect">
-0
-</strong>
-
-<span>
-İSABET
-</span>
-
-</div>
-
-</div>
-
-
-<div class="section-title">
-🏅 Rozetler
-</div>
-
+<div class="section-title">🏅 Rozetler</div>
 <div class="badges">
-
-<div class="badge">
-<div class="badge-icon">🌱</div>
-<span>İlk Karar</span>
+<div class="badge"><div class="badge-icon">🌱</div><span>İlk Karar</span></div>
+<div class="badge"><div class="badge-icon">🎯</div><span>İsabetçi</span></div>
+<div class="badge"><div class="badge-icon">🔥</div><span>Seri Karar</span></div>
+<div class="badge"><div class="badge-icon">👑</div><span>Lider</span></div>
 </div>
-
-<div class="badge">
-<div class="badge-icon">🎯</div>
-<span>İsabetçi</span>
-</div>
-
-<div class="badge">
-<div class="badge-icon">🔥</div>
-<span>Seri Karar</span>
-</div>
-
-<div class="badge">
-<div class="badge-icon">👑</div>
-<span>Lider</span>
-</div>
-
-</div>
-
-
-<div class="section-title">
-📈 En güçlü olduğun alan
-</div>
-
-<div
-class="decision"
-id="strongestArea"
->
-
-<b>
-Henüz yeterli veri yok
-</b>
-
-</div>
-
+<div class="section-title">📈 En güçlü olduğun alan</div>
+<div class="decision" id="strongestArea"><b>Henüz yeterli veri yok</b></div>
 </section>
 
-
 <!-- NAV -->
-
 <nav class="bottom-nav">
-
-<button
-class="nav active"
-onclick="showScreen('home',this)"
->
-
-<span class="nav-icon">
-🔥
-</span>
-
-<span>
-Havuz
-</span>
-
-</button>
-
-
-<button
-class="nav"
-onclick="showScreen('leaderboard',this)"
->
-
-<span class="nav-icon">
-🏆
-</span>
-
-<span>
-Liderlik
-</span>
-
-</button>
-
-
-<button
-class="nav-create"
-onclick="showScreen('create',this)"
->
-+
-</button>
-
-
-<button
-class="nav"
-onclick="showScreen('results',this)"
->
-
-<span class="nav-icon">
-📊
-</span>
-
-<span>
-Sonuçlar
-</span>
-
-</button>
-
-
-<button
-class="nav"
-onclick="showScreen('profile',this)"
->
-
-<span class="nav-icon">
-👤
-</span>
-
-<span>
-Profil
-</span>
-
-</button>
-
+<button class="nav active" onclick="showScreen('home',this)"><span class="nav-icon">🔥</span><span>Havuz</span></button>
+<button class="nav" onclick="showScreen('leaderboard',this)"><span class="nav-icon">🏆</span><span>Liderlik</span></button>
+<button class="nav-create" onclick="showScreen('create',this)">+</button>
+<button class="nav" onclick="showScreen('results',this)"><span class="nav-icon">📊</span><span>Sonuçlar</span></button>
+<button class="nav" onclick="showScreen('profile',this)"><span class="nav-icon">👤</span><span>Profil</span></button>
 </nav>
-
 </main>
 
-
-<div
-id="toast"
-class="toast"
-></div>
-
+<div id="toast" class="toast"></div>
 </div>
 
-
 <script>
-
-/* =========================================================
-   NEXUS - SUPABASE
-   ========================================================= */
-
 const SUPABASE_URL = "https://fulzvcfjmbtjljlowoso.supabase.co";
 const SUPABASE_KEY = "sb_publishable_nboUtwCIJFUE3Zp2rmfcWw_nvLXQqRL";
 
 let supabaseClient = null;
-
-try{
-  if(window.supabase && typeof window.supabase.createClient === "function"){
+try {
+  if (window.supabase && typeof window.supabase.createClient === "function") {
     supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
   }
-}catch(error){
-  console.error("Supabase başlatılamadı:", error);
+} catch (e) {
+  console.error("Supabase yüklenirken hata:", e);
 }
 
 let currentUser = null;
 let userProfile = null;
 let decisions = [];
 let currentCategory = "all";
-let currentRankPeriod = "all";
-let currentLanguage = "tr";
 
-function saveUser(){
-  if(!currentUser) return;
-  localStorage.setItem("nexus_user", JSON.stringify(currentUser));
-}
-
-function getSavedUser(){
-  try{
-    const saved = localStorage.getItem("nexus_user");
-    if(!saved) return null;
-    return JSON.parse(saved);
-  }catch(e){
-    return null;
-  }
-}
-
-window.addEventListener("DOMContentLoaded", async function(){
-  const savedUser = getSavedUser();
-  if(savedUser){
-    currentUser = savedUser;
-    await loadProfileAndStart();
+window.addEventListener("DOMContentLoaded", async () => {
+  const saved = localStorage.getItem("nexus_user");
+  if (saved) {
+    try {
+      currentUser = JSON.parse(saved);
+      await loadProfileAndStart();
+    } catch(e) {}
   }
 });
 
-async function login(){
-  const input = document.getElementById("username").value.trim();
-  if(!input){
+async function login() {
+  const val = document.getElementById("username").value.trim();
+  if (!val) {
     showToast("Kullanıcı adını gir");
     return;
   }
 
-  const cleanUsername = "@" + input.replace(/\s+/g,"").substring(0,20);
   let userId = localStorage.getItem("nexus_user_id");
-  if(!userId){
+  if (!userId) {
     userId = crypto.randomUUID();
     localStorage.setItem("nexus_user_id", userId);
   }
 
-  currentUser = { id: userId, username: cleanUsername };
-  saveUser();
+  currentUser = {
+    id: userId,
+    username: "@" + val.replace(/\s+/g, "").substring(0, 20)
+  };
+  localStorage.setItem("nexus_user", JSON.stringify(currentUser));
 
-  if(supabaseClient){
-    try{
-      const { data, error } = await supabaseClient
-        .from("profiles")
-        .upsert({ id: userId, username: cleanUsername }, { onConflict: "id" })
-        .select()
-        .single();
-
-      if(!error && data){
-        userProfile = data;
-      }
-    }catch(e){
-      console.log("Profil senkronizasyon atlandı");
-    }
+  if (supabaseClient) {
+    try {
+      await supabaseClient.from("profiles").upsert({
+        id: currentUser.id,
+        username: currentUser.username
+      }, { onConflict: "id" });
+    } catch (e) {}
   }
 
-  await startApp();
+  startApp();
+  await loadDecisions();
   showToast("Nexus'a hoş geldin 🚀");
 }
 
-async function loadProfileAndStart(){
-  if(!currentUser || !supabaseClient){
-    startApp();
-    return;
+async function loadProfileAndStart() {
+  if (supabaseClient && currentUser) {
+    try {
+      const { data } = await supabaseClient.from("profiles").select("*").eq("id", currentUser.id).maybeSingle();
+      if (data) userProfile = data;
+    } catch(e) {}
   }
-
-  try{
-    const { data } = await supabaseClient
-      .from("profiles")
-      .select("*")
-      .eq("id", currentUser.id)
-      .maybeSingle();
-
-    if(data){
-      userProfile = data;
-    }
-  }catch(e){
-    console.error(e);
-  }
-
-  await startApp();
+  startApp();
+  await loadDecisions();
 }
 
-async function startApp(){
+function startApp() {
   document.getElementById("login").style.display = "none";
   document.getElementById("mainApp").style.display = "block";
-  updateUserUI();
-  await loadDecisions();
-  await loadLeaderboard();
-  await loadResults();
-}
-
-function updateUserUI(){
-  if(!currentUser) return;
-  const username = currentUser.username || "@user";
-  const letter = username.replace("@","").substring(0,1).toUpperCase();
-  document.getElementById("headerAvatar").innerText = letter;
-  document.getElementById("profileAvatar").innerText = letter;
-  document.getElementById("profileName").innerText = username;
-  updateProfileStats();
-}
-
-function updateProfileStats(){
-  if(!userProfile) return;
-  const score = Number(userProfile.reliability_score || 0);
-  document.getElementById("statScore").innerText = score > 0 ? "%" + score : "—";
-  document.getElementById("statDecisions").innerText = userProfile.decisions_count || 0;
-  document.getElementById("statCorrect").innerText = userProfile.correct_count || 0;
-
-  const area = document.getElementById("strongestArea");
-  if(userProfile.decisions_count > 0){
-    area.innerHTML = `
-      <b>🎯 Karar performansın</b>
-      <div style="margin-top:10px;color:#9a8cff;font-size:20px;font-weight:800">%${score}</div>
-      <div style="margin-top:5px;color:#687286;font-size:9px">${userProfile.correct_count || 0} isabetli sonuç</div>
-    `;
+  if (currentUser) {
+    const letter = currentUser.username.replace("@","")[0].toUpperCase();
+    document.getElementById("headerAvatar").innerText = letter;
+    document.getElementById("profileAvatar").innerText = letter;
+    document.getElementById("profileName").innerText = currentUser.username;
+    updateStatsUI();
   }
 }
 
-async function loadDecisions(category="all"){
-  currentCategory = category;
-  if(!supabaseClient){
-    document.getElementById("feed").innerHTML = `<div class="decision"><div class="empty">Supabase bağlantısı yok.</div></div>`;
+function updateStatsUI() {
+  if (!userProfile) return;
+  document.getElementById("statScore").innerText = userProfile.reliability_score ? "%" + userProfile.reliability_score : "—";
+  document.getElementById("statDecisions").innerText = userProfile.decisions_count || 0;
+  document.getElementById("statCorrect").innerText = userProfile.correct_count || 0;
+}
+
+async function loadDecisions(cat = "all") {
+  currentCategory = cat;
+  const feed = document.getElementById("feed");
+  if (!supabaseClient) {
+    feed.innerHTML = `<div class="decision"><div class="empty">Supabase bağlantısı kurulamadı.</div></div>`;
     return;
   }
 
-  try{
+  try {
     let query = supabaseClient
       .from("decisions")
       .select(`id, user_id, question, category, status, result, created_at, profiles(username, reliability_score), options(id, option_text, position), comments(id, user_id, comment_text, created_at, profiles(username, reliability_score))`)
       .order("created_at", { ascending: false })
-      .limit(100);
+      .limit(50);
 
-    if(category !== "all"){
-      query = query.eq("category", category);
-    }
+    if (cat !== "all") query = query.eq("category", cat);
 
     const { data, error } = await query;
-    if(error || !data){
-      decisions = [];
-      renderFeed();
+    if (error || !data) {
+      feed.innerHTML = `<div class="decision"><div class="empty">Henüz karar bulunmuyor.</div></div>`;
       return;
     }
 
     const ids = data.map(d => d.id);
     let votes = [];
-    if(ids.length){
-      const { data: voteData } = await supabaseClient
-        .from("votes")
-        .select("decision_id, option_id, user_id")
-        .in("decision_id", ids);
-      votes = voteData || [];
+    if (ids.length) {
+      const { data: vData } = await supabaseClient.from("votes").select("decision_id, option_id, user_id").in("decision_id", ids);
+      votes = vData || [];
     }
 
-    decisions = data.map(decision => {
-      const decisionVotes = votes.filter(v => v.decision_id === decision.id);
-      const sortedOptions = (decision.options || []).sort((a,b) => a.position - b.position);
-      const options = sortedOptions.map(option => {
-        const count = decisionVotes.filter(v => v.option_id === option.id).length;
-        return { id: option.id, text: option.option_text, votes: count };
-      });
-      const voted = decisionVotes.some(v => v.user_id === currentUser.id);
-
+    decisions = data.map(d => {
+      const dVotes = votes.filter(v => v.decision_id === d.id);
+      const opts = (d.options || []).sort((a,b) => a.position - b.position).map(o => ({
+        id: o.id, text: o.option_text, votes: dVotes.filter(v => v.option_id === o.id).length
+      }));
       return {
-        id: decision.id,
-        userId: decision.user_id,
-        user: decision.profiles?.username || "@user",
-        avatar: (decision.profiles?.username || "U").replace("@","").substring(0,1).toUpperCase(),
-        trust: Number(decision.profiles?.reliability_score || 0),
-        category: decision.category,
-        question: decision.question,
-        options: options,
-        totalVotes: decisionVotes.length,
-        comments: decision.comments || [],
-        voted: voted,
-        status: decision.status,
-        result: decision.result,
-        createdAt: decision.created_at
+        id: d.id, user: d.profiles?.username || "@user",
+        avatar: (d.profiles?.username || "U").replace("@","")[0].toUpperCase(),
+        category: d.category, question: d.question, options: opts,
+        totalVotes: dVotes.length, comments: d.comments || [],
+        voted: dVotes.some(v => v.user_id === currentUser?.id),
+        createdAt: d.created_at
       };
     });
 
-    renderFeed(category);
-  }catch(e){
-    console.error(e);
+    renderFeed();
+  } catch (e) {
+    feed.innerHTML = `<div class="decision"><div class="empty">Veriler yüklenirken hata oluştu.</div></div>`;
   }
 }
 
-function renderFeed(filter="all"){
+function renderFeed() {
   const feed = document.getElementById("feed");
-  let list = decisions.filter(d => filter === "all" || d.category === filter);
-
-  if(!list.length){
-    feed.innerHTML = `<div class="decision"><div class="empty">Henüz burada karar yok. 🧠<br><br>İlk kararı sen gönder!</div></div>`;
+  if (!decisions.length) {
+    feed.innerHTML = `<div class="decision"><div class="empty">Bu kategoride henüz karar yok. İlk kararı sen gönder! 🧠</div></div>`;
     return;
   }
 
   feed.innerHTML = "";
-  list.forEach(decision => {
+  decisions.forEach(d => {
     const card = document.createElement("div");
     card.className = "decision";
-    const total = decision.totalVotes;
-    let optionsHTML = "";
-
-    decision.options.forEach(option => {
-      const percent = total > 0 ? Math.round(option.votes / total * 100) : 0;
-      optionsHTML += `
-        <button class="option ${decision.voted ? "voted" : ""}" onclick="vote('${decision.id}','${option.id}')">
-          ${escapeHTML(option.text)}
-          <span class="percent">${percent}%</span>
-          <span class="option-bar" style="width:${percent}%"></span>
+    let optsHTML = "";
+    d.options.forEach(o => {
+      const pct = d.totalVotes > 0 ? Math.round((o.votes / d.totalVotes) * 100) : 0;
+      optsHTML += `
+        <button class="option ${d.voted ? 'voted' : ''}" onclick="vote('${d.id}','${o.id}')">
+          ${escapeHTML(o.text)}
+          <span class="percent">${pct}%</span>
+          <span class="option-bar" style="width:${pct}%"></span>
         </button>
       `;
     });
 
-    let commentsHTML = "";
-    decision.comments.sort((a,b) => new Date(a.created_at) - new Date(b.created_at)).forEach(comment => {
-      const profile = comment.profiles || {};
-      const name = profile.username || "@user";
-      const trust = Number(profile.reliability_score || 0);
-      commentsHTML += `
+    let commHTML = "";
+    (d.comments || []).forEach(c => {
+      const cUser = c.profiles?.username || "@user";
+      commHTML += `
         <div class="comment">
-          <div class="comment-avatar">${escapeHTML(name.replace("@","").substring(0,1).toUpperCase())}</div>
-          <div>
-            <div class="comment-body">
-              <strong>${escapeHTML(name)}</strong><br>${escapeHTML(comment.comment_text)}
-              <div class="trust">🎯 ${trust}% güvenilirlik</div>
-            </div>
-          </div>
+          <div class="comment-avatar">${escapeHTML(cUser.replace("@","")[0].toUpperCase())}</div>
+          <div><div class="comment-body"><strong>${escapeHTML(cUser)}</strong><br>${escapeHTML(c.comment_text)}</div></div>
         </div>
       `;
     });
 
     card.innerHTML = `
       <div class="decision-head">
-        <div class="user-avatar">${decision.avatar}</div>
-        <div class="author">${escapeHTML(decision.user)}<span>${timeAgo(decision.createdAt)}</span></div>
-        <div class="category">${escapeHTML(decision.category)}</div>
+        <div class="user-avatar">${d.avatar}</div>
+        <div class="author">${escapeHTML(d.user)}<span>${timeAgo(d.createdAt)}</span></div>
+        <div class="category">${escapeHTML(d.category)}</div>
       </div>
-      <div class="question">${escapeHTML(decision.question)}</div>
-      <div class="options">${optionsHTML}</div>
+      <div class="question">${escapeHTML(d.question)}</div>
+      <div class="options">${optsHTML}</div>
       <div class="card-bottom">
-        <span>👥 ${total} oy</span>
-        <div class="card-links">
-          <button class="text-button" onclick="toggleComments('${decision.id}')">💬 ${decision.comments.length}</button>
-        </div>
+        <span>👥 ${d.totalVotes} oy</span>
+        <div class="card-links"><button class="text-button" onclick="toggleComments('${d.id}')">💬 ${d.comments.length}</button></div>
       </div>
-      <div class="comments" id="comments-${decision.id}">
-        ${commentsHTML}
+      <div class="comments" id="comments-${d.id}">
+        ${commHTML}
         <div style="display:flex;gap:7px;margin-top:10px;">
-          <input id="comment-${decision.id}" class="input" style="margin:0;padding:10px;font-size:10px;" placeholder="Neden böyle düşünüyorsun?">
-          <button onclick="addComment('${decision.id}')" style="border:0;background:var(--gradient);color:white;border-radius:10px;padding:0 12px;font-weight:800;">→</button>
+          <input id="comment-${d.id}" class="input" style="margin:0;padding:10px;font-size:10px;" placeholder="Yorum yaz...">
+          <button onclick="addComment('${d.id}')" style="border:0;background:var(--gradient);color:white;border-radius:10px;padding:0 12px;font-weight:800;">→</button>
         </div>
       </div>
     `;
@@ -1726,317 +460,189 @@ function renderFeed(filter="all"){
   });
 }
 
-function filterFeed(button, category){
+function filterFeed(btn, cat) {
   document.querySelectorAll(".filter").forEach(e => e.classList.remove("active"));
-  button.classList.add("active");
-  loadDecisions(category);
+  btn.classList.add("active");
+  loadDecisions(cat);
 }
 
-async function vote(decisionId, optionId){
-  if(!currentUser || !supabaseClient){
-    showToast("Giriş yapmalısın");
-    return;
-  }
-  const decision = decisions.find(d => d.id === decisionId);
-  if(!decision || decision.voted){
-    showToast("Bu karara zaten oy verdin");
-    return;
-  }
-
-  try{
+async function vote(decisionId, optionId) {
+  if (!currentUser || !supabaseClient) return;
+  try {
     const { error } = await supabaseClient.from("votes").insert({
-      decision_id: decisionId,
-      option_id: optionId,
-      user_id: currentUser.id
+      decision_id: decisionId, option_id: optionId, user_id: currentUser.id
     });
-    if(error){
-      showToast("Oy verilemedi");
+    if (error) {
+      showToast("Daha önce oy verdiniz");
       return;
     }
-    await updateVoteCount();
     await loadDecisions(currentCategory);
     showToast("Oyun kaydedildi 🎯");
-  }catch(e){
-    console.error(e);
-  }
+  } catch(e) {}
 }
 
-async function updateVoteCount(){
-  if(!userProfile) return;
-  const newCount = Number(userProfile.votes_count || 0) + 1;
-  const { data } = await supabaseClient.from("profiles").update({ votes_count: newCount }).eq("id", currentUser.id).select().single();
-  if(data) userProfile = data;
-}
-
-function toggleComments(id){
+function toggleComments(id) {
   const el = document.getElementById("comments-" + id);
-  if(el) el.classList.toggle("show");
+  if (el) el.classList.toggle("show");
 }
 
-async function addComment(decisionId){
-  if(!currentUser || !supabaseClient) return;
+async function addComment(decisionId) {
+  if (!currentUser || !supabaseClient) return;
   const input = document.getElementById("comment-" + decisionId);
-  if(!input) return;
-  const text = input.value.trim();
-  if(!text) return;
+  const text = input?.value.trim();
+  if (!text) return;
 
-  try{
+  try {
     await supabaseClient.from("comments").insert({
-      decision_id: decisionId,
-      user_id: currentUser.id,
-      comment_text: text
+      decision_id: decisionId, user_id: currentUser.id, comment_text: text
     });
     input.value = "";
     await loadDecisions(currentCategory);
-    showToast("Yorumun yayınlandı 💬");
-  }catch(e){
-    console.error(e);
-  }
+    showToast("Yorum eklendi 💬");
+  } catch(e) {}
 }
 
-function addThirdOption(){
+function addThirdOption() {
   document.getElementById("thirdOptionBox").style.display = "block";
 }
 
-async function createDecision(){
-  if(!currentUser || !supabaseClient){
-    showToast("Giriş yapmalısın");
+async function createDecision() {
+  if (!currentUser || !supabaseClient) return;
+  const q = document.getElementById("question").value.trim();
+  const o1 = document.getElementById("option1").value.trim();
+  const o2 = document.getElementById("option2").value.trim();
+  const o3 = document.getElementById("option3").value.trim();
+  const cat = document.getElementById("category").value;
+
+  if (!q || !o1 || !o2) {
+    showToast("Soru ve en az 2 seçenek gerekli");
     return;
   }
 
-  const question = document.getElementById("question").value.trim();
-  const option1 = document.getElementById("option1").value.trim();
-  const option2 = document.getElementById("option2").value.trim();
-  const option3 = document.getElementById("option3").value.trim();
-  const category = document.getElementById("category").value;
-
-  if(!question || !option1 || !option2){
-    showToast("Karar ve en az iki seçenek gerekli");
-    return;
-  }
-
-  try{
-    const { data: decision, error } = await supabaseClient.from("decisions").insert({
-      user_id: currentUser.id,
-      question: question,
-      category: category,
-      status: "open"
+  try {
+    const { data: dec, error } = await supabaseClient.from("decisions").insert({
+      user_id: currentUser.id, question: q, category: cat, status: "open"
     }).select().single();
 
-    if(error || !decision){
-      showToast("Karar oluşturulamadı");
-      return;
-    }
+    if (error || !dec) return;
 
-    const optionRows = [
-      { decision_id: decision.id, option_text: option1, position: 1 },
-      { decision_id: decision.id, option_text: option2, position: 2 }
+    let opts = [
+      { decision_id: dec.id, option_text: o1, position: 1 },
+      { decision_id: dec.id, option_text: o2, position: 2 }
     ];
-    if(option3) optionRows.push({ decision_id: decision.id, option_text: option3, position: 3 });
+    if (o3) opts.push({ decision_id: dec.id, option_text: o3, position: 3 });
 
-    await supabaseClient.from("options").insert(optionRows);
-    await updateDecisionCount();
-
+    await supabaseClient.from("options").insert(opts);
     document.getElementById("question").value = "";
     document.getElementById("option1").value = "";
     document.getElementById("option2").value = "";
     document.getElementById("option3").value = "";
     document.getElementById("thirdOptionBox").style.display = "none";
 
-    await loadDecisions("all");
     showScreen("home", document.querySelector(".nav"));
-    showToast("Kararın Nexus'a gönderildi 🚀");
-  }catch(e){
-    console.error(e);
-  }
+    await loadDecisions("all");
+    showToast("Karar yayınlandı 🚀");
+  } catch(e) {}
 }
 
-async function updateDecisionCount(){
-  const newCount = Number(userProfile.decisions_count || 0) + 1;
-  const { data } = await supabaseClient.from("profiles").update({ decisions_count: newCount }).eq("id", currentUser.id).select().single();
-  if(data) userProfile = data;
-}
-
-async function loadResults(){
-  const container = document.getElementById("pendingResults");
-  if(!container || !currentUser || !supabaseClient) return;
-
-  const { data } = await supabaseClient
-    .from("decisions")
-    .select("id, question, category, status, created_at")
-    .eq("user_id", currentUser.id)
-    .eq("status", "open")
-    .order("created_at", { ascending: false });
-
-  container.innerHTML = "";
-  if(!data || !data.length){
-    container.innerHTML = `<div class="decision"><div class="empty">🎯 Henüz sonuç bekleyen kararın yok.</div></div>`;
-    return;
-  }
-
-  data.forEach(decision => {
-    const el = document.createElement("div");
-    el.className = "pending";
-    el.innerHTML = `
-      <div class="pending-label">🔔 SONUÇ BEKLİYOR</div>
-      <div class="pending-question">${escapeHTML(decision.question)}</div>
-      <div style="color:#6e788b;font-size:9px;margin-top:7px;">${escapeHTML(decision.category)}</div>
-      <div class="result-buttons">
-        <button class="result-btn" onclick="setResult('${decision.id}','good')">🟢 İyi oldu</button>
-        <button class="result-btn" onclick="setResult('${decision.id}','same')">🟡 Beklediğim gibi</button>
-        <button class="result-btn" onclick="setResult('${decision.id}','bad')">🔴 Kötü oldu</button>
-      </div>
-    `;
-    container.appendChild(el);
-  });
-}
-
-async function setResult(id, result){
-  if(!currentUser || !supabaseClient) return;
-  try{
-    await supabaseClient.from("decisions").update({ result: result, status: "completed" }).eq("id", id).eq("user_id", currentUser.id);
-    if(result === "good") await updateCorrectCount();
-    await recalculateReliability();
-    await loadProfileAndRefresh();
-    await loadResults();
-    await loadLeaderboard();
-    showToast("Sonucun kaydedildi 🧠");
-  }catch(e){
-    console.error(e);
-  }
-}
-
-async function updateCorrectCount(){
-  const newCount = Number(userProfile.correct_count || 0) + 1;
-  const { data } = await supabaseClient.from("profiles").update({ correct_count: newCount }).eq("id", currentUser.id).select().single();
-  if(data) userProfile = data;
-}
-
-async function recalculateReliability(){
-  const { data } = await supabaseClient.from("profiles").select("decisions_count, correct_count").eq("id", currentUser.id).single();
-  if(!data) return;
-  const decisionsCount = Number(data.decisions_count || 0);
-  const correctCount = Number(data.correct_count || 0);
-  let score = decisionsCount > 0 ? Math.round(correctCount / decisionsCount * 100) : 0;
-
-  const { data: updated } = await supabaseClient.from("profiles").update({ reliability_score: score }).eq("id", currentUser.id).select().single();
-  if(updated){
-    userProfile = updated;
-    updateProfileStats();
-  }
-}
-
-async function loadProfileAndRefresh(){
-  const { data } = await supabaseClient.from("profiles").select("*").eq("id", currentUser.id).single();
-  if(data){
-    userProfile = data;
-    updateUserUI();
-  }
-}
-
-async function loadLeaderboard(){
+async function loadLeaderboard() {
   const container = document.getElementById("ranking");
-  if(!container || !supabaseClient) return;
-
-  try{
-    const { data } = await supabaseClient.from("profiles").select("id, username, decisions_count, correct_count, reliability_score, created_at");
-    let profiles = data || [];
-    profiles = profiles.filter(p => Number(p.decisions_count || 0) > 0);
-
-    profiles.sort((a,b) => Number(b.reliability_score || 0) - Number(a.reliability_score || 0));
-    container.innerHTML = "";
-
-    if(!profiles.length){
-      document.getElementById("leaderHeroName").innerText = "Henüz lider yok";
-      document.getElementById("leaderHeroScore").innerText = "İlk karar veren sen ol";
-      container.innerHTML = `<div class="decision"><div class="empty">🏆 Bu dönemde henüz sıralama oluşmadı.</div></div>`;
+  if (!container || !supabaseClient) return;
+  try {
+    const { data } = await supabaseClient.from("profiles").select("*").order("reliability_score", { ascending: false }).limit(20);
+    if (!data || !data.length) {
+      container.innerHTML = `<div class="decision"><div class="empty">Henüz lider yok.</div></div>`;
       return;
     }
+    document.getElementById("leaderHeroName").innerText = data[0].username;
+    document.getElementById("leaderHeroScore").innerText = `%${data[0].reliability_score || 0} güvenilirlik`;
 
-    const leader = profiles[0];
-    document.getElementById("leaderHeroName").innerText = leader.username;
-    document.getElementById("leaderHeroScore").innerText = "%" + Number(leader.reliability_score || 0) + " güvenilirlik • " + leader.decisions_count + " karar";
-
-    profiles.slice(0,50).forEach((user, index) => {
+    container.innerHTML = "";
+    data.forEach((u, i) => {
       const row = document.createElement("div");
       row.className = "rank-row";
-      const medal = index === 0 ? "🥇" : index === 1 ? "🥈" : index === 2 ? "🥉" : index + 1;
-      const letter = (user.username || "U").replace("@","").substring(0,1).toUpperCase();
-
+      const medal = i === 0 ? "🥇" : i === 1 ? "🥈" : i === 2 ? "🥉" : i + 1;
       row.innerHTML = `
         <div class="rank-number">${medal}</div>
-        <div class="rank-avatar">${letter}</div>
-        <div class="rank-info"><strong>${escapeHTML(user.username)}</strong><span>${user.decisions_count} karar</span></div>
-        <div class="rank-score">%${Number(user.reliability_score || 0)}<small>güvenilirlik</small></div>
+        <div class="rank-avatar">${(u.username || "U")[1].toUpperCase()}</div>
+        <div class="rank-info"><strong>${escapeHTML(u.username)}</strong><span>${u.decisions_count || 0} karar</span></div>
+        <div class="rank-score">%${u.reliability_score || 0}<small>puan</small></div>
       `;
       container.appendChild(row);
     });
-  }catch(e){
-    console.error(e);
-  }
+  } catch(e) {}
 }
 
-function rankPeriod(btn, period){
-  document.querySelectorAll(".rank-tab").forEach(e => e.classList.remove("active"));
-  btn.classList.add("active");
-  currentRankPeriod = period;
-  loadLeaderboard();
-}
-
-function showScreen(id, btn){
-  document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
-  const target = document.getElementById(id);
-  if(target) target.classList.add("active");
-  document.querySelectorAll(".nav").forEach(n => n.classList.remove("active"));
-  if(btn && btn.classList.contains("nav")) btn.classList.add("active");
-
-  if(id === "results") loadResults();
-  if(id === "leaderboard") loadLeaderboard();
-  if(id === "profile") updateProfileStats();
-  window.scrollTo({top:0, behavior:"smooth"});
-}
-
-function setLang(lang){
-  currentLanguage = lang;
-  showToast(lang === "tr" ? "Türkçe seçildi 🇹🇷" : lang === "de" ? "Deutsch ausgewählt 🇩🇪" : "English selected 🇬🇧");
-}
-
-function timeAgo(date){
-  const seconds = Math.floor((new Date() - new Date(date)) / 1000);
-  if(seconds < 60) return "şimdi";
-  const minutes = Math.floor(seconds / 60);
-  if(minutes < 60) return minutes + " dk";
-  const hours = Math.floor(minutes / 60);
-  if(hours < 24) return hours + " sa";
-  return Math.floor(hours / 24) + " gün";
-}
-
-function escapeHTML(str){
-  return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
-}
-
-function showToast(msg){
-  const toast = document.getElementById("toast");
-  if(!toast) return;
-  toast.innerText = msg;
-  toast.classList.add("show");
-  clearTimeout(window.toastTimer);
-  window.toastTimer = setTimeout(() => toast.classList.remove("show"), 2500);
-}
-
-async function loadActiveCount(){
-  if(!supabaseClient) return;
-  try{
-    const { count } = await supabaseClient.from("profiles").select("id", { count: "exact", head: true });
-    if(count !== null){
-      document.getElementById("liveCount").innerText = count + " kişi aktif";
+async function loadResults() {
+  const container = document.getElementById("pendingResults");
+  if (!container || !currentUser || !supabaseClient) return;
+  try {
+    const { data } = await supabaseClient.from("decisions").select("*").eq("user_id", currentUser.id).eq("status", "open");
+    if (!data || !data.length) {
+      container.innerHTML = `<div class="decision"><div class="empty">Sonuç bekleyen kararın yok.</div></div>`;
+      return;
     }
-  }catch(e){}
+    container.innerHTML = "";
+    data.forEach(d => {
+      const el = document.createElement("div");
+      el.className = "pending";
+      el.innerHTML = `
+        <div class="pending-label">🔔 SONUÇ BEKLİYOR</div>
+        <div class="pending-question">${escapeHTML(d.question)}</div>
+        <div class="result-buttons">
+          <button class="result-btn" onclick="setResult('${d.id}','good')">🟢 İyi oldu</button>
+          <button class="result-btn" onclick="setResult('${d.id}','same')">🟡 Normal</button>
+          <button class="result-btn" onclick="setResult('${d.id}','bad')">🔴 Kötü</button>
+        </div>
+      `;
+      container.appendChild(el);
+    });
+  } catch(e) {}
 }
 
-setInterval(loadActiveCount, 30000);
-loadActiveCount();
-</script>
+async function setResult(id, res) {
+  if (!supabaseClient || !currentUser) return;
+  try {
+    await supabaseClient.from("decisions").update({ result: res, status: "completed" }).eq("id", id);
+    await loadResults();
+    showToast("Sonuç işlendi 🧠");
+  } catch(e) {}
+}
 
+function showScreen(id, btn) {
+  document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
+  document.getElementById(id)?.classList.add("active");
+  document.querySelectorAll(".nav").forEach(n => n.classList.remove("active"));
+  if (btn && btn.classList.contains("nav")) btn.classList.add("active");
+  if (id === "leaderboard") loadLeaderboard();
+  if (id === "results") loadResults();
+}
+
+function setLang(lang) {
+  showToast(lang === "tr" ? "Türkçe seçildi 🇹🇷" : "Language updated");
+}
+
+function timeAgo(date) {
+  const s = Math.floor((new Date() - new Date(date)) / 1000);
+  if (s < 60) return "şimdi";
+  const m = Math.floor(s / 60);
+  if (m < 60) return m + " dk";
+  const h = Math.floor(m / 60);
+  if (h < 24) return h + " sa";
+  return Math.floor(h / 24) + " gün";
+}
+
+function escapeHTML(str) {
+  return String(str).replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag));
+}
+
+function showToast(msg) {
+  const t = document.getElementById("toast");
+  if (!t) return;
+  t.innerText = msg;
+  t.classList.add("show");
+  setTimeout(() => t.classList.remove("show"), 2500);
+}
+</script>
 </body>
 </html>
