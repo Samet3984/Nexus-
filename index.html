@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#08090d">
 <title>Nexus — Kararların Gücü</title>
 
-<!-- Supabase CDN (Kararlı v2 sürümü) -->
+<!-- Supabase CDN -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
@@ -266,10 +266,12 @@ const SUPABASE_KEY = "sb_publishable_nboUtwCIJFUE3Zp2rmfcWw_nvLXQqRL";
 let supabaseClient = null;
 try {
   if (window.supabase && typeof window.supabase.createClient === "function") {
-    supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
+      auth: { persistSession: false }
+    });
   }
 } catch (e) {
-  console.error("Supabase hata:", e);
+  console.error("Supabase init error:", e);
 }
 
 let currentUser = null;
@@ -354,7 +356,7 @@ async function loadDecisions(cat = "all") {
   currentCategory = cat;
   const feed = document.getElementById("feed");
   if (!supabaseClient) {
-    feed.innerHTML = `<div class="decision"><div class="empty">Supabase bağlantısı kurulamadı.</div></div>`;
+    feed.innerHTML = `<div class="decision"><div class="empty">Supabase yüklenemedi.</div></div>`;
     return;
   }
 
@@ -397,7 +399,7 @@ async function loadDecisions(cat = "all") {
 
     renderFeed();
   } catch (e) {
-    feed.innerHTML = `<div class="decision"><div class="empty">Veriler yüklenirken hata oluştu.</div></div>`;
+    feed.innerHTML = `<div class="decision"><div class="empty">Bağlantı hatası oluştu.</div></div>`;
   }
 }
 
@@ -505,7 +507,10 @@ function addThirdOption() {
 }
 
 async function createDecision() {
-  if (!currentUser || !supabaseClient) return;
+  if (!currentUser || !supabaseClient) {
+    alert("Oturum veya Supabase bağlantısı eksik.");
+    return;
+  }
   const q = document.getElementById("question").value.trim();
   const o1 = document.getElementById("option1").value.trim();
   const o2 = document.getElementById("option2").value.trim();
@@ -523,7 +528,7 @@ async function createDecision() {
     }).select().single();
 
     if (error) {
-      alert("Hata (Decisions): " + JSON.stringify(error));
+      alert("Tablo Hatası (Decisions): " + error.message);
       return;
     }
 
@@ -535,7 +540,7 @@ async function createDecision() {
 
     const { error: optError } = await supabaseClient.from("options").insert(opts);
     if (optError) {
-      alert("Hata (Options): " + JSON.stringify(optError));
+      alert("Tablo Hatası (Options): " + optError.message);
       return;
     }
 
@@ -549,7 +554,7 @@ async function createDecision() {
     await loadDecisions("all");
     showToast("Karar yayınlandı 🚀");
   } catch(e) {
-    alert("Beklenmeyen hata: " + e.message);
+    alert("Bağlantı Kurulamadı: " + e.message);
   }
 }
 
