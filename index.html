@@ -180,10 +180,10 @@ textarea{width:100%;height:130px;resize:none;background:var(--card);border:1px s
 ========================================================= */
 
 const SUPABASE_URL =
-    "https://fulzvcfjmbtjljlowoso.supabase.co";
+    "https://gdollkoewmtngxdoxnzn.supabase.co";
 
 const SUPABASE_KEY =
-    "sb_publishable_nboUtwCIJFUE3Zp2rmfcWw_nvLXQqRL";
+    "Sb_publishable_nboUtwCIJFUE3Zp2rmfcWw_nvLXQqRL";
 
 const supabaseClient =
     supabase.createClient(
@@ -389,11 +389,6 @@ async function login() {
 
             userProfile =
                 existingProfile;
-
-            /*
-             * Aynı cihaz daha önce giriş yaptıysa
-             * mevcut kullanıcı adını koruyoruz.
-             */
 
         }
 
@@ -1743,21 +1738,6 @@ async function setResult(
         }
 
 
-        /*
-         * Şimdilik sonuç sahibi için
-         * basit skor güncellemesi.
-         *
-         * Daha sonraki sürümde:
-         *
-         * - hangi seçeneğin kazanacağı
-         * - topluluk çoğunluğu
-         * - sonucu doğru tahmin edenler
-         * - güvenilirlik ağırlığı
-         *
-         * birlikte hesaplanacak.
-         */
-
-
         if (result === "good") {
 
             await supabaseClient
@@ -2195,15 +2175,6 @@ async function rankPeriod(
     button.classList.add(
         "active"
     );
-
-
-    /*
-     * Şimdilik genel sıralama.
-     *
-     * Bir sonraki backend aşamasında
-     * günlük / haftalık / aylık gerçek
-     * tarih filtreleri ekleyeceğiz.
-     */
 
 
     await loadLeaderboard();
