@@ -187,11 +187,18 @@ try {
     console.error("Supabase init error:", e);
 }
 
-let currentUser = null; // { id, username }
+let currentUser = null; 
 let userProfile = null;
 let decisions = [];
 
-// LocalStorage kullanarak Auth hatasını tamamen bypass ediyoruz
+// Geçerli bir UUID üretici (Supabase UUID sütun uyumluluğu için)
+function generateUUID() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+    });
+}
+
 window.addEventListener('DOMContentLoaded', () => {
     const savedUser = localStorage.getItem("nexus_user");
     if (savedUser) {
@@ -206,14 +213,13 @@ async function login() {
     const input = document.getElementById("username").value.trim();
     if (!input) { showToast("Kullanıcı adını gir"); return; }
     const username = "@" + input.replace(/\s+/g, "").substring(0,20);
-    const userId = "user_" + Date.now() + "_" + Math.floor(Math.random()*1000);
+    const userId = generateUUID(); // Supabase UUID hatasını önlemek için tam UUID
 
     currentUser = { id: userId, username: username };
     localStorage.setItem("nexus_user", JSON.stringify(currentUser));
 
     try {
         if (supabaseClient) {
-            // Profili veritabanına kaydetmeyi dene, tablo yoksa veya hata olursa local devam eder
             await supabaseClient.from("profiles").upsert({
                 id: currentUser.id, username: username, decisions_count: 0, correct_count: 0, votes_count: 0, reliability_score: 0
             }, { onConflict: 'id' });
