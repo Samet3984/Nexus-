@@ -99,7 +99,7 @@ textarea{width:100%;height:130px;resize:none;background:var(--card);border:1px s
 </div>
 <input id="username" class="input" maxlength="20" placeholder="Kullanıcı adın...">
 <button class="primary" onclick="login()">Nexus'a Gir →</button>
-<div class="small-note">Üyelik gerektirmez • Demo sürüm</div>
+<div class="small-note">Üyelik gerektirmez • Doğrudan Bağlantı</div>
 </div>
 </section>
 
@@ -181,67 +181,65 @@ const SUPABASE_KEY = "Sb_publishable_nboUtwCIJFUE3Zp2rmfcWw_nvLXQqRL";
 let supabaseClient = null;
 try {
     if (window.supabase && typeof window.supabase.createClient === 'function') {
-        supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
-            auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
-        });
+        supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
     }
 } catch (e) {
     console.error("Supabase init error:", e);
 }
 
-let currentUser = null;
+let currentUser = null; // { id, username }
 let userProfile = null;
 let decisions = [];
 
-async function initializeNexus() {
-    try {
-        if (!supabaseClient) return;
-        const { data: { session } } = await supabaseClient.auth.getSession();
-        if (session && session.user) {
-            currentUser = session.user;
-            await loadProfile();
-            await startApp();
-        }
-    } catch (error) {
-        console.error("Init error:", error);
+// LocalStorage kullanarak Auth hatasını tamamen bypass ediyoruz
+window.addEventListener('DOMContentLoaded', () => {
+    const savedUser = localStorage.getItem("nexus_user");
+    if (savedUser) {
+        try {
+            currentUser = JSON.parse(savedUser);
+            loadProfileAndStart();
+        } catch(e) { localStorage.removeItem("nexus_user"); }
     }
-}
+});
 
 async function login() {
     const input = document.getElementById("username").value.trim();
     if (!input) { showToast("Kullanıcı adını gir"); return; }
     const username = "@" + input.replace(/\s+/g, "").substring(0,20);
+    const userId = "user_" + Date.now() + "_" + Math.floor(Math.random()*1000);
+
+    currentUser = { id: userId, username: username };
+    localStorage.setItem("nexus_user", JSON.stringify(currentUser));
 
     try {
-        showToast("Nexus'a bağlanıyor...");
-        if (!supabaseClient) { showToast("Supabase yüklenemedi"); return; }
-
-        let { data: sessionData } = await supabaseClient.auth.getSession();
-        if (!sessionData.session) {
-            const result = await supabaseClient.auth.signInAnonymously();
-            if (result.error) { showToast("Giriş hatası"); return; }
-            currentUser = result.data.user;
-        } else {
-            currentUser = sessionData.session.user;
-        }
-
-        const { data: existingProfile } = await supabaseClient.from("profiles").select("*").eq("id", currentUser.id).maybeSingle();
-
-        if (!existingProfile) {
-            const { data: newProfile, error } = await supabaseClient.from("profiles").insert({
+        if (supabaseClient) {
+            // Profili veritabanına kaydetmeyi dene, tablo yoksa veya hata olursa local devam eder
+            await supabaseClient.from("profiles").upsert({
                 id: currentUser.id, username: username, decisions_count: 0, correct_count: 0, votes_count: 0, reliability_score: 0
-            }).select().single();
-            if (error) { showToast("Profil hatası"); return; }
-            userProfile = newProfile;
-        } else {
-            userProfile = existingProfile;
+            }, { onConflict: 'id' });
         }
-
-        await startApp();
+        await loadProfileAndStart();
         showToast("Nexus'a hoş geldin 🚀");
     } catch (error) {
-        showToast("Bağlantı hatası");
+        await loadProfileAndStart();
+        showToast("Nexus'a hoş geldin 🚀");
     }
+}
+
+async function loadProfileAndStart() {
+    try {
+        if (supabaseClient) {
+            const { data } = await supabaseClient.from("profiles").select("*").eq("id", currentUser.id).maybeSingle();
+            if (data) {
+                userProfile = data;
+            } else {
+                userProfile = { id: currentUser.id, username: currentUser.username, decisions_count: 0, correct_count: 0, votes_count: 0, reliability_score: 0 };
+            }
+        }
+    } catch(e) {
+        userProfile = { id: currentUser.id, username: currentUser.username, decisions_count: 0, correct_count: 0, votes_count: 0, reliability_score: 0 };
+    }
+    startApp();
 }
 
 async function startApp() {
@@ -253,15 +251,9 @@ async function startApp() {
     await loadResults();
 }
 
-async function loadProfile() {
-    if (!currentUser || !supabaseClient) return;
-    const { data } = await supabaseClient.from("profiles").select("*").eq("id", currentUser.id).maybeSingle();
-    if (data) userProfile = data;
-}
-
 function updateUserUI() {
-    if (!userProfile) return;
-    const username = userProfile.username || "@user";
+    if (!currentUser) return;
+    const username = currentUser.username || "@user";
     const letter = username.replace("@","").substring(0,1).toUpperCase();
     
     if (document.getElementById("headerAvatar")) document.getElementById("headerAvatar").innerText = letter;
@@ -291,7 +283,7 @@ async function loadDecisions(category = "all") {
         if (category !== "all") query = query.eq("category", category);
 
         const { data, error } = await query;
-        if (error) return;
+        if (error || !data) return;
 
         const decisionIds = data.map(d => d.id);
         let votes = [];
@@ -304,10 +296,10 @@ async function loadDecisions(category = "all") {
 
         decisions = data.map(decision => {
             const decisionVotes = votes.filter(v => v.decision_id === decision.id);
-            const options = decision.options.sort((a,b)=>a.position-b.position).map(option => {
+            const options = decision.options ? decision.options.sort((a,b)=>a.position-b.position).map(option => {
                 const count = decisionVotes.filter(v => v.option_id === option.id).length;
                 return { id: option.id, text: option.option_text, votes: count };
-            });
+            }) : [];
 
             return {
                 id: decision.id,
@@ -326,7 +318,7 @@ async function loadDecisions(category = "all") {
                 userId: decision.user_id
             };
         });
-        renderFeed();
+        renderFeed(category);
     } catch (e) { console.error(e); }
 }
 
@@ -401,7 +393,7 @@ function filterFeed(button, category) {
 }
 
 async function vote(decisionId, optionId) {
-    if (!currentUser || !supabaseClient) { showToast("Önce Nexus'a gir"); return; }
+    if (!currentUser || !supabaseClient) { showToast("Giriş yapmalısın"); return; }
     const decision = decisions.find(d => d.id === decisionId);
     if (!decision || decision.voted) { showToast("Bu karara zaten oy verdin"); return; }
 
@@ -409,9 +401,7 @@ async function vote(decisionId, optionId) {
         const { error } = await supabaseClient.from("votes").insert({ decision_id: decisionId, option_id: optionId, user_id: currentUser.id });
         if (error) { showToast("Oy verilemedi"); return; }
 
-        await supabaseClient.from("profiles").update({ votes_count: (userProfile.votes_count || 0) + 1 }).eq("id", currentUser.id);
         userProfile.votes_count = (userProfile.votes_count || 0) + 1;
-        await loadProfile();
         await loadDecisions();
         showToast("Oyun kaydedildi 🎯");
     } catch (e) { showToast("Hata oluştu"); }
@@ -442,7 +432,7 @@ function addThirdOption() {
 }
 
 async function createDecision() {
-    if (!currentUser || !supabaseClient) { showToast("Önce Nexus'a gir"); return; }
+    if (!currentUser || !supabaseClient) { showToast("Giriş yapmalısın"); return; }
     const question = document.getElementById("question").value.trim();
     const option1 = document.getElementById("option1").value.trim();
     const option2 = document.getElementById("option2").value.trim();
@@ -465,9 +455,8 @@ async function createDecision() {
         if (option3) optionRows.push({ decision_id: decision.id, option_text: option3, position: 3 });
 
         await supabaseClient.from("options").insert(optionRows);
-        await supabaseClient.from("profiles").update({ decisions_count: (userProfile.decisions_count || 0) + 1 }).eq("id", currentUser.id);
+        userProfile.decisions_count = (userProfile.decisions_count || 0) + 1;
 
-        await loadProfile();
         document.getElementById("question").value = "";
         document.getElementById("option1").value = "";
         document.getElementById("option2").value = "";
@@ -485,21 +474,11 @@ async function setResult(id, result) {
     try {
         await supabaseClient.from("decisions").update({ result: result, status: "completed" }).eq("id", id).eq("user_id", currentUser.id);
         if (result === "good") {
-            await supabaseClient.from("profiles").update({ correct_count: (userProfile.correct_count || 0) + 1 }).eq("id", currentUser.id);
+            userProfile.correct_count = (userProfile.correct_count || 0) + 1;
         }
-        await recalculateMyScore();
-        await loadProfile();
         await loadResults();
         showToast("Sonucun kaydedildi 🧠");
     } catch (e) { console.error(e); }
-}
-
-async function recalculateMyScore() {
-    if (!userProfile || !supabaseClient) return;
-    const dCount = userProfile.decisions_count || 0;
-    const cCount = userProfile.correct_count || 0;
-    let score = dCount > 0 ? Math.round(cCount / dCount * 100) : 0;
-    await supabaseClient.from("profiles").update({ reliability_score: score }).eq("id", currentUser.id);
 }
 
 async function loadResults() {
@@ -571,7 +550,7 @@ function showScreen(id, btn) {
 
     if (id === "results") loadResults();
     if (id === "leaderboard") loadLeaderboard();
-    if (id === "profile") loadProfile().then(updateUserUI);
+    if (id === "profile") updateProfileStats();
     window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
@@ -597,8 +576,6 @@ function showToast(msg) {
     clearTimeout(window.toastTimer);
     window.toastTimer = setTimeout(() => toast.classList.remove("show"), 2500);
 }
-
-initializeNexus();
 </script>
 </body>
 </html>
