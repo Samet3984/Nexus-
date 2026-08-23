@@ -4,25 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Nexus</title>
-
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
 *{box-sizing:border-box}
-
-body{
-margin:0;
-background:#07080c;
-color:#fff;
-font:14px Arial,sans-serif
-}
-
-.app{
-max-width:500px;
-margin:auto;
-min-height:100vh;
-padding:18px 15px 90px
-}
+body{margin:0;background:#07080c;color:#fff;font:14px Arial,sans-serif}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer}
+.app{max-width:520px;margin:auto;min-height:100vh;padding:16px 14px 92px}
 
 .box,.card{
 background:#12151e;
@@ -33,134 +22,97 @@ margin-bottom:12px
 }
 
 .center{text-align:center}
-
+.muted,.small{color:#788196;font-size:11px}
 .logo{
-width:80px;
-height:80px;
-margin:35px auto 15px;
-border-radius:25px;
+width:76px;height:76px;margin:28px auto 14px;border-radius:24px;
 background:linear-gradient(135deg,#6d5dfc,#a855f7);
-display:grid;
-place-items:center;
-font-size:38px;
-font-weight:900
+display:grid;place-items:center;font-size:36px;font-weight:900
 }
-
-.title{
-font-size:40px;
-font-weight:900
-}
-
-.sub{
-color:#8992a5;
-line-height:1.6;
-margin:8px 0 22px
-}
+.title{font-size:38px;font-weight:900}
+.sub{color:#8992a5;line-height:1.6;margin:8px 0 22px}
 
 .input,textarea,select{
-width:100%;
-padding:14px;
-margin:0 0 10px;
-background:#10131b;
-border:1px solid #292e3b;
-border-radius:13px;
-color:#fff;
-outline:0
+width:100%;padding:14px;margin-bottom:10px;
+background:#10131b;border:1px solid #292e3b;
+border-radius:13px;color:#fff;outline:none
 }
-
-.input:focus,
-textarea:focus,
-select:focus{
-border-color:#7c5cff
-}
-
-textarea{
-height:120px;
-resize:none
-}
+textarea{height:110px;resize:none}
+.input:focus,textarea:focus,select:focus{border-color:#7c5cff}
 
 .btn{
-width:100%;
-padding:15px;
-border:0;
-border-radius:14px;
+width:100%;padding:14px;border:0;border-radius:14px;
 background:linear-gradient(135deg,#6d5dfc,#a855f7);
-color:#fff;
-font-weight:800;
-cursor:pointer
+color:#fff;font-weight:800
 }
-
-.btn:disabled{
-opacity:.55;
-cursor:wait
+.btn:disabled{opacity:.55}
+.secondary{
+background:#191c25;
+border:1px solid #292e3b
 }
-
-.link{
-color:#9c8fff;
-font-size:11px;
-margin-top:14px;
-cursor:pointer
-}
+.link{color:#a394ff;font-size:11px;margin-top:14px;cursor:pointer}
 
 .err{
-background:#29151b;
-border:1px solid #67313d;
-color:#ffadb8;
-padding:12px;
-border-radius:12px;
-font-size:11px;
-margin-top:12px;
-word-break:break-word
+background:#29151b;border:1px solid #67313d;color:#ffadb8;
+padding:12px;border-radius:12px;font-size:11px;
+margin-top:12px;word-break:break-word
 }
+.ok{color:#22c55e;font-size:11px;margin-top:12px}
 
-.ok{
-color:#22c55e;
-font-size:11px;
-margin-top:12px
+.main{display:none}
+.screen{display:none}
+.screen.active{display:block}
+
+.top{
+display:flex;justify-content:space-between;align-items:center;
+margin-bottom:14px
 }
-
-.main{
-display:none
-}
-
-.screen{
-display:none
-}
-
-.screen.active{
-display:block
-}
-
-.head{
-display:flex;
-justify-content:space-between;
-align-items:center;
-margin-bottom:18px
-}
-
-.head h1{
-margin:0
-}
-
-.head p{
-color:#788196;
-font-size:11px
-}
-
+.brand{font-size:24px;font-weight:900}
 .avatar{
-width:42px;
-height:42px;
-border-radius:50%;
-display:grid;
-place-items:center;
+width:42px;height:42px;border-radius:50%;
+display:grid;place-items:center;
 background:linear-gradient(135deg,#6d5dfc,#a855f7);
-font-weight:bold
+font-weight:900
 }
+
+.hero{
+background:
+radial-gradient(circle at 85% 0,#704cff33,transparent 42%),
+#12151e;
+border:1px solid #322d4d;
+border-radius:20px;
+padding:18px;
+margin-bottom:12px
+}
+.hero-title{font-size:11px;color:#a394ff;font-weight:800}
+.hero-name{font-size:23px;font-weight:900;margin:7px 0}
+.hero-score{font-size:13px;color:#aeb6c7}
+
+.section-title{
+display:flex;justify-content:space-between;align-items:center;
+margin:20px 2px 9px
+}
+.section-title h3{margin:0;font-size:16px}
+.section-title span{font-size:10px;color:#7d879b}
+
+.quick{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:9px;
+margin-bottom:12px
+}
+.quick button{
+padding:14px;
+border-radius:14px;
+border:1px solid #292e3b;
+background:#12151e;
+color:#fff;
+text-align:left
+}
+.quick b{display:block;margin-bottom:4px}
+.quick span{font-size:9px;color:#788196}
 
 .q{
-font-weight:800;
-font-size:16px;
-line-height:1.45;
+font-size:16px;font-weight:800;line-height:1.45;
 margin:12px 0
 }
 
@@ -169,151 +121,86 @@ display:grid;
 grid-template-columns:1fr 1fr;
 gap:8px
 }
-
 .opt{
-position:relative;
-overflow:hidden;
-padding:12px 8px;
+position:relative;overflow:hidden;
+padding:13px 9px;
 border:1px solid #292e3b;
-background:#191c25;
-color:#fff;
-border-radius:12px;
-font-weight:700;
-cursor:pointer
+background:#191c25;color:#fff;
+border-radius:12px;font-weight:700
 }
-
-.pct{
-display:block;
-color:#7e889c;
-font-size:10px;
-margin-top:5px
+.opt .pct{
+display:block;color:#7e889c;font-size:10px;margin-top:5px
 }
-
 .bar{
-position:absolute;
-left:0;
-bottom:0;
-height:3px;
+position:absolute;left:0;bottom:0;height:3px;
 background:#7c5cff
 }
 
-.meta{
-color:#687286;
-font-size:9px;
-margin-top:10px
-}
+.meta{color:#687286;font-size:9px;margin-top:10px}
 
-.nav{
-position:fixed;
-bottom:0;
-left:50%;
-transform:translateX(-50%);
-max-width:500px;
-width:100%;
-height:72px;
-background:#0a0c11f5;
-border-top:1px solid #292e3b;
-display:flex;
-justify-content:space-around;
-align-items:center;
-z-index:10
+.rank-row{
+display:flex;align-items:center;gap:10px;
+padding:12px 0;border-bottom:1px solid #252a35
 }
-
-.nav button{
-border:0;
-background:none;
-color:#788196;
-font-size:9px;
-cursor:pointer
-}
-
-.nav .active{
-color:#9c8fff
-}
-
-.plus{
-width:46px;
-height:46px;
-border-radius:15px!important;
-background:linear-gradient(135deg,#6d5dfc,#a855f7)!important;
-color:#fff!important;
-font-size:24px!important
-}
+.rank-row:last-child{border-bottom:0}
+.rank-num{width:25px;text-align:center;font-weight:900}
+.grow{flex:1}
+.rank-score{font-weight:900;color:#a394ff}
 
 .stats{
 display:grid;
 grid-template-columns:repeat(3,1fr);
 gap:7px
 }
+.stat{text-align:center}
+.stat b{display:block;font-size:18px}
+.stat span{font-size:8px;color:#697386}
 
-.stat{
-text-align:center
+.empty{
+padding:24px 14px;
+text-align:center;
+color:#8992a5
 }
+.empty .big{font-size:30px;margin-bottom:8px}
 
-.stat b{
-display:block;
-font-size:18px
+.nav{
+position:fixed;bottom:0;left:50%;
+transform:translateX(-50%);
+max-width:520px;width:100%;height:70px;
+background:#0a0c11f7;border-top:1px solid #292e3b;
+display:flex;justify-content:space-around;align-items:center;
+z-index:20
 }
-
-.stat span{
-font-size:8px;
-color:#697386
+.nav button{
+border:0;background:none;color:#788196;font-size:9px
 }
-
-.row{
-display:flex;
-align-items:center;
-gap:10px
-}
-
-.row .avatar{
-width:36px;
-height:36px
-}
-
-.row .grow{
-flex:1
-}
-
-.small{
-font-size:9px;
-color:#697386
-}
-
-.tabs{
-display:flex;
-gap:5px;
-margin-bottom:12px
-}
-
-.tabs button{
-flex:1;
-background:#12151e;
-border:1px solid #292e3b;
-color:#788196;
-border-radius:10px;
-padding:9px;
-font-size:10px
-}
-
-.tabs .active{
-color:#fff;
-background:#29233e
+.nav button.active{color:#a394ff}
+.nav .plus{
+width:46px;height:46px;border-radius:15px;
+background:linear-gradient(135deg,#6d5dfc,#a855f7);
+color:#fff;font-size:23px
 }
 
 .toast{
-position:fixed;
-bottom:85px;
-left:50%;
+position:fixed;bottom:82px;left:50%;
 transform:translateX(-50%);
-background:#292e3b;
-padding:11px 15px;
-border-radius:12px;
-font-size:11px;
-display:none;
-z-index:20;
-max-width:90%;
-text-align:center
+background:#292e3b;padding:11px 15px;
+border-radius:12px;font-size:11px;
+display:none;z-index:30;max-width:90%;text-align:center
+}
+
+.language{
+display:flex;gap:5px;margin:8px 0 15px
+}
+.language button{
+flex:1;padding:8px;border-radius:9px;
+background:#12151e;border:1px solid #292e3b;color:#788196
+}
+.language button.active{color:#fff;background:#29233e}
+
+@media(max-width:380px){
+.opts{grid-template-columns:1fr}
+.quick{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -322,10 +209,11 @@ text-align:center
 
 <div class="app">
 
+<!-- AUTH -->
+
 <section id="auth" class="center">
 
 <div class="logo">N</div>
-
 <div class="title">Nexus</div>
 
 <div class="sub">
@@ -336,81 +224,39 @@ Sonucunu geri getir.<br>
 
 <div id="loginForm">
 
-<input
-id="le"
-class="input"
-type="email"
-autocomplete="email"
-placeholder="E-posta"
->
+<input id="le" class="input" type="email"
+autocomplete="email" placeholder="E-posta">
 
-<input
-id="lp"
-class="input"
-type="password"
-autocomplete="current-password"
-placeholder="Şifre"
->
+<input id="lp" class="input" type="password"
+autocomplete="current-password" placeholder="Şifre">
 
-<button
-id="loginBtn"
-type="button"
-class="btn"
->
+<button id="loginBtn" type="button" class="btn">
 Nexus'a Gir →
 </button>
 
-<div
-id="registerLink"
-class="link"
->
+<div id="registerLink" class="link">
 Hesabın yok mu? Kayıt ol
 </div>
 
 </div>
 
-<div
-id="registerForm"
-style="display:none"
->
+<div id="registerForm" style="display:none">
 
-<input
-id="ru"
-class="input"
-maxlength="20"
-autocomplete="username"
-placeholder="Kullanıcı adı"
->
+<input id="ru" class="input" maxlength="20"
+autocomplete="username" placeholder="Kullanıcı adı">
 
-<input
-id="re"
-class="input"
-type="email"
-autocomplete="email"
-placeholder="E-posta"
->
+<input id="re" class="input" type="email"
+autocomplete="email" placeholder="E-posta">
 
-<input
-id="rp"
-class="input"
-type="password"
-minlength="6"
-autocomplete="new-password"
-placeholder="Şifre (en az 6 karakter)"
->
+<input id="rp" class="input" type="password"
+minlength="6" autocomplete="new-password"
+placeholder="Şifre (en az 6 karakter)">
 
-<button
-id="registerBtn"
-type="button"
-class="btn"
->
+<button id="registerBtn" type="button" class="btn">
 Nexus'a Katıl 🚀
 </button>
 
-<div
-id="loginLink"
-class="link"
->
+<div id="loginLink" class="link">
 Zaten hesabın var mı? Giriş yap
 </div>
 
@@ -421,20 +267,47 @@ Zaten hesabın var mı? Giriş yap
 </section>
 
 
+<!-- MAIN -->
+
 <main id="main" class="main">
 
+<!-- HOME -->
 
 <section id="home" class="screen active">
 
-<div class="head">
-
+<div class="top">
 <div>
-<h1>🔥 Nexus</h1>
-<p>Topluluk kararları</p>
+<div class="brand">🔥 Nexus</div>
+<div class="muted">Topluluğun karar gücü</div>
+</div>
+<div id="ha" class="avatar">N</div>
 </div>
 
-<div id="ha" class="avatar">N</div>
+<div class="hero">
+<div class="hero-title">👑 AYIN NEXUS ŞAMPİYONU</div>
+<div id="championName" class="hero-name">Henüz şampiyon yok</div>
+<div id="championScore" class="hero-score">
+İlk kararlar verildikçe yarış başlayacak.
+</div>
+</div>
 
+<div class="quick">
+
+<button id="quickCreate" type="button">
+<b>🧠 Kararını Fırlat</b>
+<span>Kararsız kaldığın şeyi Nexus'a bırak.</span>
+</button>
+
+<button id="quickRank" type="button">
+<b>🏆 Liderlik</b>
+<span>Herkes herkesle yarışıyor.</span>
+</button>
+
+</div>
+
+<div class="section-title">
+<h3>🔥 Karar Havuzu</h3>
+<span>TOPLULUK</span>
 </div>
 
 <div id="feed"></div>
@@ -442,88 +315,81 @@ Zaten hesabın var mı? Giriş yap
 </section>
 
 
+<!-- CREATE -->
+
 <section id="create" class="screen">
 
-<h2>🧠 Kararını Fırlat</h2>
+<div class="section-title">
+<h3>🧠 Kararını Fırlat</h3>
+</div>
 
 <p class="small">
 Kararsız kaldığın şeyi Nexus'a bırak.
 </p>
 
-<textarea
-id="q"
-placeholder="Örn: Bu işi kabul etmeli miyim?"
-></textarea>
+<textarea id="q"
+placeholder="Örn: Bu işi kabul etmeli miyim?"></textarea>
 
-<input
-id="o1"
-class="input"
-placeholder="1. seçenek"
->
-
-<input
-id="o2"
-class="input"
-placeholder="2. seçenek"
->
-
-<input
-id="o3"
-class="input"
-placeholder="3. seçenek (isteğe bağlı)"
->
+<input id="o1" class="input" placeholder="1. seçenek">
+<input id="o2" class="input" placeholder="2. seçenek">
+<input id="o3" class="input"
+placeholder="3. seçenek (isteğe bağlı)">
 
 <select id="cat">
-
 <option>Günlük</option>
 <option>İş</option>
 <option>Aşk</option>
 <option>Alışveriş</option>
 <option>Arkadaşlık</option>
 <option>Hayat</option>
-
 </select>
 
-<button
-id="createBtn"
-type="button"
-class="btn"
->
+<button id="createBtn" type="button" class="btn">
 🚀 Nexus'a Sor
 </button>
 
 </section>
 
 
+<!-- LEADERBOARD -->
+
 <section id="leaderboard" class="screen">
 
-<h2>🏆 Liderlik</h2>
+<div class="section-title">
+<h3>🏆 Liderlik</h3>
+</div>
 
-<p class="small">
-Herkes herkesle yarışıyor.
-</p>
+<div class="card center">
+<b>Herkes herkesle yarışıyor.</b>
+<div class="small" style="margin-top:6px">
+En başarılı tahminciler burada yükselir.
+</div>
+</div>
 
 <div id="rank"></div>
 
 </section>
 
 
+<!-- RESULTS -->
+
 <section id="results" class="screen">
 
-<h2>📊 Sonuçlarım</h2>
+<div class="section-title">
+<h3>📊 Sonuçlarım</h3>
+</div>
 
 <div id="resultsBox"></div>
 
 </section>
 
 
+<!-- PROFILE -->
+
 <section id="profile" class="screen center">
 
-<div
-id="pa"
-class="avatar"
-style="width:76px;height:76px;margin:auto;font-size:25px"
->
+<div id="pa" class="avatar"
+style="width:76px;height:76px;margin:auto;font-size:25px">
 N
 </div>
 
@@ -548,11 +414,19 @@ N
 
 </div>
 
-<button
-id="logoutBtn"
-type="button"
-class="btn"
->
+<div class="card" style="text-align:left">
+
+<b>🌍 Dil / Language</b>
+
+<div class="language">
+<button data-lang="tr" class="active">🇹🇷 TR</button>
+<button data-lang="de">🇩🇪 DE</button>
+<button data-lang="en">🇬🇧 EN</button>
+</div>
+
+</div>
+
+<button id="logoutBtn" type="button" class="btn">
 Çıkış Yap
 </button>
 
@@ -561,45 +435,29 @@ class="btn"
 
 <nav class="nav">
 
-<button
-type="button"
-class="active"
-data-screen="home"
->
-🔥<br>
-Havuz
+<button type="button"
+data-screen="home" class="active">
+🔥<br>Havuz
 </button>
 
-<button
-type="button"
-data-screen="leaderboard"
->
-🏆<br>
-Liderlik
+<button type="button"
+data-screen="leaderboard">
+🏆<br>Liderlik
 </button>
 
-<button
-type="button"
-class="plus"
-data-screen="create"
->
+<button type="button"
+data-screen="create" class="plus">
 +
 </button>
 
-<button
-type="button"
-data-screen="results"
->
-📊<br>
-Sonuçlar
+<button type="button"
+data-screen="results">
+📊<br>Sonuçlar
 </button>
 
-<button
-type="button"
-data-screen="profile"
->
-👤<br>
-Profil
+<button type="button"
+data-screen="profile">
+👤<br>Profil
 </button>
 
 </nav>
@@ -613,9 +471,9 @@ Profil
 
 <script>
 
-/* =====================================================
+/* ==============================
    SUPABASE
-===================================================== */
+============================== */
 
 const SUPABASE_URL =
 "https://gdollkoewmtngxdoxnzn.supabase.co";
@@ -623,22 +481,7 @@ const SUPABASE_URL =
 const SUPABASE_KEY =
 "sb_publishable_nboUtwCIJFUE3Zp2rmfcWw_nvLXQqRL";
 
-
-let db;
-
-try{
-
-if(
-typeof supabase === "undefined"
-){
-
-throw new Error(
-"Supabase kütüphanesi yüklenemedi."
-);
-
-}
-
-db =
+const db =
 supabase.createClient(
 SUPABASE_URL,
 SUPABASE_KEY,
@@ -651,66 +494,43 @@ detectSessionInUrl:true
 }
 );
 
-}catch(e){
 
-document.getElementById("authMsg").innerHTML=
-'<div class="err">'+
-"Supabase başlatılamadı: "+
-e.message+
-'</div>';
-
-throw e;
-
-}
-
-
-/* =====================================================
-   DEĞİŞKENLER
-===================================================== */
+/* ==============================
+   STATE
+============================== */
 
 let session=null;
 let profile=null;
 let decisions=[];
 
 
-/* =====================================================
-   KISA YARDIMCILAR
-===================================================== */
+/* ==============================
+   HELPERS
+============================== */
 
-const $ = id =>
-document.getElementById(id);
+const $=id=>document.getElementById(id);
 
-
-const esc = value =>
-String(value ?? "")
-.replace(
-/[&<>"']/g,
-m => ({
+const esc=x=>
+String(x??"")
+.replace(/[&<>"']/g,m=>({
 "&":"&amp;",
 "<":"&lt;",
 ">":"&gt;",
 '"':"&quot;",
 "'":"&#039;"
-}[m])
-);
+}[m]));
 
 
 function toast(message){
 
-const el=$("toast");
+$("toast").textContent=message;
+$("toast").style.display="block";
 
-el.textContent=message;
+clearTimeout(window.nexusToast);
 
-el.style.display="block";
-
-clearTimeout(window.nexusToastTimer);
-
-window.nexusToastTimer=setTimeout(
-()=>{
-el.style.display="none";
-},
-2500
-);
+window.nexusToast=setTimeout(()=>{
+$("toast").style.display="none";
+},2500);
 
 }
 
@@ -718,25 +538,19 @@ el.style.display="none";
 function authmsg(message,ok=false){
 
 $("authMsg").innerHTML=
-'<div class="'+
-(ok?"ok":"err")+
-'">'+
-esc(message)+
-'</div>';
+`<div class="${ok?"ok":"err"}">${esc(message)}</div>`;
 
 }
 
 
-/* =====================================================
-   AUTH EKRANI
-===================================================== */
+/* ==============================
+   AUTH
+============================== */
 
 function registerView(){
 
 $("loginForm").style.display="none";
-
 $("registerForm").style.display="block";
-
 $("authMsg").innerHTML="";
 
 }
@@ -745,44 +559,83 @@ $("authMsg").innerHTML="";
 function loginView(){
 
 $("registerForm").style.display="none";
-
 $("loginForm").style.display="block";
-
 $("authMsg").innerHTML="";
 
 }
 
 
-/* =====================================================
-   KAYIT
-===================================================== */
+async function login(){
+
+const button=$("loginBtn");
+
+const email=$("le").value.trim();
+const password=$("lp").value;
+
+if(!email || !password){
+
+authmsg("E-posta ve şifre gerekli.");
+return;
+
+}
+
+button.disabled=true;
+button.textContent="Giriş yapılıyor...";
+
+try{
+
+const r=
+await db.auth.signInWithPassword({
+email,
+password
+});
+
+if(r.error) throw r.error;
+
+if(!r.data?.session){
+
+throw new Error("Oturum oluşturulamadı.");
+
+}
+
+session=r.data.session;
+
+await ensureProfile(r.data.user);
+
+await start();
+
+}catch(e){
+
+console.error(e);
+
+authmsg(
+"Giriş başarısız: "+
+(e.message||e)
+);
+
+}finally{
+
+button.disabled=false;
+button.textContent="Nexus'a Gir →";
+
+}
+
+}
+
 
 async function register(){
 
 const button=$("registerBtn");
 
-let username=
-$("ru")
-.value
-.trim()
+const username=
+$("ru").value.trim()
 .replace(/\s+/g,"")
 .slice(0,20);
 
-let email=
-$("re")
-.value
-.trim();
+const email=$("re").value.trim();
+const password=$("rp").value;
 
-let password=
-$("rp")
-.value;
-
-
-if(
-!username ||
-!email ||
-password.length<6
-){
+if(!username || !email || password.length<6){
 
 authmsg(
 "Kullanıcı adı, e-posta ve en az 6 karakterli şifre gerekli."
@@ -792,87 +645,63 @@ return;
 
 }
 
-
 button.disabled=true;
-
 button.textContent="Hesap oluşturuluyor...";
-
 
 try{
 
-const result=
+const r=
 await db.auth.signUp({
 
-email:email,
-
-password:password,
+email,
+password,
 
 options:{
 data:{
-username:username
+username
 }
 }
 
 });
 
+if(r.error) throw r.error;
 
-if(result.error){
+if(!r.data.user){
 
-throw result.error;
-
-}
-
-
-if(!result.data.user){
-
-throw new Error(
-"Hesap oluşturulamadı."
-);
+throw new Error("Hesap oluşturulamadı.");
 
 }
 
-
-if(!result.data.session){
+if(!r.data.session){
 
 authmsg(
-"Kayıt oluşturuldu. E-posta doğrulaması gerekiyorsa e-postanı doğrula, ardından giriş yap.",
+"Kayıt oluşturuldu. E-postanı doğrula, ardından giriş yap.",
 true
 );
 
-button.disabled=false;
-
-button.textContent="Nexus'a Katıl 🚀";
-
 return;
 
 }
 
-
-session=result.data.session;
-
+session=r.data.session;
 
 await ensureProfile(
-result.data.user,
+r.data.user,
 username
 );
 
-
 await start();
 
-
-}catch(error){
-
-console.error("REGISTER ERROR:",error);
+}catch(e){
 
 authmsg(
 "Kayıt başarısız: "+
-(error.message || error)
+(e.message||e)
 );
 
 }finally{
 
 button.disabled=false;
-
 button.textContent="Nexus'a Katıl 🚀";
 
 }
@@ -880,917 +709,650 @@ button.textContent="Nexus'a Katıl 🚀";
 }
 
 
-/* =====================================================
-   GİRİŞ
-===================================================== */
+/* ==============================
+   PROFILE
+============================== */
 
-async function login(){
+async function ensureProfile(user,usernameFromRegister){
 
-const button=$("loginBtn");
-
-const email=
-$("le")
-.value
-.trim();
-
-const password=
-$("lp")
-.value;
-
-
-if(
-!email ||
-!password
-){
-
-authmsg(
-"E-posta ve şifre gerekli."
-);
-
-return;
-
-}
-
-
-button.disabled=true;
-
-button.textContent="Giriş yapılıyor...";
-
-$("authMsg").innerHTML="";
-
-
-try{
-
-const result=
-await db.auth.signInWithPassword({
-
-email:email,
-
-password:password
-
-});
-
-
-console.log(
-"NEXUS LOGIN RESULT:",
-result
-);
-
-
-if(result.error){
-
-throw result.error;
-
-}
-
-
-if(!result.data || !result.data.session){
-
-throw new Error(
-"Supabase oturumu oluşturamadı."
-);
-
-}
-
-
-session=result.data.session;
-
-
-await ensureProfile(
-result.data.user
-);
-
-
-await start();
-
-
-}catch(error){
-
-console.error(
-"NEXUS LOGIN ERROR:",
-error
-);
-
-authmsg(
-"Giriş başarısız: "+
-(error.message || error)
-);
-
-}finally{
-
-button.disabled=false;
-
-button.textContent="Nexus'a Gir →";
-
-}
-
-}
-
-
-/* =====================================================
-   PROFİL
-===================================================== */
-
-async function ensureProfile(
-user,
-usernameFromRegister
-){
-
-if(!user || !user.id){
-
-throw new Error(
-"Supabase kullanıcı bilgisi alınamadı."
-);
-
-}
-
-
-const result=
+const r=
 await db
 .from("profiles")
 .select("*")
 .eq("id",user.id)
 .maybeSingle();
 
-
-if(result.error){
+if(r.error){
 
 throw new Error(
 "Profil kontrolü başarısız: "+
-result.error.message
+r.error.message
 );
 
 }
 
+if(r.data){
 
-if(result.data){
-
-profile=result.data;
-
+profile=r.data;
 return;
 
 }
 
-
 let username=
 usernameFromRegister ||
 user.user_metadata?.username ||
-(
-"@"+
-(user.email || "user")
-.split("@")[0]
-);
+("@"+(user.email||"user").split("@")[0]);
 
-
-if(!username.startsWith("@")){
-
+if(!username.startsWith("@"))
 username="@"+username;
 
-}
-
-
-username=username.slice(0,21);
-
-
-const insertResult=
+const p=
 await db
 .from("profiles")
 .insert({
 
 id:user.id,
-
-username:username,
-
+username:username.slice(0,21),
 decisions_count:0,
-
 correct_count:0,
-
 votes_count:0,
-
 reliability_score:0
 
 })
 .select()
 .single();
 
-
-if(insertResult.error){
+if(p.error){
 
 throw new Error(
 "Profil oluşturulamadı: "+
-insertResult.error.message
+p.error.message
 );
 
 }
 
-
-profile=insertResult.data;
+profile=p.data;
 
 }
 
 
-/* =====================================================
-   UYGULAMAYI BAŞLAT
-===================================================== */
+/* ==============================
+   START
+============================== */
 
 async function start(){
 
-if(!session){
-
-throw new Error(
-"Oturum bulunamadı."
-);
-
-}
-
-
 $("auth").style.display="none";
-
 $("main").style.display="block";
-
 
 updateProfile();
 
-
 await loadFeed();
-
-await loadResults();
-
 await loadLeaderboard();
+await loadChampion();
+await loadResults();
 
 }
 
 
-/* =====================================================
-   PROFİL UI
-===================================================== */
+/* ==============================
+   PROFILE UI
+============================== */
 
 function updateProfile(){
 
 const username=
-profile?.username ||
-"@user";
+profile?.username||"@user";
 
 const letter=
-username
-.replace("@","")
-.charAt(0)
-.toUpperCase() ||
-"N";
-
+username.replace("@","").charAt(0).toUpperCase()||"N";
 
 $("ha").textContent=letter;
-
 $("pa").textContent=letter;
-
 $("pn").textContent=username;
 
 $("sc").textContent=
-(profile?.reliability_score || 0)+
-"%";
+(profile?.reliability_score||0)+"%";
 
 $("dc").textContent=
-profile?.decisions_count || 0;
+profile?.decisions_count||0;
 
 $("cc").textContent=
-profile?.correct_count || 0;
+profile?.correct_count||0;
 
 }
 
 
-/* =====================================================
-   KARARLAR
-===================================================== */
+/* ==============================
+   FEED
+============================== */
 
 async function loadFeed(){
 
-if(!session){
-
-return;
-
-}
-
-
-const result=
+const r=
 await db
 .from("decisions")
 .select(
 "id,user_id,question,category,status,result,created_at,profiles(username),options(id,option_text,position)"
 )
-.order(
-"created_at",
-{
-ascending:false
-}
-)
+.order("created_at",{ascending:false})
 .limit(50);
 
-
-if(result.error){
+if(r.error){
 
 $("feed").innerHTML=
-'<div class="err">'+
-esc(result.error.message)+
-'</div>';
+`<div class="err">${esc(r.error.message)}</div>`;
 
 return;
 
 }
 
+const rows=r.data||[];
 
-const rows=result.data || [];
+if(!rows.length){
 
-const ids=
-rows.map(
-x=>x.id
-);
+$("feed").innerHTML=`
+<div class="card empty">
+<div class="big">🧠</div>
+<b>Nexus henüz yeni.</b>
+<p>İlk kararını sen başlat.</p>
+<button
+type="button"
+class="btn"
+onclick="showScreen('create')"
+>
++ İlk Kararını Oluştur
+</button>
+</div>`;
 
+return;
+
+}
+
+const ids=rows.map(x=>x.id);
 
 let votes=[];
 
-
 if(ids.length){
 
-const voteResult=
+const v=
 await db
 .from("votes")
-.select(
-"decision_id,option_id,user_id"
-)
-.in(
-"decision_id",
-ids
-);
+.select("decision_id,option_id,user_id")
+.in("decision_id",ids);
 
-
-if(voteResult.error){
+if(v.error){
 
 $("feed").innerHTML=
-'<div class="err">'+
-esc(voteResult.error.message)+
-'</div>';
+`<div class="err">${esc(v.error.message)}</div>`;
 
 return;
 
 }
 
-
-votes=
-voteResult.data || [];
+votes=v.data||[];
 
 }
 
+decisions=rows.map(d=>{
 
-decisions=
-rows.map(
-decision=>{
-
-const decisionVotes=
-votes.filter(
-v=>
-v.decision_id===
-decision.id
-);
-
+const vv=
+votes.filter(v=>v.decision_id===d.id);
 
 const options=
-(decision.options || [])
-.sort(
-(a,b)=>
-a.position-b.position
-)
-.map(
-option=>({
+(d.options||[])
+.sort((a,b)=>a.position-b.position)
+.map(o=>({
 
-id:option.id,
+id:o.id,
+text:o.option_text,
+n:vv.filter(v=>v.option_id===o.id).length
 
-text:option.option_text,
-
-n:
-decisionVotes.filter(
-v=>
-v.option_id===
-option.id
-).length
-
-})
-);
-
+}));
 
 return{
-
-...decision,
-
+...d,
 oo:options,
-
-total:decisionVotes.length,
-
-voted:
-decisionVotes.some(
-v=>
-v.user_id===
-session.user.id
-)
-
+total:vv.length,
+voted:vv.some(v=>v.user_id===session.user.id)
 };
-
-}
-);
-
-
-if(!decisions.length){
-
-$("feed").innerHTML=
-'<div class="card center">'+
-"Henüz karar yok. 🧠"+
-"</div>";
-
-return;
-
-}
-
-
-$("feed").innerHTML=
-decisions
-.map(
-decision=>{
-
-return `
-<div class="card">
-
-<b>
-${esc(
-decision.profiles?.username ||
-"@user"
-)}
-</b>
-
-<span class="small">
- • ${esc(decision.category || "")}
-</span>
-
-<div class="q">
-${esc(decision.question)}
-</div>
-
-<div class="opts">
-
-${
-decision.oo
-.map(
-option=>{
-
-const percent=
-decision.total
-?
-Math.round(
-option.n/
-decision.total*
-100
-)
-:
-0;
-
-
-return `
-<button
-type="button"
-class="opt"
-data-decision="${esc(decision.id)}"
-data-option="${esc(option.id)}"
->
-
-${esc(option.text)}
-
-<span class="pct">
-${percent}%
-</span>
-
-<span
-class="bar"
-style="width:${percent}%"
-></span>
-
-</button>
-`;
-
-}
-)
-.join("")
-}
-
-</div>
-
-<div class="meta">
-👥 ${decision.total} oy
-</div>
-
-</div>
-`;
-
-}
-)
-.join("");
-
-
-document
-.querySelectorAll(
-".opt[data-decision]"
-)
-.forEach(
-button=>{
-
-button.addEventListener(
-"click",
-()=>{
-
-vote(
-button.dataset.decision,
-button.dataset.option
-);
-
-}
-);
-
-}
-);
-
-}
-
-
-/* =====================================================
-   OY
-===================================================== */
-
-async function vote(
-decisionId,
-optionId
-){
-
-if(!session){
-
-return toast(
-"Önce giriş yapmalısın."
-);
-
-}
-
-
-const decision=
-decisions.find(
-x=>x.id===decisionId
-);
-
-
-if(
-!decision
-){
-
-return;
-
-}
-
-
-if(
-decision.voted
-){
-
-return toast(
-"Bu karara zaten oy verdin."
-);
-
-}
-
-
-const result=
-await db
-.from("votes")
-.insert({
-
-decision_id:decisionId,
-
-option_id:optionId,
-
-user_id:session.user.id
 
 });
 
 
-if(result.error){
+$("feed").innerHTML=
+decisions.map(d=>{
 
-return toast(
-result.error.code==="23505"
-?
-"Bu karara zaten oy verdin."
-:
-"Oy verilemedi: "+
-result.error.message
+return `
+<div class="card">
+
+<div class="row">
+
+<div class="avatar" style="width:34px;height:34px">
+${esc(
+(d.profiles?.username||"U")
+.replace("@","")
+.charAt(0)
+.toUpperCase()
+)}
+</div>
+
+<div class="grow">
+<b>${esc(d.profiles?.username||"@user")}</b>
+<div class="small">${esc(d.category||"Günlük")}</div>
+</div>
+
+</div>
+
+<div class="q">
+${esc(d.question)}
+</div>
+
+<div class="opts">
+
+${d.oo.map(o=>{
+
+const pct=d.total
+?Math.round(o.n/d.total*100)
+:0;
+
+return `
+<button
+type="button"
+class="opt voteOption"
+data-did="${esc(d.id)}"
+data-oid="${esc(o.id)}"
+>
+${esc(o.text)}
+<span class="pct">${pct}%</span>
+<span class="bar" style="width:${pct}%"></span>
+</button>`;
+
+}).join("")}
+
+</div>
+
+<div class="meta">
+👥 ${d.total} oy
+${d.voted?" • Sen oy verdin":""}
+</div>
+
+</div>`;
+
+}).join("");
+
+
+document
+.querySelectorAll(".voteOption")
+.forEach(btn=>{
+
+btn.addEventListener("click",()=>{
+
+vote(
+btn.dataset.did,
+btn.dataset.oid
 );
+
+});
+
+});
 
 }
 
 
+/* ==============================
+   VOTE
+============================== */
+
+async function vote(did,oid){
+
+const d=
+decisions.find(x=>x.id===did);
+
+if(!d)return;
+
+if(d.voted){
+
+toast("Bu karara zaten oy verdin.");
+return;
+
+}
+
+const r=
+await db
+.from("votes")
+.insert({
+
+decision_id:did,
+option_id:oid,
+user_id:session.user.id
+
+});
+
+if(r.error){
+
+toast(
+r.error.code==="23505"
+?
+"Bu karara zaten oy verdin."
+:
+"Oy verilemedi: "+r.error.message
+);
+
+return;
+
+}
+
 const count=
-Number(profile?.votes_count || 0)+1;
+Number(profile?.votes_count||0)+1;
 
-
-const updateResult=
 await db
 .from("profiles")
 .update({
 votes_count:count
 })
-.eq(
-"id",
-session.user.id
-);
-
-
-if(!updateResult.error){
+.eq("id",session.user.id);
 
 profile.votes_count=count;
 
-}
-
-
 await loadFeed();
 
-
-toast(
-"Oyun kaydedildi 🎯"
-);
+toast("Oyun kaydedildi 🎯");
 
 }
 
 
-/* =====================================================
-   KARAR OLUŞTUR
-===================================================== */
+/* ==============================
+   CREATE
+============================== */
 
 async function createDecision(){
 
-if(!session){
+const q=$("q").value.trim();
+const a=$("o1").value.trim();
+const b=$("o2").value.trim();
+const c=$("o3").value.trim();
 
-return toast(
-"Önce giriş yapmalısın."
-);
+if(!q||!a||!b){
 
-}
-
-
-const question=
-$("q").value.trim();
-
-const option1=
-$("o1").value.trim();
-
-const option2=
-$("o2").value.trim();
-
-const option3=
-$("o3").value.trim();
-
-
-if(
-!question ||
-!option1 ||
-!option2
-){
-
-return toast(
-"Karar ve en az iki seçenek gerekli."
-);
+toast("Karar ve en az iki seçenek gerekli.");
+return;
 
 }
 
-
-const result=
+const r=
 await db
 .from("decisions")
 .insert({
 
 user_id:session.user.id,
-
-question:question,
-
+question:q,
 category:$("cat").value,
-
 status:"open"
 
 })
 .select()
 .single();
 
+if(r.error){
 
-if(result.error){
-
-return toast(
+toast(
 "Karar oluşturulamadı: "+
-result.error.message
+r.error.message
 );
 
-}
+return;
 
+}
 
 const options=[
-
 {
-decision_id:result.data.id,
-option_text:option1,
+decision_id:r.data.id,
+option_text:a,
 position:1
 },
-
 {
-decision_id:result.data.id,
-option_text:option2,
+decision_id:r.data.id,
+option_text:b,
 position:2
 }
-
 ];
 
-
-if(option3){
+if(c){
 
 options.push({
-
-decision_id:result.data.id,
-
-option_text:option3,
-
+decision_id:r.data.id,
+option_text:c,
 position:3
-
 });
 
 }
 
-
-const optionResult=
+const o=
 await db
 .from("options")
 .insert(options);
 
-
-if(optionResult.error){
+if(o.error){
 
 await db
 .from("decisions")
 .delete()
-.eq(
-"id",
-result.data.id
+.eq("id",r.data.id);
+
+toast(
+"Seçenekler kaydedilemedi: "+
+o.error.message
 );
 
-return toast(
-"Seçenekler kaydedilemedi: "+
-optionResult.error.message
-);
+return;
 
 }
 
-
 const count=
-Number(
-profile?.decisions_count || 0
-)+1;
+Number(profile?.decisions_count||0)+1;
 
-
-const profileResult=
+const p=
 await db
 .from("profiles")
 .update({
-
 decisions_count:count
-
 })
-.eq(
-"id",
-session.user.id
-)
+.eq("id",session.user.id)
 .select()
 .single();
 
+if(p.error){
 
-if(profileResult.error){
-
-return toast(
-profileResult.error.message
-);
+toast(p.error.message);
+return;
 
 }
 
-
-profile=profileResult.data;
-
+profile=p.data;
 
 updateProfile();
-
 
 $("q").value="";
 $("o1").value="";
 $("o2").value="";
 $("o3").value="";
 
-
 await loadFeed();
-
+await loadLeaderboard();
+await loadChampion();
 
 showScreen("home");
 
-
-toast(
-"Kararın Nexus'a gönderildi 🚀"
-);
+toast("Kararın Nexus'a gönderildi 🚀");
 
 }
 
 
-/* =====================================================
-   SONUÇLAR
-===================================================== */
+/* ==============================
+   LEADERBOARD
+============================== */
 
-async function loadResults(){
+async function loadLeaderboard(){
 
-if(!session){
-
-return;
-
-}
-
-
-const result=
+const r=
 await db
-.from("decisions")
+.from("profiles")
 .select(
-"id,question,category"
+"username,decisions_count,reliability_score"
 )
-.eq(
-"user_id",
-session.user.id
-)
-.eq(
-"status",
-"open"
-)
-.order(
-"created_at",
-{
-ascending:false
-}
-);
+.order("reliability_score",{ascending:false})
+.limit(50);
 
+if(r.error){
 
-if(result.error){
-
-$("resultsBox").innerHTML=
-'<div class="err">'+
-esc(result.error.message)+
-'</div>';
+$("rank").innerHTML=
+`<div class="err">${esc(r.error.message)}</div>`;
 
 return;
 
 }
 
-
-const rows=
-result.data || [];
-
+const rows=r.data||[];
 
 if(!rows.length){
 
-$("resultsBox").innerHTML=
-'<div class="card center">'+
-"🎯 Sonuç bekleyen kararın yok."+
-"</div>";
+$("rank").innerHTML=
+`<div class="card empty">Henüz yarışmacı yok.</div>`;
 
 return;
 
 }
 
+$("rank").innerHTML=
+rows.map((u,i)=>{
+
+const name=u.username||"@user";
+
+return `
+<div class="rank-row">
+
+<div class="rank-num">
+${i===0?"🥇":i===1?"🥈":i===2?"🥉":i+1}
+</div>
+
+<div class="avatar" style="width:36px;height:36px">
+${esc(
+name.replace("@","").charAt(0).toUpperCase()
+)}
+</div>
+
+<div class="grow">
+<b>${esc(name)}</b>
+<div class="small">
+${u.decisions_count||0} karar
+</div>
+</div>
+
+<div class="rank-score">
+%${u.reliability_score||0}
+</div>
+
+</div>`;
+
+}).join("");
+
+}
+
+
+/* ==============================
+   CHAMPION
+============================== */
+
+async function loadChampion(){
+
+const r=
+await db
+.from("profiles")
+.select(
+"username,decisions_count,reliability_score"
+)
+.order("reliability_score",{ascending:false})
+.limit(1);
+
+if(r.error||!r.data?.length){
+
+$("championName").textContent=
+"Henüz şampiyon yok";
+
+$("championScore").textContent=
+"İlk kararlar verildikçe yarış başlayacak.";
+
+return;
+
+}
+
+const champion=r.data[0];
+
+$("championName").textContent=
+champion.username||"@user";
+
+$("championScore").textContent=
+`${champion.reliability_score||0}% güvenilirlik • ${champion.decisions_count||0} karar`;
+
+}
+
+
+/* ==============================
+   RESULTS
+============================== */
+
+async function loadResults(){
+
+const r=
+await db
+.from("decisions")
+.select("id,question,category")
+.eq("user_id",session.user.id)
+.eq("status","open")
+.order("created_at",{ascending:false});
+
+if(r.error){
 
 $("resultsBox").innerHTML=
-rows
-.map(
-decision=>`
+`<div class="err">${esc(r.error.message)}</div>`;
+
+return;
+
+}
+
+const rows=r.data||[];
+
+if(!rows.length){
+
+$("resultsBox").innerHTML=`
+<div class="card empty">
+<div class="big">🎯</div>
+<b>Sonuç bekleyen kararın yok.</b>
+<p>Karar oluştur ve sonucu daha sonra bildir.</p>
+</div>`;
+
+return;
+
+}
+
+$("resultsBox").innerHTML=
+rows.map(d=>`
 
 <div class="card">
 
-<b>
-${esc(decision.question)}
-</b>
+<b>${esc(d.question)}</b>
 
-<div class="small">
-${esc(decision.category)}
+<div class="small" style="margin:6px 0 12px">
+${esc(d.category)}
 </div>
 
-<div
-class="opts"
-style="margin-top:10px"
->
+<div class="opts">
 
 <button
 type="button"
 class="opt resultBtn"
-data-id="${esc(decision.id)}"
+data-id="${esc(d.id)}"
 data-result="good"
 >
 🟢 İyi oldu
@@ -1799,7 +1361,7 @@ data-result="good"
 <button
 type="button"
 class="opt resultBtn"
-data-id="${esc(decision.id)}"
+data-id="${esc(d.id)}"
 data-result="same"
 >
 🟡 Aynı
@@ -1808,7 +1370,7 @@ data-result="same"
 <button
 type="button"
 class="opt resultBtn"
-data-id="${esc(decision.id)}"
+data-id="${esc(d.id)}"
 data-result="bad"
 >
 🔴 Kötü oldu
@@ -1818,385 +1380,269 @@ data-result="bad"
 
 </div>
 
-`
-)
-.join("");
+`).join("");
 
 
 document
 .querySelectorAll(".resultBtn")
-.forEach(
-button=>{
+.forEach(btn=>{
 
-button.addEventListener(
-"click",
-()=>{
+btn.addEventListener("click",()=>{
 
 saveResult(
-button.dataset.id,
-button.dataset.result
+btn.dataset.id,
+btn.dataset.result
 );
 
-}
-);
+});
 
-}
-);
+});
 
 }
 
 
-/* =====================================================
-   SONUÇ KAYDET
-===================================================== */
+/* ==============================
+   RESULT
+============================== */
 
-async function saveResult(
-id,
-value
-){
+async function saveResult(id,value){
 
-if(!session){
+const r=
+await db
+.from("decisions")
+.update({
+result:value,
+status:"completed"
+})
+.eq("id",id)
+.eq("user_id",session.user.id);
+
+if(r.error){
+
+toast(
+"Sonuç kaydedilemedi: "+
+r.error.message
+);
 
 return;
 
 }
 
-
-const result=
+const all=
 await db
 .from("decisions")
-.update({
+.select("result")
+.eq("user_id",session.user.id);
 
-result:value,
+if(all.error){
 
-status:"completed"
-
-})
-.eq(
-"id",
-id
-)
-.eq(
-"user_id",
-session.user.id
-);
-
-
-if(result.error){
-
-return toast(
-"Sonuç kaydedilemedi: "+
-result.error.message
-);
+toast(all.error.message);
+return;
 
 }
 
+const rows=all.data||[];
 
-const allResult=
-await db
-.from("decisions")
-.select(
-"result"
-)
-.eq(
-"user_id",
-session.user.id
-);
-
-
-if(allResult.error){
-
-return toast(
-allResult.error.message
-);
-
-}
-
-
-const rows=
-allResult.data || [];
-
-
-const completed=
-rows.filter(
-x=>x.result
-);
-
+const done=
+rows.filter(x=>x.result);
 
 const good=
-completed.filter(
-x=>x.result==="good"
-).length;
-
+done.filter(x=>x.result==="good").length;
 
 const score=
-completed.length
-?
-Math.round(
-good/
-completed.length*
-100
-)
-:
-0;
+done.length
+?Math.round(good/done.length*100)
+:0;
 
-
-const profileResult=
+const p=
 await db
 .from("profiles")
 .update({
 
 decisions_count:rows.length,
-
 correct_count:good,
-
 reliability_score:score
 
 })
-.eq(
-"id",
-session.user.id
-)
+.eq("id",session.user.id)
 .select()
 .single();
 
+if(p.error){
 
-if(profileResult.error){
-
-return toast(
-profileResult.error.message
-);
+toast(p.error.message);
+return;
 
 }
 
-
-profile=
-profileResult.data;
-
+profile=p.data;
 
 updateProfile();
 
-
 await loadResults();
-
 await loadLeaderboard();
+await loadChampion();
 
-
-toast(
-"Sonucun kaydedildi 🧠"
-);
+toast("Sonucun kaydedildi 🧠");
 
 }
 
 
-/* =====================================================
-   LİDERLİK
-===================================================== */
+/* ==============================
+   NAV
+============================== */
 
-async function loadLeaderboard(){
-
-if(!session){
-
-return;
-
-}
-
-
-const result=
-await db
-.from("profiles")
-.select(
-"username,decisions_count,reliability_score"
-)
-.order(
-"reliability_score",
-{
-ascending:false
-}
-)
-.limit(50);
-
-
-if(result.error){
-
-$("rank").innerHTML=
-'<div class="err">'+
-esc(result.error.message)+
-'</div>';
-
-return;
-
-}
-
-
-const rows=
-result.data || [];
-
-
-if(!rows.length){
-
-$("rank").innerHTML=
-'<div class="card center">'+
-"Henüz lider yok."+
-"</div>";
-
-return;
-
-}
-
-
-$("rank").innerHTML=
-rows
-.map(
-(user,index)=>`
-
-<div class="box row">
-
-<b>
-${
-index<3
-?
-["🥇","🥈","🥉"][index]
-:
-index+1
-}
-</b>
-
-<div class="avatar">
-
-${esc(
-(user.username || "U")
-.replace("@","")
-.charAt(0)
-.toUpperCase() ||
-"U"
-)}
-
-</div>
-
-<div class="grow">
-
-<b>
-${esc(
-user.username ||
-"@user"
-)}
-</b>
-
-<div class="small">
-${user.decisions_count || 0} karar
-</div>
-
-</div>
-
-<b style="color:#9c8fff">
-%${user.reliability_score || 0}
-</b>
-
-</div>
-
-`
-)
-.join("");
-
-}
-
-
-/* =====================================================
-   SAYFA DEĞİŞTİR
-   screen() YERİNE showScreen()
-===================================================== */
-
-function showScreen(
-id,
-button
-){
+function showScreen(id,button){
 
 document
 .querySelectorAll(".screen")
-.forEach(
-element=>
-element.classList.remove("active")
-);
-
+.forEach(x=>x.classList.remove("active"));
 
 const target=$(id);
 
-
-if(!target){
-
-return;
-
-}
-
+if(!target)return;
 
 target.classList.add("active");
 
-
 document
 .querySelectorAll(".nav button")
-.forEach(
-element=>
-element.classList.remove("active")
-);
+.forEach(x=>x.classList.remove("active"));
 
-
-if(
-button &&
-!button.classList.contains("plus")
-){
-
+if(button && !button.classList.contains("plus")){
 button.classList.add("active");
+}
+
+if(id==="leaderboard")loadLeaderboard();
+if(id==="results")loadResults();
+if(id==="home"){
+loadFeed();
+loadChampion();
+}
+
+window.scrollTo(0,0);
 
 }
 
 
-if(id==="results"){
+/* ==============================
+   LANGUAGE
+============================== */
 
-loadResults();
+const languages=
+document.querySelectorAll("[data-lang]");
+
+languages.forEach(btn=>{
+
+btn.addEventListener("click",()=>{
+
+languages.forEach(x=>x.classList.remove("active"));
+
+btn.classList.add("active");
+
+localStorage.setItem(
+"nexus_language",
+btn.dataset.lang
+);
+
+toast(
+btn.dataset.lang==="tr"
+?"Türkçe seçildi"
+:btn.dataset.lang==="de"
+?"Deutsch ausgewählt"
+:"English selected"
+);
+
+});
+
+});
+
+
+const savedLanguage=
+localStorage.getItem("nexus_language");
+
+if(savedLanguage){
+
+languages.forEach(btn=>{
+
+btn.classList.toggle(
+"active",
+btn.dataset.lang===savedLanguage
+);
+
+});
 
 }
 
 
-if(id==="leaderboard"){
+/* ==============================
+   EVENTS
+============================== */
 
-loadLeaderboard();
+$("loginBtn").addEventListener("click",login);
+$("registerBtn").addEventListener("click",register);
 
-}
+$("registerLink").addEventListener(
+"click",
+registerView
+);
+
+$("loginLink").addEventListener(
+"click",
+loginView
+);
+
+$("createBtn").addEventListener(
+"click",
+createDecision
+);
+
+$("logoutBtn").addEventListener(
+"click",
+logout
+);
+
+$("quickCreate").addEventListener(
+"click",
+()=>showScreen("create")
+);
+
+$("quickRank").addEventListener(
+"click",
+()=>showScreen("leaderboard")
+);
+
+document
+.querySelectorAll(".nav button[data-screen]")
+.forEach(btn=>{
+
+btn.addEventListener(
+"click",
+()=>showScreen(
+btn.dataset.screen,
+btn
+)
+);
+
+});
 
 
-window.scrollTo(
-{
-top:0,
-behavior:"smooth"
+$("lp").addEventListener(
+"keydown",
+e=>{
+if(e.key==="Enter")login();
 }
 );
 
-}
 
-
-/* =====================================================
-   ÇIKIŞ
-===================================================== */
+/* ==============================
+   LOGOUT
+============================== */
 
 async function logout(){
 
-try{
-
 await db.auth.signOut();
 
-}catch(error){
-
-console.error(
-"LOGOUT ERROR:",
-error
-);
-
-}
-
-
 session=null;
-
 profile=null;
 
 location.reload();
@@ -2204,229 +1650,59 @@ location.reload();
 }
 
 
-/* =====================================================
-   BUTONLAR
-===================================================== */
+/* ==============================
+   INIT
+============================== */
 
-$("loginBtn")
-.addEventListener(
-"click",
-login
-);
-
-
-$("registerBtn")
-.addEventListener(
-"click",
-register
-);
-
-
-$("registerLink")
-.addEventListener(
-"click",
-registerView
-);
-
-
-$("loginLink")
-.addEventListener(
-"click",
-loginView
-);
-
-
-$("createBtn")
-.addEventListener(
-"click",
-createDecision
-);
-
-
-$("logoutBtn")
-.addEventListener(
-"click",
-logout
-);
-
-
-/* =====================================================
-   NAV
-===================================================== */
-
-document
-.querySelectorAll(
-".nav button[data-screen]"
-)
-.forEach(
-button=>{
-
-button.addEventListener(
-"click",
-()=>{
-
-showScreen(
-button.dataset.screen,
-button
-);
-
-}
-);
-
-}
-);
-
-
-/* =====================================================
-   ENTER TUŞU İLE GİRİŞ
-===================================================== */
-
-$("le")
-.addEventListener(
-"keydown",
-event=>{
-
-if(event.key==="Enter"){
-
-login();
-
-}
-
-}
-);
-
-
-$("lp")
-.addEventListener(
-"keydown",
-event=>{
-
-if(event.key==="Enter"){
-
-login();
-
-}
-
-}
-);
-
-
-/* =====================================================
-   SUPABASE SESSION
-===================================================== */
-
-(async function init(){
+(async()=>{
 
 try{
 
-const result=
+const r=
 await db.auth.getSession();
 
+if(r.error)throw r.error;
 
-if(result.error){
+if(r.data?.session){
 
-throw result.error;
-
-}
-
-
-if(result.data?.session){
-
-session=
-result.data.session;
-
-
-try{
+session=r.data.session;
 
 await ensureProfile(
 session.user
 );
 
-
 await start();
 
+}
 
-}catch(error){
+}catch(e){
 
-console.error(
-"START ERROR:",
-error
-);
+console.error(e);
 
 authmsg(
-error.message ||
-"Profil yüklenemedi."
-);
-
-}
-
-}
-
-}catch(error){
-
-console.error(
-"SESSION ERROR:",
-error
-);
-
-authmsg(
-"Supabase bağlantısı kurulamadı: "+
-(error.message || error)
+"Başlatma hatası: "+
+(e.message||e)
 );
 
 }
 
 
-/*
-  Auth değişikliklerini dinle.
-  Oturum değiştiğinde sadece session güncellenir.
-*/
 db.auth.onAuthStateChange(
 (event,newSession)=>{
 
+session=newSession;
+
 console.log(
-"NEXUS AUTH EVENT:",
+"NEXUS AUTH:",
 event
 );
-
-session=newSession;
 
 }
 );
 
 })();
 
-
-/* =====================================================
-   GLOBAL HATA YAKALAMA
-===================================================== */
-
-window.addEventListener(
-"error",
-event=>{
-
-console.error(
-"NEXUS GLOBAL ERROR:",
-event.error || event.message
-);
-
-}
-);
-
-
-window.addEventListener(
-"unhandledrejection",
-event=>{
-
-console.error(
-"NEXUS PROMISE ERROR:",
-event.reason
-);
-
-}
-);
-
 </script>
 
 </body>
-</html>
+   </html>
