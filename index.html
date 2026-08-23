@@ -2,779 +2,347 @@
 <html lang="tr">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Nexus — Kim daha iyi karar veriyor?</title>
-
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Nexus</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
 *{box-sizing:border-box}
-
-html{background:#05060a}
-
-body{
-margin:0;
-background:
-radial-gradient(circle at 20% 0%,rgba(124,92,255,.16),transparent 30%),
-radial-gradient(circle at 100% 20%,rgba(0,145,255,.10),transparent 25%),
-#05060a;
-color:#fff;
-font-family:Inter,Arial,sans-serif;
--webkit-font-smoothing:antialiased
-}
-
+html,body{margin:0;min-height:100%;background:#05060a;color:#fff}
+body{font-family:Inter,Arial,sans-serif;-webkit-font-smoothing:antialiased}
 button,input,textarea,select{font:inherit}
 button{cursor:pointer}
-
-.app{
-width:100%;
-max-width:540px;
-margin:auto;
-min-height:100vh;
-padding:14px 14px 105px
-}
-
-/* AUTH */
+.app{max-width:540px;margin:auto;min-height:100vh;padding:14px 14px 100px}
+.hidden{display:none!important}
 
 .auth{
 min-height:100vh;
 display:flex;
 align-items:center;
-justify-content:center
-}
-
-.authbox{
-width:100%;
+justify-content:center;
 padding:15px
 }
-
+.auth-inner{width:100%}
 .logo{
-width:88px;
-height:88px;
-margin:10px auto 18px;
-border-radius:28px;
-display:grid;
-place-items:center;
-font-size:43px;
-font-weight:1000;
-background:
-linear-gradient(145deg,#765cff,#a855f7);
-box-shadow:
-0 0 35px rgba(124,92,255,.35),
-inset 0 1px rgba(255,255,255,.25)
+width:88px;height:88px;border-radius:27px;margin:0 auto 18px;
+display:grid;place-items:center;
+font-size:44px;font-weight:1000;
+background:linear-gradient(135deg,#715cff,#b04df4);
+box-shadow:0 0 45px rgba(116,92,255,.35)
 }
-
-.brandtitle{
-font-size:46px;
-font-weight:1000;
-letter-spacing:-2px;
-text-align:center
+.brand{
+font-size:46px;font-weight:1000;text-align:center;
+letter-spacing:-2px
 }
-
 .tagline{
-text-align:center;
-color:#858da2;
-font-size:13px;
-line-height:1.7;
-margin:8px 0 28px
+text-align:center;color:#7e879a;font-size:12px;
+line-height:1.7;margin:8px 0 28px
 }
-
-.authcard{
-background:rgba(17,19,28,.82);
-border:1px solid rgba(255,255,255,.08);
-border-radius:25px;
-padding:20px;
-box-shadow:0 20px 70px rgba(0,0,0,.35);
-backdrop-filter:blur(18px)
-}
-
-.input,
-textarea,
-select{
-width:100%;
-padding:15px;
-margin-bottom:10px;
-background:#0c0f17;
+.auth-card,.card{
+background:rgba(15,18,27,.92);
 border:1px solid #252a38;
+border-radius:23px;
+padding:18px;
+box-shadow:0 15px 45px rgba(0,0,0,.25)
+}
+.input,textarea,select{
+width:100%;
+padding:14px;
+margin-bottom:10px;
+border:1px solid #292e3b;
 border-radius:14px;
+background:#0b0e15;
 color:#fff;
 outline:none
 }
-
-.input:focus,
-textarea:focus,
-select:focus{
-border-color:#765cff;
-box-shadow:0 0 0 3px rgba(118,92,255,.10)
+.input:focus,textarea:focus,select:focus{
+border-color:#735cff;
+box-shadow:0 0 0 3px rgba(115,92,255,.1)
 }
-
-select option{
-background:#10131c
-}
-
-textarea{
-height:120px;
-resize:none
-}
-
+textarea{height:115px;resize:none}
 .btn{
-width:100%;
-padding:15px;
-border:0;
-border-radius:15px;
-background:linear-gradient(135deg,#715cff,#a855f7);
-color:white;
-font-weight:900;
-box-shadow:0 10px 25px rgba(113,92,255,.20);
-transition:.2s
+width:100%;padding:15px;border:0;border-radius:15px;
+background:linear-gradient(135deg,#715cff,#a94df4);
+color:#fff;font-weight:900
 }
-
-.btn:active{
-transform:scale(.98)
-}
-
 .btn.secondary{
-background:#151925;
-border:1px solid #292e3c;
-box-shadow:none
+background:#171a23;border:1px solid #292e3b
 }
-
 .link{
-color:#a797ff;
-font-size:11px;
-margin-top:16px;
-cursor:pointer
+margin-top:14px;color:#a798ff;font-size:11px;text-align:center
 }
-
 .err{
-margin-top:12px;
-padding:12px;
-border-radius:13px;
-background:#2a141a;
-border:1px solid #67313d;
-color:#ffadb8;
-font-size:11px;
-word-break:break-word
+margin-top:10px;padding:12px;border-radius:12px;
+background:#29151b;border:1px solid #67313d;
+color:#ffadb8;font-size:11px;word-break:break-word
 }
+.ok{margin-top:10px;color:#38db89;font-size:11px}
 
-.ok{
-margin-top:12px;
-color:#35dc86;
-font-size:11px
+.main{display:none}
+.screen{display:none}
+.screen.active{display:block}
+
+.top{
+display:flex;justify-content:space-between;
+align-items:center;padding:4px 2px 15px
 }
-
-/* MAIN */
-
-.main{
-display:none
-}
-
-.screen{
-display:none
-}
-
-.screen.active{
-display:block
-}
-
-/* TOP */
-
-.topbar{
-display:flex;
-align-items:center;
-justify-content:space-between;
-padding:5px 2px 15px
-}
-
-.nexusbrand{
-font-size:23px;
-font-weight:1000;
-letter-spacing:-1px
-}
-
-.nexusbrand span{
-color:#967fff
-}
-
-.subtitle{
-font-size:9px;
-color:#6f788d;
-margin-top:3px
-}
-
-.avatar{
-width:42px;
-height:42px;
-border-radius:50%;
-display:grid;
-place-items:center;
-font-weight:1000;
-background:linear-gradient(145deg,#705cff,#a855f7);
-box-shadow:0 5px 20px rgba(118,92,255,.2)
-}
-
-/* HERO */
-
-.hero{
-position:relative;
-overflow:hidden;
-padding:22px;
-border-radius:25px;
-margin-bottom:13px;
-background:
-radial-gradient(circle at 90% 10%,rgba(157,118,255,.30),transparent 35%),
-linear-gradient(145deg,#151326,#0d0f18);
-border:1px solid rgba(153,126,255,.22);
-box-shadow:
-0 15px 50px rgba(0,0,0,.35),
-inset 0 1px rgba(255,255,255,.06)
-}
-
-.hero:after{
-content:"";
-position:absolute;
-width:130px;
-height:130px;
-right:-55px;
-bottom:-65px;
-border-radius:50%;
-background:rgba(121,92,255,.14);
-filter:blur(20px)
-}
-
-.hero-label{
-font-size:9px;
-font-weight:900;
-letter-spacing:1.5px;
-color:#a797ff
-}
-
-.hero-title{
-font-size:25px;
-font-weight:1000;
-margin:8px 0 5px;
-letter-spacing:-.8px
-}
-
-.hero-text{
-font-size:11px;
-color:#7f889b
-}
-
-.champion{
-display:flex;
-align-items:center;
-gap:12px;
-margin-top:18px
-}
-
-.champion-avatar{
-width:54px;
-height:54px;
-border-radius:18px;
-display:grid;
-place-items:center;
-font-weight:1000;
-font-size:19px;
-background:linear-gradient(145deg,#7b61ff,#bd55f7);
-box-shadow:0 0 25px rgba(124,92,255,.25)
-}
-
-.champion-name{
-font-weight:900;
-font-size:15px
-}
-
-.champion-score{
-font-size:10px;
-color:#7f899e;
-margin-top:4px
-}
-
-/* QUICK ACTIONS */
-
-.quick{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:9px;
-margin-bottom:17px
-}
-
-.quickbtn{
-padding:16px;
-border-radius:18px;
-text-align:left;
-background:#10131b;
-border:1px solid #242936;
-color:#fff;
-transition:.2s
-}
-
-.quickbtn:active{
-transform:scale(.97)
-}
-
-.quickicon{
-font-size:20px;
-margin-bottom:10px
-}
-
-.quicktitle{
-font-size:12px;
-font-weight:900
-}
-
-.quickdesc{
-font-size:9px;
-color:#687287;
-margin-top:4px
-}
-
-/* SECTION */
-
-.section{
-display:flex;
-align-items:end;
-justify-content:space-between;
-margin:20px 3px 10px
-}
-
-.section h2{
-font-size:17px;
-margin:0;
-letter-spacing:-.4px
-}
-
-.section span{
-font-size:8px;
-color:#667084;
+.logo-small{font-size:23px;font-weight:1000}
+.logo-small span{color:#987fff}
+.mini-text{
+font-size:8px;color:#697387;margin-top:3px;
 letter-spacing:1px
 }
+.avatar{
+width:42px;height:42px;border-radius:14px;
+display:grid;place-items:center;font-weight:1000;
+background:linear-gradient(135deg,#715cff,#a94df4)
+}
 
-/* DECISION CARD */
+.hero{
+position:relative;overflow:hidden;
+padding:21px;border-radius:24px;
+margin-bottom:12px;
+background:
+radial-gradient(circle at 90% 5%,rgba(161,112,255,.25),transparent 35%),
+linear-gradient(145deg,#171326,#0d1018);
+border:1px solid rgba(139,111,255,.25)
+}
+.hero-kicker{
+font-size:8px;font-weight:900;
+letter-spacing:1.5px;color:#a797ff
+}
+.hero-title{
+font-size:25px;font-weight:1000;
+margin-top:7px;letter-spacing:-.8px
+}
+.hero-sub{
+font-size:10px;color:#7e879b;margin-top:5px
+}
+.champion{
+display:flex;align-items:center;gap:11px;margin-top:17px
+}
+.champ-avatar{
+width:52px;height:52px;border-radius:17px;
+display:grid;place-items:center;
+font-weight:1000;font-size:18px;
+background:linear-gradient(135deg,#8066ff,#c54df1)
+}
+.champ-name{font-size:14px;font-weight:900}
+.champ-score{font-size:9px;color:#788296;margin-top:4px}
+
+.quick{
+display:grid;grid-template-columns:1fr 1fr;
+gap:8px;margin-bottom:18px
+}
+.quick button{
+border:1px solid #272c39;
+border-radius:18px;
+background:#10131b;color:#fff;
+padding:15px;text-align:left
+}
+.qicon{font-size:20px;margin-bottom:8px}
+.qtitle{font-size:11px;font-weight:900}
+.qsub{font-size:8px;color:#687286;margin-top:4px}
+
+.section{
+display:flex;justify-content:space-between;
+align-items:end;margin:18px 3px 10px
+}
+.section h2{margin:0;font-size:17px}
+.section span{
+font-size:7px;color:#657085;letter-spacing:1px
+}
 
 .decision{
-position:relative;
-overflow:hidden;
-background:
-linear-gradient(145deg,rgba(20,23,33,.98),rgba(12,14,21,.98));
+background:linear-gradient(145deg,#11151e,#0c0f16);
 border:1px solid #252a38;
-border-radius:22px;
-padding:16px;
-margin-bottom:12px;
-box-shadow:0 10px 35px rgba(0,0,0,.20)
+border-radius:21px;
+padding:15px;margin-bottom:11px
 }
-
-.decision-head{
-display:flex;
-align-items:center;
-gap:10px
+.user{
+display:flex;align-items:center;gap:9px
 }
-
 .user-avatar{
-width:35px;
-height:35px;
-border-radius:12px;
-display:grid;
-place-items:center;
-font-size:11px;
-font-weight:900;
-background:#171a25;
-border:1px solid #292e3c
+width:35px;height:35px;border-radius:11px;
+display:grid;place-items:center;
+font-size:10px;font-weight:900;
+background:#191d28;border:1px solid #2a2f3c
 }
-
-.user-name{
-font-size:11px;
-font-weight:900
-}
-
-.time{
-font-size:8px;
-color:#596276;
-margin-top:3px
-}
-
+.username{font-size:10px;font-weight:900}
+.time{font-size:8px;color:#596477;margin-top:3px}
 .category{
-margin-left:auto;
-font-size:8px;
-color:#8d97aa;
-background:#171a23;
-border:1px solid #252a36;
-padding:6px 8px;
-border-radius:8px
+margin-left:auto;padding:6px 8px;border-radius:8px;
+font-size:7px;color:#8992a5;
+background:#181b24;border:1px solid #272c38
 }
-
 .question{
-font-size:18px;
-font-weight:900;
-line-height:1.35;
-letter-spacing:-.4px;
-margin:16px 0
+font-size:17px;font-weight:900;
+line-height:1.4;letter-spacing:-.3px;
+margin:15px 0
 }
-
 .option{
-position:relative;
-overflow:hidden;
-width:100%;
-padding:14px;
+position:relative;overflow:hidden;
+width:100%;padding:13px;
 margin-bottom:8px;
-border-radius:14px;
-background:#171a23;
-border:1px solid #292e3a;
-color:white;
-text-align:left;
-font-weight:800;
-transition:.2s
+text-align:left;color:#fff;
+background:#171b24;
+border:1px solid #292e3b;
+border-radius:13px
 }
-
-.option:hover{
-border-color:#6654d8
+.option:active{transform:scale(.985)}
+.option-text{position:relative;z-index:2;font-size:11px;font-weight:800}
+.option-info{
+position:relative;z-index:2;
+font-size:8px;color:#788296;margin-top:5px
 }
-
-.option:active{
-transform:scale(.985)
-}
-
-.option-text{
-position:relative;
-z-index:2
-}
-
-.option-total{
-position:relative;
-z-index:2;
-font-size:10px;
-color:#7d879a;
-margin-top:5px
-}
-
 .option-fill{
-position:absolute;
-left:0;
-bottom:0;
-height:3px;
-background:#7962ff;
-z-index:1
+position:absolute;bottom:0;left:0;height:3px;
+background:#7760ff
 }
-
 .genderbar{
-display:flex;
-height:5px;
-overflow:hidden;
-border-radius:10px;
-margin-top:10px;
-background:#202431
+display:flex;height:4px;border-radius:10px;
+overflow:hidden;background:#252a34;margin-top:9px
 }
-
-.male{
-background:#299cff
+.male{background:#299cff}
+.female{background:#ff4fa3}
+.legend{
+display:flex;gap:12px;font-size:7px;
+color:#687287;margin-top:6px
 }
-
-.female{
-background:#ff4fa3
+.dot{
+display:inline-block;width:6px;height:6px;
+border-radius:50%;margin-right:3px
 }
-
-.genderlegend{
-display:flex;
-gap:12px;
-font-size:8px;
-color:#6d778b;
-margin-top:7px
+.blue{background:#299cff}
+.pink{background:#ff4fa3}
+.foot{
+display:flex;justify-content:space-between;
+font-size:8px;color:#626d80;margin-top:10px
 }
-
-.blue-dot,.pink-dot{
-width:6px;
-height:6px;
-border-radius:50%;
-display:inline-block;
-margin-right:3px
-}
-
-.blue-dot{background:#299cff}
-.pink-dot{background:#ff4fa3}
-
-.decision-foot{
-display:flex;
-justify-content:space-between;
-font-size:8px;
-color:#626c80;
-margin-top:11px
-}
-
-/* EMPTY */
 
 .empty{
-padding:28px 18px;
-text-align:center;
-background:#10131b;
-border:1px dashed #303545;
-border-radius:20px;
-color:#7d879a
+text-align:center;padding:28px 15px;
+border:1px dashed #303646;
+border-radius:20px;background:#0e1118
 }
-
-.empty-icon{
-font-size:35px;
-margin-bottom:10px
-}
-
-.empty-title{
-font-size:14px;
-font-weight:900;
-color:#fff
-}
-
-.empty p{
-font-size:10px;
-line-height:1.6
-}
-
-/* LEADERBOARD */
+.empty-icon{font-size:34px}
+.empty-title{font-size:13px;font-weight:900;margin-top:8px}
+.empty-text{font-size:9px;color:#737d91;line-height:1.6;margin:7px 0 15px}
 
 .podium{
-display:grid;
-grid-template-columns:1fr 1.15fr 1fr;
-align-items:end;
-gap:7px;
-margin-bottom:15px
+display:grid;grid-template-columns:1fr 1.15fr 1fr;
+gap:7px;align-items:end;margin-bottom:12px
 }
-
-.podium-card{
-text-align:center;
-padding:13px 5px;
-border-radius:18px;
-background:#11141d;
+.pod{
+padding:13px 5px;text-align:center;
+border-radius:17px;background:#10131b;
 border:1px solid #272c39
 }
-
-.podium-card.first{
-padding-top:20px;
-background:
-radial-gradient(circle at 50% 0,rgba(255,196,66,.12),transparent 50%),
-#14151d;
-border-color:#5c4b28
+.pod.first{
+padding-top:19px;
+border-color:#5a4926;
+background:radial-gradient(circle at 50% 0,rgba(255,193,55,.13),transparent 55%),#14151c
 }
-
-.podium-avatar{
-width:42px;
-height:42px;
-margin:auto;
-border-radius:14px;
-display:grid;
-place-items:center;
-background:linear-gradient(145deg,#705cff,#a855f7);
-font-weight:900
-}
-
-.first .podium-avatar{
-width:50px;
-height:50px
-}
-
-.podium-medal{
-font-size:18px;
-margin-bottom:6px
-}
-
-.podium-name{
-font-size:9px;
+.pod-medal{font-size:17px}
+.pod-avatar{
+width:42px;height:42px;margin:6px auto;
+border-radius:13px;
+display:grid;place-items:center;
 font-weight:900;
-margin-top:7px;
-white-space:nowrap;
-overflow:hidden;
-text-overflow:ellipsis
+background:linear-gradient(135deg,#715cff,#ad4ef2)
 }
-
-.podium-score{
-font-size:9px;
-color:#9d91ff;
-margin-top:4px
+.first .pod-avatar{width:49px;height:49px}
+.pod-name{
+font-size:8px;font-weight:900;
+white-space:nowrap;overflow:hidden;text-overflow:ellipsis
 }
+.pod-score{font-size:9px;color:#a193ff;margin-top:4px}
 
-.ranklist{
-background:#10131b;
-border:1px solid #252a36;
-border-radius:20px;
-padding:5px 14px
+.ranks{
+background:#10131b;border:1px solid #252a37;
+border-radius:19px;padding:0 13px
 }
-
 .rank{
-display:flex;
-align-items:center;
-gap:10px;
-padding:13px 0;
-border-bottom:1px solid #20242f
+display:flex;align-items:center;gap:9px;
+padding:12px 0;border-bottom:1px solid #202530
 }
-
-.rank:last-child{
-border-bottom:0
-}
-
-.ranknum{
-width:22px;
-font-size:10px;
-font-weight:900;
-text-align:center;
-color:#707a8d
-}
-
-.rankscore{
-margin-left:auto;
-font-weight:900;
-color:#9c8cff
-}
-
-/* RESULTS */
+.rank:last-child{border-bottom:0}
+.rank-no{width:23px;text-align:center;color:#687286;font-size:9px;font-weight:900}
+.rank-score{margin-left:auto;color:#a194ff;font-weight:900;font-size:10px}
 
 .result-card{
-background:#11141c;
-border:1px solid #252a37;
-border-radius:20px;
-padding:16px;
+padding:15px;border-radius:19px;
+background:#10131b;border:1px solid #252a37;
 margin-bottom:10px
 }
+.result-title{font-size:12px;font-weight:900;line-height:1.45}
+.small{font-size:8px;color:#687286}
 
-.result-title{
-font-weight:900;
-font-size:13px;
-line-height:1.4
-}
-
-/* PROFILE */
-
-.profile-head{
-text-align:center;
-padding:10px 0 18px
-}
-
+.profile-head{text-align:center;padding:10px 0 18px}
 .big-avatar{
-width:82px;
-height:82px;
-border-radius:27px;
-margin:auto;
-display:grid;
-place-items:center;
-font-size:27px;
-font-weight:1000;
-background:linear-gradient(145deg,#725cff,#a855f7);
-box-shadow:0 0 35px rgba(118,92,255,.22)
+width:80px;height:80px;border-radius:25px;
+margin:auto;display:grid;place-items:center;
+font-size:26px;font-weight:1000;
+background:linear-gradient(135deg,#715cff,#a94df4);
+box-shadow:0 0 35px rgba(113,92,255,.22)
 }
-
-.profile-name{
-font-size:21px;
-font-weight:1000;
-margin:12px 0 4px
-}
-
+.profile-name{font-size:20px;font-weight:1000;margin-top:11px}
 .stats{
-display:grid;
-grid-template-columns:repeat(3,1fr);
-gap:7px
+display:grid;grid-template-columns:repeat(3,1fr);gap:7px
+}
+.stat{
+text-align:center;padding:13px 3px;
+background:#10131b;border:1px solid #252a37;
+border-radius:16px
+}
+.stat b{display:block;font-size:18px}
+.stat span{font-size:7px;color:#697387}
+
+.langs{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.lang{
+padding:10px 4px;border-radius:10px;
+border:1px solid #292e3b;
+background:#11141b;color:#788296;font-size:9px
+}
+.lang.active{
+background:#292340;border-color:#6654ac;color:#fff
 }
 
-.stat{
-background:#11141c;
-border:1px solid #252a37;
-border-radius:17px;
-padding:14px 5px;
+.nav{
+position:fixed;z-index:20;bottom:0;left:50%;
+transform:translateX(-50%);
+width:100%;max-width:540px;height:75px;
+display:flex;justify-content:space-around;align-items:center;
+background:rgba(7,9,14,.95);
+border-top:1px solid #252a37;
+backdrop-filter:blur(18px)
+}
+.nav button{
+border:0;background:none;color:#697387;
+font-size:8px;min-width:50px
+}
+.nav button.active{color:#a798ff}
+.nav .plus{
+width:49px;height:49px;min-width:49px;
+border-radius:16px;
+background:linear-gradient(135deg,#715cff,#aa4df3);
+color:#fff;font-size:24px;
+box-shadow:0 8px 25px rgba(113,92,255,.3)
+}
+
+.toast{
+position:fixed;z-index:100;
+bottom:88px;left:50%;
+transform:translateX(-50%);
+background:#262b37;border:1px solid #3b4150;
+padding:11px 15px;border-radius:12px;
+font-size:9px;display:none;max-width:90%;
 text-align:center
 }
 
-.stat b{
-display:block;
-font-size:18px
-}
-
-.stat span{
-font-size:7px;
-color:#687287;
-letter-spacing:.4px
-}
-
-.language{
-display:flex;
-gap:6px
-}
-
-.language button{
-flex:1;
-padding:10px;
-border-radius:10px;
-background:#11141c;
-border:1px solid #282d39;
-color:#7a8498;
-font-size:10px
-}
-
-.language button.active{
-background:#29233f;
-color:#fff;
-border-color:#5b4ca5
-}
-
-/* NAV */
-
-.nav{
-position:fixed;
-z-index:50;
-bottom:0;
-left:50%;
-transform:translateX(-50%);
-width:100%;
-max-width:540px;
-height:76px;
-background:rgba(7,9,14,.94);
-border-top:1px solid #242936;
-backdrop-filter:blur(18px);
-display:flex;
-align-items:center;
-justify-content:space-around
-}
-
-.nav button{
-border:0;
-background:none;
-color:#687286;
-font-size:8px;
-min-width:52px
-}
-
-.nav button.active{
-color:#a798ff
-}
-
-.nav .plus{
-width:50px;
-height:50px;
-min-width:50px;
-border-radius:17px;
-background:linear-gradient(145deg,#715cff,#a855f7);
-color:#fff;
-font-size:25px;
-box-shadow:0 8px 25px rgba(113,92,255,.30)
-}
-
-/* TOAST */
-
-.toast{
-position:fixed;
-z-index:100;
-bottom:90px;
-left:50%;
-transform:translateX(-50%);
-background:#242936;
-border:1px solid #383e4d;
-padding:12px 16px;
-border-radius:13px;
-font-size:10px;
-display:none;
-max-width:90%;
-text-align:center;
-box-shadow:0 10px 30px rgba(0,0,0,.35)
-}
-
-@media(max-width:380px){
-.question{font-size:16px}
+@media(max-width:370px){
 .quick{grid-template-columns:1fr}
+.question{font-size:15px}
 }
 </style>
 </head>
@@ -784,14 +352,11 @@ box-shadow:0 10px 30px rgba(0,0,0,.35)
 <div class="app">
 
 <!-- AUTH -->
-
 <section id="auth" class="auth">
-
-<div class="authbox">
+<div class="auth-inner">
 
 <div class="logo">N</div>
-
-<div class="brandtitle">Nexus</div>
+<div class="brand">NEXUS</div>
 
 <div class="tagline">
 Kararını topluluğa bırak.<br>
@@ -799,21 +364,15 @@ Sonucunu geri getir.<br>
 <b>Kim gerçekten daha iyi karar veriyor?</b>
 </div>
 
-<div class="authcard">
+<div class="auth-card">
 
 <div id="loginForm">
 
-<input id="le"
-class="input"
-type="email"
-placeholder="E-posta"
-autocomplete="email">
+<input id="le" class="input" type="email"
+placeholder="E-posta">
 
-<input id="lp"
-class="input"
-type="password"
-placeholder="Şifre"
-autocomplete="current-password">
+<input id="lp" class="input" type="password"
+placeholder="Şifre">
 
 <button id="loginBtn" class="btn">
 Nexus'a Gir →
@@ -825,23 +384,18 @@ Hesabın yok mu? Kayıt ol
 
 </div>
 
-
 <div id="registerForm" style="display:none">
 
-<input id="ru"
-class="input"
+<input id="ru" class="input"
 maxlength="20"
 placeholder="Kullanıcı adı">
 
-<input id="re"
-class="input"
+<input id="re" class="input"
 type="email"
 placeholder="E-posta">
 
-<input id="rp"
-class="input"
+<input id="rp" class="input"
 type="password"
-minlength="6"
 placeholder="Şifre (en az 6 karakter)">
 
 <select id="rg" class="input">
@@ -863,111 +417,83 @@ Zaten hesabın var mı? Giriş yap
 <div id="authMsg"></div>
 
 </div>
-
 </div>
-
 </section>
 
 
 <!-- MAIN -->
-
 <main id="main" class="main">
 
 <!-- HOME -->
-
 <section id="home" class="screen active">
 
-<div class="topbar">
-
+<div class="top">
 <div>
-<div class="nexusbrand">N<span>EXUS</span></div>
-<div class="subtitle">KİM DAHA İYİ KARAR VERİYOR?</div>
+<div class="logo-small">N<span>EXUS</span></div>
+<div class="mini-text" data-i18n="subtitle">
+KİM DAHA İYİ KARAR VERİYOR?
 </div>
-
+</div>
 <div id="ha" class="avatar">N</div>
-
 </div>
-
 
 <div class="hero">
 
-<div class="hero-label">
+<div class="hero-kicker" data-i18n="monthlyChampion">
 👑 AYIN NEXUS ŞAMPİYONU
 </div>
 
-<div class="hero-title">
+<div class="hero-title" data-i18n="whoIsKing">
 Taht bugün kimin?
 </div>
 
-<div class="hero-text">
-En iyi tahminciler burada yükseliyor.
+<div class="hero-sub" data-i18n="competition">
+Herkes herkesle yarışıyor.
 </div>
 
 <div class="champion">
 
-<div id="championAvatar"
-class="champion-avatar">
-?
-</div>
+<div id="champAvatar" class="champ-avatar">?</div>
 
 <div>
-
-<div id="championName"
-class="champion-name">
+<div id="champName" class="champ-name">
 Henüz şampiyon yok
 </div>
-
-<div id="championScore"
-class="champion-score">
+<div id="champScore" class="champ-score">
 Yarış başlamak üzere...
 </div>
-
 </div>
 
 </div>
-
 </div>
-
 
 <div class="quick">
 
-<button id="quickCreate" class="quickbtn">
-
-<div class="quickicon">🧠</div>
-
-<div class="quicktitle">
+<button id="quickCreate">
+<div class="qicon">🧠</div>
+<div class="qtitle" data-i18n="throwDecision">
 Kararını Fırlat
 </div>
-
-<div class="quickdesc">
+<div class="qsub" data-i18n="askCommunity">
 Topluluğun fikrini al.
 </div>
-
 </button>
 
-
-<button id="quickRank" class="quickbtn">
-
-<div class="quickicon">🏆</div>
-
-<div class="quicktitle">
+<button id="quickRank">
+<div class="qicon">🏆</div>
+<div class="qtitle" data-i18n="leaderboard">
 Liderlik
 </div>
-
-<div class="quickdesc">
+<div class="qsub" data-i18n="seeChampions">
 Tahta kim çıkıyor?
 </div>
-
 </button>
 
 </div>
 
-
 <div class="section">
-
-<h2>🔥 Karar Havuzu</h2>
-<span>CANLI</span>
-
+<h2 data-i18n="decisionPool">🔥 Karar Havuzu</h2>
+<span data-i18n="live">CANLI</span>
 </div>
 
 <div id="feed"></div>
@@ -976,31 +502,25 @@ Tahta kim çıkıyor?
 
 
 <!-- CREATE -->
-
 <section id="create" class="screen">
 
 <div class="section">
-
-<h2>🧠 Kararını Fırlat</h2>
-<span>NEXUS'A SOR</span>
-
+<h2 data-i18n="createTitle">🧠 Kararını Fırlat</h2>
+<span>NEXUS</span>
 </div>
 
-<div class="decision">
+<div class="card">
 
 <textarea id="q"
-placeholder="Kararsız kaldığın şeyi yaz...&#10;&#10;Örn: Bu işi kabul etmeli miyim?"></textarea>
+placeholder="Kararsız kaldığın şeyi yaz..."></textarea>
 
-<input id="o1"
-class="input"
+<input id="o1" class="input"
 placeholder="1. seçenek">
 
-<input id="o2"
-class="input"
+<input id="o2" class="input"
 placeholder="2. seçenek">
 
-<input id="o3"
-class="input"
+<input id="o3" class="input"
 placeholder="3. seçenek — isteğe bağlı">
 
 <select id="cat">
@@ -1022,28 +542,25 @@ placeholder="3. seçenek — isteğe bağlı">
 
 
 <!-- LEADERBOARD -->
-
 <section id="leaderboard" class="screen">
 
 <div class="section">
-<h2>🏆 Liderlik</h2>
-<span>HERKES YARIŞIYOR</span>
+<h2 data-i18n="leaderboardTitle">🏆 Liderlik</h2>
+<span data-i18n="everyoneCompetes">HERKES YARIŞIYOR</span>
 </div>
 
 <div id="podium" class="podium"></div>
-
-<div id="rank" class="ranklist"></div>
+<div id="rank" class="ranks"></div>
 
 </section>
 
 
 <!-- RESULTS -->
-
 <section id="results" class="screen">
 
 <div class="section">
-<h2>📊 Sonuçlarım</h2>
-<span>PERFORMANS</span>
+<h2 data-i18n="myResults">📊 Sonuçlarım</h2>
+<span data-i18n="performance">PERFORMANS</span>
 </div>
 
 <div id="resultsBox"></div>
@@ -1052,59 +569,56 @@ placeholder="3. seçenek — isteğe bağlı">
 
 
 <!-- PROFILE -->
-
 <section id="profile" class="screen">
 
 <div class="profile-head">
 
 <div id="pa" class="big-avatar">N</div>
-
 <div id="pn" class="profile-name">@user</div>
 
-<div class="small">
+<div class="small" data-i18n="nexusPredictor">
 Nexus tahmincisi
 </div>
 
 </div>
 
-
 <div class="stats">
 
 <div class="stat">
 <b id="sc">0%</b>
-<span>GÜVENİLİRLİK</span>
+<span data-i18n="reliability">GÜVENİLİRLİK</span>
 </div>
 
 <div class="stat">
 <b id="dc">0</b>
-<span>KARAR</span>
+<span data-i18n="decisions">KARAR</span>
 </div>
 
 <div class="stat">
 <b id="cc">0</b>
-<span>İSABET</span>
+<span data-i18n="accuracy">İSABET</span>
 </div>
 
 </div>
 
+<div class="card" style="margin-top:12px">
 
-<div class="decision" style="margin-top:12px">
-
-<div class="small" style="margin-bottom:10px">
+<div class="small" style="margin-bottom:10px"
+data-i18n="language">
 🌍 UYGULAMA DİLİ
 </div>
 
-<div class="language">
+<div class="langs">
 
-<button data-lang="tr" class="active">
+<button class="lang active" data-lang="tr">
 🇹🇷 Türkçe
 </button>
 
-<button data-lang="de">
+<button class="lang" data-lang="de">
 🇩🇪 Deutsch
 </button>
 
-<button data-lang="en">
+<button class="lang" data-lang="en">
 🇬🇧 English
 </button>
 
@@ -1112,9 +626,30 @@ Nexus tahmincisi
 
 </div>
 
+<div class="card" style="margin-top:10px">
+
+<div class="small" data-i18n="points">
+PUAN
+</div>
+
+<div style="font-size:27px;font-weight:1000;margin-top:5px"
+id="points">
+0
+</div>
+
+<div class="small" style="margin-top:5px">
+🏆 <span data-i18n="monthlyPoints">
+Aylık puan
+</span>:
+<span id="monthlyPoints">0</span>
+</div>
+
+</div>
 
 <button id="logoutBtn"
-class="btn secondary">
+class="btn secondary"
+style="margin-top:10px"
+data-i18n="logout">
 Çıkış Yap
 </button>
 
@@ -1122,15 +657,14 @@ class="btn secondary">
 
 
 <!-- NAV -->
-
 <nav class="nav">
 
 <button data-screen="home" class="active">
-🔥<br>Havuz
+🔥<br><span data-i18n="navHome">Havuz</span>
 </button>
 
 <button data-screen="leaderboard">
-🏆<br>Liderlik
+🏆<br><span data-i18n="navRank">Liderlik</span>
 </button>
 
 <button data-screen="create" class="plus">
@@ -1138,17 +672,16 @@ class="btn secondary">
 </button>
 
 <button data-screen="results">
-📊<br>Sonuçlar
+📊<br><span data-i18n="navResults">Sonuçlar</span>
 </button>
 
 <button data-screen="profile">
-👤<br>Profil
+👤<br><span data-i18n="navProfile">Profil</span>
 </button>
 
 </nav>
 
 </main>
-
 
 <div id="toast" class="toast"></div>
 
@@ -1157,9 +690,9 @@ class="btn secondary">
 
 <script>
 
-/* =========================================
+/* =========================
 SUPABASE
-========================================= */
+========================= */
 
 const SUPABASE_URL=
 "https://gdollkoewmtngxdoxnzn.supabase.co";
@@ -1181,9 +714,9 @@ detectSessionInUrl:true
 );
 
 
-/* =========================================
+/* =========================
 STATE
-========================================= */
+========================= */
 
 let session=null;
 let profile=null;
@@ -1191,9 +724,299 @@ let decisions=[];
 let userProfiles={};
 
 
-/* =========================================
+/* =========================
+TRANSLATIONS
+========================= */
+
+const T={
+
+tr:{
+subtitle:"KİM DAHA İYİ KARAR VERİYOR?",
+monthlyChampion:"👑 AYIN NEXUS ŞAMPİYONU",
+whoIsKing:"Taht bugün kimin?",
+competition:"Herkes herkesle yarışıyor.",
+throwDecision:"Kararını Fırlat",
+askCommunity:"Topluluğun fikrini al.",
+leaderboard:"Liderlik",
+seeChampions:"Tahta kim çıkıyor?",
+decisionPool:"🔥 Karar Havuzu",
+live:"CANLI",
+createTitle:"🧠 Kararını Fırlat",
+leaderboardTitle:"🏆 Liderlik",
+everyoneCompetes:"HERKES YARIŞIYOR",
+myResults:"📊 Sonuçlarım",
+performance:"PERFORMANS",
+nexusPredictor:"Nexus tahmincisi",
+reliability:"GÜVENİLİRLİK",
+decisions:"KARAR",
+accuracy:"İSABET",
+language:"🌍 UYGULAMA DİLİ",
+points:"PUAN",
+monthlyPoints:"Aylık puan",
+logout:"Çıkış Yap",
+navHome:"Havuz",
+navRank:"Liderlik",
+navResults:"Sonuçlar",
+navProfile:"Profil",
+noDecisions:"Nexus daha yeni başlıyor.",
+firstDecision:"İlk kararını sen fırlat.",
+askPeople:"Topluluk cevap versin.",
+createFirst:"+ İlk Kararını Oluştur",
+male:"Erkek",
+female:"Kadın",
+votes:"oy",
+totalVotes:"toplam oy",
+youVoted:"Oy verdin",
+choose:"Seçimini yap",
+noChampion:"Henüz şampiyon yok",
+starting:"Yarış başlamak üzere...",
+noRanking:"Henüz yarışmacı yok.",
+good:"🟢 İyi oldu",
+same:"🟡 Aynı",
+bad:"🔴 Kötü oldu",
+noResults:"Henüz sonuç bekleyen kararın yok.",
+resultSaved:"Sonucun kaydedildi 🧠",
+voteSaved:"Oyun kaydedildi 🎯",
+alreadyVoted:"Bu karara zaten oy verdin.",
+decisionSent:"Kararın Nexus'a fırlatıldı 🚀",
+needDecision:"Karar ve en az iki seçenek gerekli.",
+loginRequired:"E-posta ve şifre gerekli.",
+login:"Nexus'a Gir →",
+register:"Nexus'a Katıl 🚀",
+registerAccount:"Hesabın yok mu? Kayıt ol",
+haveAccount:"Zaten hesabın var mı? Giriş yap",
+email:"E-posta",
+password:"Şifre",
+username:"Kullanıcı adı",
+gender:"Cinsiyet seç",
+category:"Kategori",
+optional:"isteğe bağlı"
+},
+
+de:{
+subtitle:"WER TRIFFT DIE BESSEREN ENTSCHEIDUNGEN?",
+monthlyChampion:"👑 NEXUS-CHAMPION DES MONATS",
+whoIsKing:"Wer steht heute an der Spitze?",
+competition:"Jeder tritt gegen jeden an.",
+throwDecision:"Entscheidung starten",
+askCommunity:"Frag die Community.",
+leaderboard:"Rangliste",
+seeChampions:"Wer erklimmt den Thron?",
+decisionPool:"🔥 Entscheidungs-Pool",
+live:"LIVE",
+createTitle:"🧠 Entscheidung starten",
+leaderboardTitle:"🏆 Rangliste",
+everyoneCompetes:"ALLE TRETEN AN",
+myResults:"📊 Meine Ergebnisse",
+performance:"LEISTUNG",
+nexusPredictor:"Nexus-Tipper",
+reliability:"ZUVERLÄSSIGKEIT",
+decisions:"ENTSCHEIDUNGEN",
+accuracy:"TREFFER",
+language:"🌍 APP-SPRACHE",
+points:"PUNKTE",
+monthlyPoints:"Monatspunkte",
+logout:"Abmelden",
+navHome:"Pool",
+navRank:"Rangliste",
+navResults:"Ergebnisse",
+navProfile:"Profil",
+noDecisions:"Nexus startet gerade erst.",
+firstDecision:"Starte deine erste Entscheidung.",
+askPeople:"Die Community entscheidet mit.",
+createFirst:"+ Erste Entscheidung",
+male:"Männer",
+female:"Frauen",
+votes:"Stimmen",
+totalVotes:"Stimmen insgesamt",
+youVoted:"Abgestimmt",
+choose:"Wähle eine Option",
+noChampion:"Noch kein Champion",
+starting:"Der Wettbewerb beginnt...",
+noRanking:"Noch keine Teilnehmer.",
+good:"🟢 Gut gelaufen",
+same:"🟡 Gleich",
+bad:"🔴 Schlecht gelaufen",
+noResults:"Keine offenen Ergebnisse.",
+resultSaved:"Ergebnis gespeichert 🧠",
+voteSaved:"Stimme gespeichert 🎯",
+alreadyVoted:"Du hast bereits abgestimmt.",
+decisionSent:"Entscheidung an Nexus gesendet 🚀",
+needDecision:"Entscheidung und mindestens zwei Optionen erforderlich.",
+loginRequired:"E-Mail und Passwort erforderlich.",
+login:"Bei Nexus anmelden →",
+register:"Nexus beitreten 🚀",
+registerAccount:"Noch kein Konto? Registrieren",
+haveAccount:"Schon ein Konto? Anmelden",
+email:"E-Mail",
+password:"Passwort",
+username:"Benutzername",
+gender:"Geschlecht auswählen",
+category:"Kategorie",
+optional:"optional"
+},
+
+en:{
+subtitle:"WHO MAKES BETTER DECISIONS?",
+monthlyChampion:"👑 NEXUS CHAMPION OF THE MONTH",
+whoIsKing:"Who rules today?",
+competition:"Everyone competes against everyone.",
+throwDecision:"Launch a Decision",
+askCommunity:"Ask the community.",
+leaderboard:"Leaderboard",
+seeChampions:"Who takes the throne?",
+decisionPool:"🔥 Decision Pool",
+live:"LIVE",
+createTitle:"🧠 Launch a Decision",
+leaderboardTitle:"🏆 Leaderboard",
+everyoneCompetes:"EVERYONE COMPETES",
+myResults:"📊 My Results",
+performance:"PERFORMANCE",
+nexusPredictor:"Nexus predictor",
+reliability:"RELIABILITY",
+decisions:"DECISIONS",
+accuracy:"ACCURACY",
+language:"🌍 APP LANGUAGE",
+points:"POINTS",
+monthlyPoints:"Monthly points",
+logout:"Log out",
+navHome:"Pool",
+navRank:"Ranks",
+navResults:"Results",
+navProfile:"Profile",
+noDecisions:"Nexus is just getting started.",
+firstDecision:"Launch your first decision.",
+askPeople:"Let the community decide.",
+createFirst:"+ Create First Decision",
+male:"Men",
+female:"Women",
+votes:"votes",
+totalVotes:"total votes",
+youVoted:"You voted",
+choose:"Choose",
+noChampion:"No champion yet",
+starting:"The competition is about to begin...",
+noRanking:"No competitors yet.",
+good:"🟢 It went well",
+same:"🟡 Same",
+bad:"🔴 It went badly",
+noResults:"No pending results.",
+resultSaved:"Result saved 🧠",
+voteSaved:"Vote saved 🎯",
+alreadyVoted:"You already voted.",
+decisionSent:"Decision sent to Nexus 🚀",
+needDecision:"A decision and at least two options are required.",
+loginRequired:"Email and password are required.",
+login:"Enter Nexus →",
+register:"Join Nexus 🚀",
+registerAccount:"Don't have an account? Register",
+haveAccount:"Already have an account? Log in",
+email:"Email",
+password:"Password",
+username:"Username",
+gender:"Select gender",
+category:"Category",
+optional:"optional"
+}
+
+};
+
+let lang=
+localStorage.getItem("nexus_lang")||"tr";
+
+function t(key){
+return T[lang]?.[key]||T.tr[key]||key;
+}
+
+
+/* =========================
+LANGUAGE APPLY
+========================= */
+
+function applyLanguage(){
+
+document.documentElement.lang=lang;
+
+document
+.querySelectorAll("[data-i18n]")
+.forEach(el=>{
+el.textContent=t(el.dataset.i18n);
+});
+
+document
+.querySelectorAll("[data-lang]")
+.forEach(b=>{
+b.classList.toggle(
+"active",
+b.dataset.lang===lang
+);
+});
+
+/* Auth */
+$("loginBtn").textContent=t("login");
+$("registerBtn").textContent=t("register");
+$("registerLink").textContent=t("registerAccount");
+$("loginLink").textContent=t("haveAccount");
+$("le").placeholder=t("email");
+$("lp").placeholder=t("password");
+$("ru").placeholder=t("username");
+$("re").placeholder=t("email");
+$("rp").placeholder=t("password");
+$("rg").options[0].text=t("gender");
+
+/* Create */
+$("q").placeholder=
+lang==="tr"
+?"Kararsız kaldığın şeyi yaz..."
+:lang==="de"
+?"Schreibe deine Frage..."
+:"Write what you are unsure about...";
+
+$("o1").placeholder=
+"1. "+(lang==="tr"?"seçenek":lang==="de"?"Option":"option");
+
+$("o2").placeholder=
+"2. "+(lang==="tr"?"seçenek":lang==="de"?"Option":"option");
+
+$("o3").placeholder=
+"3. "+(lang==="tr"?"seçenek — isteğe bağlı":lang==="de"?"Option — optional":"option — optional");
+
+}
+
+
+document
+.querySelectorAll("[data-lang]")
+.forEach(btn=>{
+
+btn.onclick=()=>{
+
+lang=btn.dataset.lang;
+
+localStorage.setItem(
+"nexus_lang",
+lang
+);
+
+applyLanguage();
+
+renderCurrent();
+
+toast(
+lang==="tr"
+?"Türkçe seçildi"
+:lang==="de"
+?"Deutsch ausgewählt"
+:"English selected"
+);
+
+};
+
+});
+
+
+/* =========================
 HELPERS
-========================================= */
+========================= */
 
 const $=id=>document.getElementById(id);
 
@@ -1207,64 +1030,73 @@ String(x??"")
 "'":"&#039;"
 }[m]));
 
-
-function toast(message){
-
-$("toast").textContent=message;
-$("toast").style.display="block";
-
-clearTimeout(window.nexusToast);
-
-window.nexusToast=
-setTimeout(()=>{
-$("toast").style.display="none";
-},2500);
-
-}
-
-
-function authmsg(message,ok=false){
-
-$("authMsg").innerHTML=
-`<div class="${ok?"ok":"err"}">${esc(message)}</div>`;
-
-}
-
-
-function letter(name){
-
-return String(name||"N")
+function letter(x){
+return String(x||"N")
 .replace("@","")
 .charAt(0)
 .toUpperCase()||"N";
+}
+
+function toast(x){
+$("toast").textContent=x;
+$("toast").style.display="block";
+clearTimeout(window.nToast);
+window.nToast=setTimeout(()=>{
+$("toast").style.display="none";
+},2500);
+}
+
+function authmsg(x,ok=false){
+$("authMsg").innerHTML=
+`<div class="${ok?"ok":"err"}">${esc(x)}</div>`;
+}
+
+function ago(date){
+
+if(!date)return "";
+
+const diff=
+Date.now()-new Date(date).getTime();
+
+const min=Math.floor(diff/60000);
+
+if(min<1)return lang==="tr"?"şimdi":lang==="de"?"gerade":"now";
+
+if(min<60)
+return `${min} ${lang==="tr"?"dk":lang==="de"?"Min.":"min"} ${lang==="tr"?"önce":lang==="de"?"zuvor":"ago"}`;
+
+const h=Math.floor(min/60);
+
+if(h<24)
+return `${h} ${lang==="tr"?"saat":lang==="de"?"Std.":"hours"} ${lang==="tr"?"önce":lang==="de"?"zuvor":"ago"}`;
+
+return new Date(date).toLocaleDateString(
+lang==="tr"?"tr-TR":lang==="de"?"de-DE":"en-US"
+);
 
 }
 
 
-/* =========================================
+/* =========================
 AUTH VIEW
-========================================= */
+========================= */
 
 $("registerLink").onclick=()=>{
-
 $("loginForm").style.display="none";
 $("registerForm").style.display="block";
 $("authMsg").innerHTML="";
-
 };
 
 $("loginLink").onclick=()=>{
-
 $("registerForm").style.display="none";
 $("loginForm").style.display="block";
 $("authMsg").innerHTML="";
-
 };
 
 
-/* =========================================
+/* =========================
 LOGIN
-========================================= */
+========================= */
 
 async function login(){
 
@@ -1272,16 +1104,14 @@ const email=$("le").value.trim();
 const password=$("lp").value;
 
 if(!email||!password){
-
-authmsg("E-posta ve şifre gerekli.");
+authmsg(t("loginRequired"));
 return;
-
 }
 
 const btn=$("loginBtn");
 
 btn.disabled=true;
-btn.textContent="Giriş yapılıyor...";
+btn.textContent="...";
 
 try{
 
@@ -1302,23 +1132,22 @@ await start();
 }catch(e){
 
 authmsg(
-"Giriş başarısız: "+
-(e.message||e)
+"Login: "+(e.message||e)
 );
 
 }finally{
 
 btn.disabled=false;
-btn.textContent="Nexus'a Gir →";
+btn.textContent=t("login");
 
 }
 
 }
 
 
-/* =========================================
+/* =========================
 REGISTER
-========================================= */
+========================= */
 
 async function register(){
 
@@ -1332,62 +1161,62 @@ const password=$("rp").value;
 const gender=$("rg").value;
 
 if(!username||!email||password.length<6){
-
 authmsg(
-"Kullanıcı adı, e-posta ve en az 6 karakterli şifre gerekli."
+lang==="tr"
+?"Kullanıcı adı, e-posta ve en az 6 karakterli şifre gerekli."
+:lang==="de"
+?"Benutzername, E-Mail und mindestens 6 Zeichen Passwort erforderlich."
+:"Username, email and a password of at least 6 characters are required."
 );
-
 return;
-
 }
 
 if(!gender){
-
-authmsg("Lütfen cinsiyetini seç.");
-
+authmsg(
+lang==="tr"
+?"Lütfen cinsiyetini seç."
+:lang==="de"
+?"Bitte wähle dein Geschlecht."
+:"Please select your gender."
+);
 return;
-
 }
 
 const btn=$("registerBtn");
-
 btn.disabled=true;
-btn.textContent="Hesap oluşturuluyor...";
+btn.textContent="...";
 
 try{
 
 const r=
 await db.auth.signUp({
-
 email,
 password,
-
 options:{
 data:{
 username,
 gender
 }
 }
-
 });
 
 if(r.error)throw r.error;
 
-if(!r.data.user){
-
-throw new Error("Hesap oluşturulamadı.");
-
-}
+if(!r.data.user)
+throw new Error("User could not be created.");
 
 if(!r.data.session){
 
 authmsg(
-"Kayıt oluşturuldu. E-postanı doğrula, ardından giriş yap.",
+lang==="tr"
+?"Kayıt oluşturuldu. E-postanı doğrula ve giriş yap."
+:lang==="de"
+?"Konto erstellt. Bitte bestätige deine E-Mail und melde dich an."
+:"Account created. Confirm your email and then log in.",
 true
 );
 
 return;
-
 }
 
 session=r.data.session;
@@ -1403,29 +1232,24 @@ await start();
 }catch(e){
 
 authmsg(
-"Kayıt başarısız: "+
-(e.message||e)
+"Register: "+(e.message||e)
 );
 
 }finally{
 
 btn.disabled=false;
-btn.textContent="Nexus'a Katıl 🚀";
+btn.textContent=t("register");
 
 }
 
 }
 
 
-/* =========================================
+/* =========================
 PROFILE
-========================================= */
+========================= */
 
-async function ensureProfile(
-user,
-usernameFromRegister,
-genderFromRegister
-){
+async function ensureProfile(user,username,gender){
 
 const r=
 await db
@@ -1434,109 +1258,91 @@ await db
 .eq("id",user.id)
 .maybeSingle();
 
-if(r.error){
-
-throw new Error(
-"Profil kontrolü başarısız: "+
-r.error.message
-);
-
-}
+if(r.error)
+throw new Error(r.error.message);
 
 if(r.data){
 
 profile=r.data;
 
-return;
+/* Eski kullanıcıda gender boşsa
+metadata'dan doldurmayı deniyoruz. */
+
+if(
+!profile.gender &&
+(user.user_metadata?.gender)
+){
+
+const g=
+user.user_metadata.gender;
+
+const u=
+await db
+.from("profiles")
+.update({gender:g})
+.eq("id",user.id)
+.select()
+.single();
+
+if(!u.error)
+profile=u.data;
 
 }
 
-let username=
-usernameFromRegister||
+return;
+}
+
+let name=
+username||
 user.user_metadata?.username||
-("@"+(user.email||"user").split("@")[0]);
+"@"+(user.email||"user").split("@")[0];
 
-if(!username.startsWith("@"))
-username="@"+username;
-
-const gender=
-genderFromRegister||
-user.user_metadata?.gender||
-null;
+if(!name.startsWith("@"))
+name="@"+name;
 
 const data={
 id:user.id,
-username:username.slice(0,21),
+username:name.slice(0,21),
 decisions_count:0,
 correct_count:0,
 votes_count:0,
-reliability_score:0
+reliability_score:0,
+points:0,
+total_votes:0,
+correct_votes:0,
+followers_count:0,
+following_count:0,
+monthly_points:0,
+gender:gender||user.user_metadata?.gender||null
 };
 
-/*
-   gender kolonu varsa kaydet.
-   Kolon henüz yoksa profil yine oluşturulabilir.
-*/
-
-if(gender){
-data.gender=gender;
-}
-
-let p=
+const p=
 await db
 .from("profiles")
 .insert(data)
 .select()
 .single();
 
-if(p.error){
-
-/*
-   Eğer profiles tablosunda gender kolonu henüz
-   yoksa eski yapıyla tekrar deniyoruz.
-*/
-
-if(
-gender &&
-/gender|column/i.test(p.error.message||"")
-){
-
-delete data.gender;
-
-p=
-await db
-.from("profiles")
-.insert(data)
-.select()
-.single();
-
-}
-
-}
-
-if(p.error){
-
+if(p.error)
 throw new Error(
-"Profil oluşturulamadı: "+
-p.error.message
+"Profil oluşturulamadı: "+p.error.message
 );
-
-}
 
 profile=p.data;
 
 }
 
 
-/* =========================================
+/* =========================
 START
-========================================= */
+========================= */
 
 async function start(){
 
 $("auth").style.display="none";
 $("main").style.display="block";
 
+applyLanguage();
 updateProfile();
 
 await loadFeed();
@@ -1546,16 +1352,9 @@ await loadResults();
 
 }
 
-
-/* =========================================
-PROFILE UI
-========================================= */
-
 function updateProfile(){
 
-const name=
-profile?.username||"@user";
-
+const name=profile?.username||"@user";
 const l=letter(name);
 
 $("ha").textContent=l;
@@ -1569,21 +1368,25 @@ $("dc").textContent=
 profile?.decisions_count||0;
 
 $("cc").textContent=
-profile?.correct_count||0;
+profile?.correct_count||profile?.correct_votes||0;
+
+$("points").textContent=
+profile?.points||0;
+
+$("monthlyPoints").textContent=
+profile?.monthly_points||0;
 
 }
 
 
-/* =========================================
-GET GENDER PROFILES
-========================================= */
+/* =========================
+LOAD USER PROFILES
+========================= */
 
 async function loadUserProfiles(ids){
 
-if(!ids.length)return;
-
 const unique=[
-...new Set(ids.filter(Boolean))
+...new Set((ids||[]).filter(Boolean))
 ];
 
 if(!unique.length)return;
@@ -1605,9 +1408,9 @@ userProfiles[p.id]=p;
 }
 
 
-/* =========================================
+/* =========================
 FEED
-========================================= */
+========================= */
 
 async function loadFeed(){
 
@@ -1617,10 +1420,8 @@ await db
 .select(
 "id,user_id,question,category,status,result,created_at,profiles(username),options(id,option_text,position)"
 )
-.order(
-"created_at",
-{ascending:false}
-)
+.eq("status","open")
+.order("created_at",{ascending:false})
 .limit(50);
 
 if(r.error){
@@ -1629,7 +1430,6 @@ $("feed").innerHTML=
 `<div class="err">${esc(r.error.message)}</div>`;
 
 return;
-
 }
 
 const rows=r.data||[];
@@ -1643,77 +1443,60 @@ $("feed").innerHTML=`
 <div class="empty-icon">🧠</div>
 
 <div class="empty-title">
-Nexus daha yeni başlıyor.
+${t("noDecisions")}
 </div>
 
-<p>
-İlk kararını sen fırlat.<br>
-Topluluk cevap versin.
-</p>
+<div class="empty-text">
+${t("firstDecision")}<br>
+${t("askPeople")}
+</div>
 
-<button
-id="emptyCreate"
-class="btn"
->
-+ İlk Kararını Oluştur
+<button id="firstDecisionBtn" class="btn">
+${t("createFirst")}
 </button>
 
 </div>`;
 
-$("emptyCreate").onclick=
+$("firstDecisionBtn").onclick=
 ()=>showScreen("create");
 
 return;
-
 }
 
 const ids=rows.map(x=>x.id);
 
-let votes=[];
-
-const v=
+const vr=
 await db
 .from("votes")
-.select(
-"decision_id,option_id,user_id"
-)
-.in(
-"decision_id",
-ids
-);
+.select("decision_id,option_id,user_id")
+.in("decision_id",ids);
 
-if(v.error){
+if(vr.error){
 
 $("feed").innerHTML=
-`<div class="err">${esc(v.error.message)}</div>`;
+`<div class="err">${esc(vr.error.message)}</div>`;
 
 return;
-
 }
 
-votes=v.data||[];
+const votes=vr.data||[];
 
 await loadUserProfiles(
-votes.map(v=>v.user_id)
+votes.map(x=>x.user_id)
 );
-
 
 decisions=rows.map(d=>{
 
 const vv=
-votes.filter(
-x=>x.decision_id===d.id
-);
+votes.filter(x=>x.decision_id===d.id);
 
-const options=
+const oo=
 (d.options||[])
 .sort((a,b)=>a.position-b.position)
 .map(o=>{
 
 const ov=
-vv.filter(
-x=>x.option_id===o.id
-);
+vv.filter(x=>x.option_id===o.id);
 
 const male=
 ov.filter(
@@ -1725,22 +1508,19 @@ ov.filter(
 x=>userProfiles[x.user_id]?.gender==="female"
 ).length;
 
-const total=ov.length;
-
 return{
 id:o.id,
 text:o.option_text,
-n:total,
+n:ov.length,
 male,
 female
 };
 
 });
 
-
 return{
 ...d,
-oo:options,
+oo,
 total:vv.length,
 voted:vv.some(
 x=>x.user_id===session.user.id
@@ -1749,67 +1529,69 @@ x=>x.user_id===session.user.id
 
 });
 
+renderFeed();
+
+}
+
+
+function renderFeed(){
 
 $("feed").innerHTML=
 decisions.map(d=>{
-
-const total=d.total;
 
 return `
 
 <div class="decision">
 
-<div class="decision-head">
+<div class="user">
 
 <div class="user-avatar">
 ${letter(d.profiles?.username)}
 </div>
 
 <div>
-
-<div class="user-name">
+<div class="username">
 ${esc(d.profiles?.username||"@user")}
 </div>
-
 <div class="time">
-${timeAgo(d.created_at)}
+${ago(d.created_at)}
 </div>
-
 </div>
 
 <div class="category">
-${esc(d.category||"Günlük")}
+${esc(d.category||"")}
 </div>
 
 </div>
-
 
 <div class="question">
 ${esc(d.question)}
 </div>
 
-
 ${d.oo.map(o=>{
 
 const pct=
-total
-?Math.round(o.n/total*100)
+d.total
+?Math.round(o.n/d.total*100)
 :0;
 
+const genderTotal=
+o.male+o.female;
+
 const malePct=
-o.n
-?Math.round(o.male/o.n*100)
+genderTotal
+?Math.round(o.male/genderTotal*100)
 :0;
 
 const femalePct=
-o.n
-?Math.round(o.female/o.n*100)
+genderTotal
+?Math.round(o.female/genderTotal*100)
 :0;
 
 return `
 
 <button
-class="option"
+class="option vote-option"
 data-did="${esc(d.id)}"
 data-oid="${esc(o.id)}"
 >
@@ -1818,8 +1600,8 @@ data-oid="${esc(o.id)}"
 ${esc(o.text)}
 </div>
 
-<div class="option-total">
-${pct}% • ${o.n} oy
+<div class="option-info">
+${pct}% • ${o.n} ${t("votes")}
 </div>
 
 <div
@@ -1841,16 +1623,16 @@ style="width:${femalePct}%"
 
 </div>
 
-<div class="genderlegend">
+<div class="legend">
 
 <span>
-<i class="blue-dot"></i>
-Erkek ${o.male}
+<i class="dot blue"></i>
+${t("male")} ${o.male}
 </span>
 
 <span>
-<i class="pink-dot"></i>
-Kadın ${o.female}
+<i class="dot pink"></i>
+${t("female")} ${o.female}
 </span>
 
 </div>
@@ -1861,15 +1643,12 @@ Kadın ${o.female}
 
 }).join("")}
 
+<div class="foot">
 
-<div class="decision-foot">
-
-<span>
-👥 ${total} toplam oy
-</span>
+<span>👥 ${d.total} ${t("totalVotes")}</span>
 
 <span>
-${d.voted?"✓ Oy verdin":"Seçimini yap"}
+${d.voted?t("youVoted"):t("choose")}
 </span>
 
 </div>
@@ -1880,28 +1659,23 @@ ${d.voted?"✓ Oy verdin":"Seçimini yap"}
 
 }).join("");
 
-
 document
-.querySelectorAll(".option")
+.querySelectorAll(".vote-option")
 .forEach(btn=>{
-
 btn.onclick=()=>{
-
 vote(
 btn.dataset.did,
 btn.dataset.oid
 );
-
 };
-
 });
 
 }
 
 
-/* =========================================
+/* =========================
 VOTE
-========================================= */
+========================= */
 
 async function vote(did,oid){
 
@@ -1911,51 +1685,45 @@ decisions.find(x=>x.id===did);
 if(!d)return;
 
 if(d.voted){
-
-toast("Bu karara zaten oy verdin.");
+toast(t("alreadyVoted"));
 return;
-
 }
 
 const r=
 await db
 .from("votes")
 .insert({
-
 decision_id:did,
 option_id:oid,
 user_id:session.user.id
-
 });
 
 if(r.error){
 
 toast(
 r.error.code==="23505"
-?
-"Bu karara zaten oy verdin."
-:
-"Oy verilemedi: "+
-r.error.message
+?t("alreadyVoted")
+:"Vote: "+r.error.message
 );
 
 return;
-
 }
 
-const count=
-Number(profile?.votes_count||0)+1;
+/* Mevcut oy alanlarını güncelle */
+const newVotes=
+Number(profile.votes_count||0)+1;
+
+const totalVotes=
+Number(profile.total_votes||0)+1;
 
 const p=
 await db
 .from("profiles")
 .update({
-votes_count:count
+votes_count:newVotes,
+total_votes:totalVotes
 })
-.eq(
-"id",
-session.user.id
-)
+.eq("id",session.user.id)
 .select()
 .single();
 
@@ -1965,16 +1733,15 @@ profile=p.data;
 updateProfile();
 
 await loadFeed();
-await loadLeaderboard();
 
-toast("Oyun kaydedildi 🎯");
+toast(t("voteSaved"));
 
 }
 
 
-/* =========================================
-CREATE DECISION
-========================================= */
+/* =========================
+CREATE
+========================= */
 
 async function createDecision(){
 
@@ -1984,25 +1751,18 @@ const b=$("o2").value.trim();
 const c=$("o3").value.trim();
 
 if(!q||!a||!b){
-
-toast(
-"Karar ve en az iki seçenek gerekli."
-);
-
+toast(t("needDecision"));
 return;
-
 }
 
 const r=
 await db
 .from("decisions")
 .insert({
-
 user_id:session.user.id,
 question:q,
 category:$("cat").value,
 status:"open"
-
 })
 .select()
 .single();
@@ -2010,15 +1770,13 @@ status:"open"
 if(r.error){
 
 toast(
-"Karar oluşturulamadı: "+
-r.error.message
+"Decision: "+r.error.message
 );
 
 return;
-
 }
 
-const options=[
+const opts=[
 {
 decision_id:r.data.id,
 option_text:a,
@@ -2033,7 +1791,7 @@ position:2
 
 if(c){
 
-options.push({
+opts.push({
 decision_id:r.data.id,
 option_text:c,
 position:3
@@ -2044,7 +1802,7 @@ position:3
 const o=
 await db
 .from("options")
-.insert(options);
+.insert(opts);
 
 if(o.error){
 
@@ -2054,16 +1812,14 @@ await db
 .eq("id",r.data.id);
 
 toast(
-"Seçenekler kaydedilemedi: "+
-o.error.message
+"Options: "+o.error.message
 );
 
 return;
-
 }
 
 const count=
-Number(profile?.decisions_count||0)+1;
+Number(profile.decisions_count||0)+1;
 
 const p=
 await db
@@ -2071,10 +1827,7 @@ await db
 .update({
 decisions_count:count
 })
-.eq(
-"id",
-session.user.id
-)
+.eq("id",session.user.id)
 .select()
 .single();
 
@@ -2089,65 +1842,54 @@ $("o2").value="";
 $("o3").value="";
 
 await loadFeed();
-await loadLeaderboard();
 await loadChampion();
 
 showScreen("home");
 
-toast("Kararın Nexus'a fırlatıldı 🚀");
+toast(t("decisionSent"));
 
 }
 
 
-/* =========================================
+/* =========================
 CHAMPION
-========================================= */
+========================= */
 
 async function loadChampion(){
 
 const r=
 await db
 .from("profiles")
-.select(
-"username,decisions_count,reliability_score"
-)
-.order(
-"reliability_score",
-{ascending:false}
-)
+.select("username,monthly_points,points,reliability_score,decisions_count")
+.order("monthly_points",{ascending:false})
 .limit(3);
 
 if(r.error||!r.data?.length){
 
-$("championName").textContent=
-"Henüz şampiyon yok";
-
-$("championScore").textContent=
-"Yarış başlamak üzere...";
-
-$("championAvatar").textContent="?";
+$("champName").textContent=t("noChampion");
+$("champScore").textContent=t("starting");
+$("champAvatar").textContent="?";
 
 return;
-
 }
 
 const c=r.data[0];
 
-$("championName").textContent=
+$("champName").textContent=
 c.username||"@user";
 
-$("championScore").textContent=
-`${c.reliability_score||0}% güvenilirlik • ${c.decisions_count||0} karar`;
+$("champScore").textContent=
+`${c.monthly_points||0} ${t("points").toLowerCase()} • ${c.reliability_score||0}%`;
 
-$("championAvatar").textContent=
+$("champAvatar").textContent=
 letter(c.username);
 
 }
 
 
-/* =========================================
+/* =========================
 LEADERBOARD
-========================================= */
+========================= */
 
 async function loadLeaderboard(){
 
@@ -2155,12 +1897,9 @@ const r=
 await db
 .from("profiles")
 .select(
-"username,decisions_count,reliability_score"
+"username,monthly_points,points,reliability_score,decisions_count"
 )
-.order(
-"reliability_score",
-{ascending:false}
-)
+.order("monthly_points",{ascending:false})
 .limit(20);
 
 if(r.error){
@@ -2169,7 +1908,6 @@ $("rank").innerHTML=
 `<div class="err">${esc(r.error.message)}</div>`;
 
 return;
-
 }
 
 const rows=r.data||[];
@@ -2178,48 +1916,45 @@ if(!rows.length){
 
 $("podium").innerHTML="";
 $("rank").innerHTML=
-`<div class="empty">Henüz yarışmacı yok.</div>`;
+`<div class="empty">${t("noRanking")}</div>`;
 
 return;
-
 }
 
-
-const podiumRows=[
+const positions=[
 rows[1],
 rows[0],
 rows[2]
 ];
 
+const medals=["🥈","🥇","🥉"];
+
 $("podium").innerHTML=
-podiumRows
-.map((u,index)=>{
+positions.map((u,i)=>{
 
 if(!u)return "";
 
-const realIndex=
-index===0?1:index===1?0:2;
-
-const medals=["🥈","🥇","🥉"];
+const real=
+i===0?1:i===1?0:2;
 
 return `
 
-<div class="podium-card ${realIndex===0?"first":""}">
+<div class="pod ${real===0?"first":""}">
 
-<div class="podium-medal">
-${medals[realIndex]}
+<div class="pod-medal">
+${medals[real]}
 </div>
 
-<div class="podium-avatar">
+<div class="pod-avatar">
 ${letter(u.username)}
 </div>
 
-<div class="podium-name">
+<div class="pod-name">
 ${esc(u.username||"@user")}
 </div>
 
-<div class="podium-score">
-${u.reliability_score||0}%
+<div class="pod-score">
+${u.monthly_points||0} ${t("points").toLowerCase()}
 </div>
 
 </div>
@@ -2228,18 +1963,13 @@ ${u.reliability_score||0}%
 
 }).join("");
 
-
 $("rank").innerHTML=
-rows.slice(3).map((u,i)=>{
-
-const real=i+4;
-
-return `
+rows.slice(3).map((u,i)=>`
 
 <div class="rank">
 
-<div class="ranknum">
-#${real}
+<div class="rank-no">
+#${i+4}
 </div>
 
 <div class="user-avatar">
@@ -2248,64 +1978,40 @@ ${letter(u.username)}
 
 <div>
 
-<div class="user-name">
+<div class="username">
 ${esc(u.username||"@user")}
 </div>
 
 <div class="small">
-${u.decisions_count||0} karar
+${u.decisions_count||0} ${t("decisions").toLowerCase()}
 </div>
 
 </div>
 
-<div class="rankscore">
-${u.reliability_score||0}%
+<div class="rank-score">
+${u.monthly_points||0}
 </div>
 
 </div>
 
-`;
-
-}).join("");
-
-
-if(!rows.slice(3).length){
-
-$("rank").innerHTML+=`
-<div class="small"
-style="padding:12px 0;text-align:center">
-Diğer yarışmacılar karar verdikçe burada görünecek.
-</div>`;
-
-}
+`).join("");
 
 }
 
 
-/* =========================================
+/* =========================
 RESULTS
-========================================= */
+========================= */
 
 async function loadResults(){
 
 const r=
 await db
 .from("decisions")
-.select(
-"id,question,category"
-)
-.eq(
-"user_id",
-session.user.id
-)
-.eq(
-"status",
-"open"
-)
-.order(
-"created_at",
-{ascending:false}
-);
+.select("id,question,category")
+.eq("user_id",session.user.id)
+.eq("status","open")
+.order("created_at",{ascending:false});
 
 if(r.error){
 
@@ -2313,7 +2019,6 @@ $("resultsBox").innerHTML=
 `<div class="err">${esc(r.error.message)}</div>`;
 
 return;
-
 }
 
 const rows=r.data||[];
@@ -2327,18 +2032,12 @@ $("resultsBox").innerHTML=`
 <div class="empty-icon">🎯</div>
 
 <div class="empty-title">
-Henüz sonuç bekleyen kararın yok.
+${t("noResults")}
 </div>
-
-<p>
-Kararını oluştur, topluluğun fikrini al.<br>
-Sonucu daha sonra bildir.
-</p>
 
 </div>`;
 
 return;
-
 }
 
 $("resultsBox").innerHTML=
@@ -2350,62 +2049,52 @@ rows.map(d=>`
 ${esc(d.question)}
 </div>
 
-<div class="small"
-style="margin:6px 0 12px">
+<div class="small" style="margin:6px 0 12px">
 ${esc(d.category)}
 </div>
 
-<div class="opts">
-
 <button
-class="option resultBtn"
-data-id="${esc(d.id)}"
+class="option result-btn"
+data-id="${d.id}"
 data-result="good">
-🟢 İyi oldu
+${t("good")}
 </button>
 
 <button
-class="option resultBtn"
-data-id="${esc(d.id)}"
+class="option result-btn"
+data-id="${d.id}"
 data-result="same">
-🟡 Aynı
+${t("same")}
 </button>
 
 <button
-class="option resultBtn"
-data-id="${esc(d.id)}"
+class="option result-btn"
+data-id="${d.id}"
 data-result="bad">
-🔴 Kötü oldu
+${t("bad")}
 </button>
-
-</div>
 
 </div>
 
 `).join("");
 
-
 document
-.querySelectorAll(".resultBtn")
+.querySelectorAll(".result-btn")
 .forEach(btn=>{
-
 btn.onclick=()=>{
-
 saveResult(
 btn.dataset.id,
 btn.dataset.result
 );
-
 };
-
 });
 
 }
 
 
-/* =========================================
+/* =========================
 SAVE RESULT
-========================================= */
+========================= */
 
 async function saveResult(id,value){
 
@@ -2414,48 +2103,35 @@ await db
 .from("decisions")
 .update({
 result:value,
-status:"completed"
+status:"completed",
+result_at:new Date().toISOString()
 })
-.eq(
-"id",
-id
-)
-.eq(
-"user_id",
-session.user.id
-);
+.eq("id",id)
+.eq("user_id",session.user.id);
 
 if(r.error){
 
-toast(
-"Sonuç kaydedilemedi: "+
-r.error.message
-);
-
+toast("Result: "+r.error.message);
 return;
-
 }
 
+/*
+Karar sahibinin mevcut sonuçlarını hesapla.
+*/
 const all=
 await db
 .from("decisions")
 .select("result")
-.eq(
-"user_id",
-session.user.id
-);
+.eq("user_id",session.user.id);
 
 if(all.error){
 
 toast(all.error.message);
 return;
-
 }
 
 const rows=all.data||[];
-
-const done=
-rows.filter(x=>x.result);
+const done=rows.filter(x=>x.result);
 
 const good=
 done.filter(x=>x.result==="good").length;
@@ -2465,28 +2141,26 @@ done.length
 ?Math.round(good/done.length*100)
 :0;
 
+/*
+Mevcut profiles alanlarını güncelliyoruz.
+*/
 const p=
 await db
 .from("profiles")
 .update({
-
 decisions_count:rows.length,
 correct_count:good,
+correct_votes:good,
 reliability_score:score
-
 })
-.eq(
-"id",
-session.user.id
-)
+.eq("id",session.user.id)
 .select()
 .single();
 
 if(p.error){
 
-toast(p.error.message);
+toast("Profile: "+p.error.message);
 return;
-
 }
 
 profile=p.data;
@@ -2497,14 +2171,14 @@ await loadResults();
 await loadLeaderboard();
 await loadChampion();
 
-toast("Sonucun kaydedildi 🧠");
+toast(t("resultSaved"));
 
 }
 
 
-/* =========================================
+/* =========================
 NAVIGATION
-========================================= */
+========================= */
 
 function showScreen(id,button){
 
@@ -2512,19 +2186,16 @@ document
 .querySelectorAll(".screen")
 .forEach(x=>x.classList.remove("active"));
 
-const target=$(id);
-
-if(!target)return;
-
-target.classList.add("active");
+$(id).classList.add("active");
 
 document
 .querySelectorAll(".nav button")
 .forEach(x=>x.classList.remove("active"));
 
-if(button){
+if(button)
 button.classList.add("active");
-}
+
+window.scrollTo(0,0);
 
 if(id==="home"){
 loadFeed();
@@ -2537,26 +2208,20 @@ loadLeaderboard();
 if(id==="results")
 loadResults();
 
-window.scrollTo(0,0);
-
 }
-
 
 document
 .querySelectorAll(".nav button")
 .forEach(btn=>{
 
 btn.onclick=()=>{
-
 showScreen(
 btn.dataset.screen,
 btn
 );
-
 };
 
 });
-
 
 $("quickCreate").onclick=
 ()=>showScreen("create");
@@ -2575,95 +2240,53 @@ register;
 
 $("logoutBtn").onclick=
 async()=>{
-
 await db.auth.signOut();
 location.reload();
-
 };
-
-
-/* =========================================
-LANGUAGE
-========================================= */
-
-document
-.querySelectorAll("[data-lang]")
-.forEach(btn=>{
-
-btn.onclick=()=>{
-
-document
-.querySelectorAll("[data-lang]")
-.forEach(x=>
-x.classList.remove("active")
-);
-
-btn.classList.add("active");
-
-localStorage.setItem(
-"nexus_language",
-btn.dataset.lang
-);
-
-toast(
-btn.dataset.lang==="tr"
-?"Türkçe seçildi"
-:btn.dataset.lang==="de"
-?"Deutsch ausgewählt"
-:"English selected"
-);
-
-};
-
-});
-
-
-/* =========================================
-TIME
-========================================= */
-
-function timeAgo(date){
-
-if(!date)return "";
-
-const diff=
-Date.now()-new Date(date).getTime();
-
-const min=Math.floor(diff/60000);
-
-if(min<1)return "şimdi";
-if(min<60)return min+" dk önce";
-
-const h=Math.floor(min/60);
-
-if(h<24)return h+" saat önce";
-
-const d=Math.floor(h/24);
-
-if(d<7)return d+" gün önce";
-
-return new Date(date).toLocaleDateString("tr-TR");
-
-}
-
-
-/* =========================================
-ENTER LOGIN
-========================================= */
 
 $("lp").addEventListener(
 "keydown",
 e=>{
 if(e.key==="Enter")login();
+});
+
+
+/* =========================
+RENDER CURRENT
+========================= */
+
+function renderCurrent(){
+
+applyLanguage();
+
+const active=
+document.querySelector(".screen.active");
+
+if(!active)return;
+
+if(active.id==="home"){
+loadFeed();
+loadChampion();
 }
-);
+
+if(active.id==="leaderboard")
+loadLeaderboard();
+
+if(active.id==="results")
+loadResults();
+
+updateProfile();
+
+}
 
 
-/* =========================================
+/* =========================
 INIT
-========================================= */
+========================= */
 
 (async()=>{
+
+applyLanguage();
 
 try{
 
@@ -2695,18 +2318,14 @@ authmsg(
 
 }
 
-
 db.auth.onAuthStateChange(
-(event,newSession)=>{
-
-session=newSession;
-
-}
-);
+(event,s)=>{
+session=s;
+});
 
 })();
 
 </script>
 
 </body>
-   </html>
+</html>
