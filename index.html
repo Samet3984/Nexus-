@@ -5,831 +5,131 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#07080d">
 <title>Nexus</title>
-
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
 :root{
---bg:#07080d;
---surface:#10131b;
---surface2:#151923;
---line:#252b38;
---text:#f7f8fb;
---muted:#8b94a8;
---accent:#7c5cff;
---accent2:#a855f7;
---grad:linear-gradient(135deg,#6d5dfc,#a855f7);
---green:#22c55e;
-}
-
-*{
-box-sizing:border-box;
--webkit-tap-highlight-color:transparent
-}
-
-html,body{
-margin:0;
-padding:0;
-background:#030408;
-color:var(--text);
-font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif
-}
-
-body{
-min-height:100vh
-}
-
-button,input,textarea,select{
-font:inherit
-}
-
-button{
-cursor:pointer
-}
-
-.app{
-max-width:520px;
-min-height:100vh;
-margin:auto;
-background:
-radial-gradient(circle at 50% -10%,#1b1734,transparent 32%),
-var(--bg);
-position:relative;
-overflow-x:hidden
-}
-
-.hidden{
-display:none!important
-}
-
-#auth{
-min-height:100vh;
-display:flex;
-align-items:center;
-justify-content:center;
-padding:24px
-}
-
-.auth-box{
-width:100%;
-max-width:420px;
-text-align:center
-}
-
-.logo{
-width:78px;
-height:78px;
-margin:0 auto 17px;
-border-radius:25px;
-background:var(--grad);
-display:grid;
-place-items:center;
-font-size:36px;
-font-weight:900;
-box-shadow:0 20px 60px #6d5dfc44
-}
-
-.brand{
-font-size:42px;
-font-weight:900;
-letter-spacing:-2px
-}
-
-.tag{
-color:var(--muted);
-line-height:1.65;
-margin:8px 0 22px
-}
-
-.language{
-display:flex;
-gap:7px;
-justify-content:center;
-margin-bottom:14px
-}
-
-.lang{
-border:1px solid var(--line);
-background:var(--surface);
-color:var(--muted);
-border-radius:10px;
-padding:7px 11px;
-font-size:10px;
-font-weight:800
-}
-
-.lang.active{
-color:#fff;
-border-color:#5948ba;
-background:#241e3d
-}
-
-.field{
-width:100%;
-padding:14px 15px;
-margin-bottom:9px;
-border:1px solid var(--line);
-border-radius:14px;
-background:#0d1017;
-color:#fff;
-outline:0
-}
-
-.field:focus{
-border-color:var(--accent)
-}
-
-.select{
-appearance:none
-}
-
-.primary{
-width:100%;
-padding:15px;
-border:0;
-border-radius:14px;
-background:var(--grad);
-color:#fff;
-font-weight:900;
-box-shadow:0 12px 30px #6d5dfc33
-}
-
-.primary:disabled{
-opacity:.6;
-cursor:not-allowed
-}
-
-.secondary-link{
-color:#a99cff;
-font-size:11px;
-margin-top:13px;
-cursor:pointer
-}
-
-.msg{
-margin-top:12px;
-padding:10px;
-border-radius:11px;
-font-size:10px
-}
-
-.err{
-background:#29151b;
-border:1px solid #67313d;
-color:#ffadb8
-}
-
-.ok{
-color:#52d67d;
-background:#102319;
-border:1px solid #214c31
-}
-
-#main{
-display:none;
-min-height:100vh;
-padding-bottom:92px
-}
-
-.screen{
-display:none;
-padding:17px 15px 22px;
-animation:in .22s ease
-}
-
-.screen.active{
-display:block
-}
-
-@keyframes in{
-from{opacity:0;transform:translateY(5px)}
-to{opacity:1;transform:none}
-}
-
-.top{
-display:flex;
-align-items:center;
-justify-content:space-between;
-margin-bottom:16px
-}
-
-.top h1{
-font-size:25px;
-margin:0;
-letter-spacing:-.7px
-}
-
-.top p{
-font-size:10px;
-color:var(--muted);
-margin:4px 0 0
-}
-
-.mini-avatar,
-.avatar{
-background:var(--grad);
-display:grid;
-place-items:center;
-font-weight:900
-}
-
-.mini-avatar{
-width:42px;
-height:42px;
-border-radius:14px
-}
-
-.hero{
-padding:17px;
-border:1px solid #302a4d;
-border-radius:21px;
-background:
-radial-gradient(circle at 100% 0,#6d5dfc2b,transparent 43%),
-linear-gradient(145deg,#17142a,#10131b);
-margin-bottom:14px
-}
-
-.live{
-display:flex;
-align-items:center;
-gap:7px;
-color:#bcb0ff;
-font-size:9px;
-font-weight:900;
-letter-spacing:.5px
-}
-
-.dot{
-width:7px;
-height:7px;
-border-radius:50%;
-background:var(--green);
-box-shadow:0 0 12px var(--green)
-}
-
-.hero h2{
-font-size:19px;
-margin:11px 0 5px
-}
-
-.hero p{
-color:var(--muted);
-font-size:10px;
-line-height:1.55;
-margin:0
-}
-
-.quick{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:8px;
-margin-top:13px
-}
-
-.quick button{
-border:1px solid #343044;
-background:#171522;
-color:#fff;
-border-radius:12px;
-padding:10px;
-text-align:left;
-font-size:10px;
-font-weight:800
-}
-
-.quick b{
-display:block;
-font-size:14px;
-margin-bottom:3px
-}
-
-.filters{
-display:flex;
-gap:7px;
-overflow:auto;
-scrollbar-width:none;
-margin:0 0 14px
-}
-
-.filters::-webkit-scrollbar{
-display:none
-}
-
-.filter{
-white-space:nowrap;
-border:1px solid var(--line);
-background:var(--surface);
-color:var(--muted);
-border-radius:20px;
-padding:9px 12px;
-font-size:10px;
-font-weight:800
-}
-
-.filter.active{
-background:#251f3f;
-color:#fff;
-border-color:#5a48bd
-}
-
-.card{
-background:linear-gradient(145deg,#11141d,#0e1118);
-border:1px solid var(--line);
-border-radius:19px;
-padding:15px;
-margin-bottom:11px;
-box-shadow:0 12px 30px #0000001f
-}
-
-.userline{
-display:flex;
-align-items:center;
-gap:9px
-}
-
-.avatar{
-width:36px;
-height:36px;
-border-radius:12px;
-font-size:12px
-}
-
-.grow{
-flex:1
-}
-
-.name{
-font-size:11px;
-font-weight:900
-}
-
-.muted{
-font-size:9px;
-color:var(--muted);
-margin-top:3px
-}
-
-.chip{
-color:#b7a9ff;
-background:#211c35;
-border:1px solid #342b56;
-border-radius:9px;
-padding:5px 7px;
-font-size:8px;
-font-weight:900
-}
-
-.q{
-font-size:16px;
-line-height:1.48;
-font-weight:850;
-margin:13px 0
-}
-
-.opts{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:8px
-}
-
-.opt{
-position:relative;
-overflow:hidden;
-min-height:58px;
-border:1px solid var(--line);
-background:#171a23;
-color:#fff;
-border-radius:13px;
-padding:11px 9px;
-text-align:left;
-font-size:11px;
-font-weight:800
-}
-
-.opt:disabled{
-opacity:.65;
-cursor:default
-}
-
-.pct{
-display:block;
-color:#8b94a8;
-font-size:9px;
-margin-top:5px
-}
-
-.bar{
-position:absolute;
-left:0;
-bottom:0;
-height:3px;
-background:var(--grad);
-border-radius:0 4px 0 0
-}
-
-.bottom{
-display:flex;
-justify-content:space-between;
-align-items:center;
-margin-top:11px;
-color:#687286;
-font-size:9px
-}
-
-.textbtn{
-border:0;
-background:none;
-color:#7e889d;
-font-size:9px;
-padding:0;
-font-weight:800
-}
-
-.cities{
-display:flex;
-flex-wrap:wrap;
-gap:5px;
-margin-top:8px
-}
-
-.city{
-background:#151a23;
-border:1px solid #252d3a;
-border-radius:8px;
-padding:5px 7px;
-color:#aeb7c8;
-font-size:8px
-}
-
-.comments{
-display:none;
-border-top:1px solid var(--line);
-margin-top:12px;
-padding-top:12px
-}
-
-.comments.show{
-display:block
-}
-
-.form-card{
-background:linear-gradient(145deg,#12151e,#0e1118);
-border:1px solid var(--line);
-border-radius:20px;
-padding:17px
-}
-
-.form-title{
-font-size:22px;
-font-weight:900
-}
-
-.form-sub{
-color:var(--muted);
-font-size:10px;
-line-height:1.55;
-margin:5px 0 17px
-}
-
-.label{
-font-size:8px;
-color:#778196;
-font-weight:900;
-letter-spacing:.5px;
-margin:13px 0 6px
-}
-
-.add{
-width:100%;
-border:1px dashed #44415c;
-background:transparent;
-color:#a99cff;
-padding:11px;
-border-radius:12px;
-font-size:10px;
-font-weight:800
-}
-
-.info{
-margin-top:12px;
-padding:11px;
-border-radius:12px;
-background:#10151e;
-border:1px solid var(--line);
-color:#7e899d;
-font-size:9px;
-line-height:1.5
-}
-
-.leader-hero{
-padding:21px;
-text-align:center;
-border-radius:21px;
-background:
-radial-gradient(circle at 50% 0,#ffd76b24,transparent 55%),
-linear-gradient(145deg,#181528,#11131b);
-border:1px solid #3b3349;
-margin-bottom:13px
-}
-
-.crown{
-font-size:34px
-}
-
-.leader-name{
-font-size:18px;
-font-weight:900;
-margin-top:6px
-}
-
-.leader-score{
-font-size:9px;
-color:#a99cff;
-margin-top:4px
-}
-
-.tabs{
-display:flex;
-padding:4px;
-background:#0e1118;
-border:1px solid var(--line);
-border-radius:13px;
-margin-bottom:12px
-}
-
-.tab{
-flex:1;
-border:0;
-background:none;
-color:#6f798d;
-border-radius:9px;
-padding:9px 2px;
-font-size:9px;
-font-weight:800
-}
-
-.tab.active{
-background:#292340;
-color:#fff
-}
-
-.rank{
-display:flex;
-align-items:center;
-gap:9px
-}
-
-.rankno{
-width:23px;
-text-align:center;
-font-weight:900
-}
-
-.rankscore{
-text-align:right;
-color:#a99cff;
-font-size:11px;
-font-weight:900
-}
-
-.rankscore small{
-display:block;
-color:#697386;
-font-size:7px
-}
-
-.profile-head{
-text-align:center;
-padding:8px 0 16px
-}
-
-.profile-avatar{
-width:78px;
-height:78px;
-border-radius:25px;
-margin:auto;
-font-size:25px;
-box-shadow:0 15px 40px #6d5dfc33
-}
-
-.profile-name{
-font-size:21px;
-font-weight:900;
-margin-top:10px
-}
-
-.profile-meta{
-font-size:9px;
-color:#8c96aa;
-margin-top:4px
-}
-
-.stats{
-display:grid;
-grid-template-columns:repeat(3,1fr);
-gap:7px;
-margin-bottom:13px
-}
-
-.stat{
-background:#11141c;
-border:1px solid var(--line);
-border-radius:14px;
-padding:12px 4px;
-text-align:center
-}
-
-.stat b{
-display:block;
-font-size:17px
-}
-
-.stat span{
-font-size:7px;
-color:#6f798d
-}
-
-.profile-grid{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:8px
-}
-
-.profile-info{
-padding:12px;
-border:1px solid var(--line);
-border-radius:13px;
-background:#10131a
-}
-
-.profile-info span{
-display:block;
-color:#6f798d;
-font-size:7px;
-margin-bottom:4px
-}
-
-.profile-info b{
-font-size:11px
-}
-
-.badges{
-display:flex;
-gap:7px;
-overflow:auto
-}
-
-.badge{
-min-width:82px;
-text-align:center;
-padding:11px 6px;
-border:1px solid var(--line);
-border-radius:13px;
-background:#11141c
-}
-
-.badge-icon{
-font-size:20px
-}
-
-.badge small{
-display:block;
-color:#7c869a;
-font-size:7px;
-margin-top:5px
-}
-
-.pending{
-background:linear-gradient(145deg,#17142a,#11141b);
-border:1px solid #322a50;
-border-radius:17px;
-padding:14px;
-margin-bottom:10px
-}
-
-.pending-label{
-font-size:8px;
-color:#a99cff;
-font-weight:900
-}
-
-.pending-q{
-font-size:13px;
-font-weight:850;
-line-height:1.45;
-margin:7px 0
-}
-
-.result-buttons{
-display:grid;
-grid-template-columns:repeat(3,1fr);
-gap:6px
-}
-
-.result{
-border:1px solid var(--line);
-background:#171a23;
-color:#fff;
-border-radius:10px;
-padding:9px 3px;
-font-size:8px;
-font-weight:800
-}
-
-.navbar{
-position:fixed;
-z-index:40;
-bottom:0;
-left:50%;
-transform:translateX(-50%);
-width:100%;
-max-width:520px;
-height:75px;
-display:flex;
-align-items:center;
-justify-content:space-around;
-background:#080a0ff2;
-backdrop-filter:blur(18px);
-border-top:1px solid var(--line);
-padding-bottom:env(safe-area-inset-bottom)
-}
-
-.nav{
-border:0;
-background:none;
-color:#687286;
-font-size:8px;
-font-weight:800;
-display:flex;
-flex-direction:column;
-align-items:center;
-gap:4px;
-min-width:58px
-}
-
-.nav i{
-font-style:normal;
-font-size:19px
-}
-
-.nav.active{
-color:#a99cff
-}
-
-.create-btn{
-width:48px;
-height:48px;
-border:0;
-border-radius:16px;
-background:var(--grad);
-color:#fff;
-font-size:25px;
-box-shadow:0 10px 25px #6d5dfc44
-}
-
-.toast{
-position:fixed;
-z-index:100;
-left:50%;
-bottom:88px;
-transform:translate(-50%,15px);
-opacity:0;
-pointer-events:none;
-background:#252b37;
-border:1px solid #3b4352;
-color:#fff;
-border-radius:12px;
-padding:10px 14px;
-font-size:9px;
-font-weight:800;
-transition:.25s;
-max-width:90%;
-text-align:center
-}
-
-.toast.show{
-opacity:1;
-transform:translate(-50%,0)
-}
-
-@media(max-width:360px){
-.brand{font-size:36px}
-.q{font-size:14px}
-}
+--bg:#07080d;--surface:#10131b;--surface2:#151923;--line:#252b38;
+--text:#f7f8fb;--muted:#8b94a8;--accent:#7c5cff;--accent2:#a855f7;
+--grad:linear-gradient(135deg,#6d5dfc,#a855f7);--green:#22c55e
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0;background:#030408;color:var(--text);
+font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+body{min-height:100vh}button,input,textarea,select{font:inherit}button{cursor:pointer}
+.app{max-width:520px;min-height:100vh;margin:auto;background:
+radial-gradient(circle at 50% -10%,#1b1734,transparent 32%),var(--bg);
+position:relative;overflow-x:hidden}.hidden{display:none!important}
+#auth{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+.auth-box{width:100%;max-width:420px;text-align:center}
+.logo{width:78px;height:78px;margin:0 auto 17px;border-radius:25px;background:var(--grad);
+display:grid;place-items:center;font-size:36px;font-weight:900;box-shadow:0 20px 60px #6d5dfc44}
+.brand{font-size:42px;font-weight:900;letter-spacing:-2px}
+.tag{color:var(--muted);line-height:1.65;margin:8px 0 22px}
+.language{display:flex;gap:7px;justify-content:center;margin-bottom:14px}
+.lang{border:1px solid var(--line);background:var(--surface);color:var(--muted);
+border-radius:10px;padding:7px 11px;font-size:10px;font-weight:800}
+.lang.active{color:#fff;border-color:#5948ba;background:#241e3d}
+.field{width:100%;padding:14px 15px;margin-bottom:9px;border:1px solid var(--line);
+border-radius:14px;background:#0d1017;color:#fff;outline:0}
+.field:focus{border-color:var(--accent)}.select{appearance:none}
+.primary{width:100%;padding:15px;border:0;border-radius:14px;background:var(--grad);
+color:#fff;font-weight:900;box-shadow:0 12px 30px #6d5dfc33}
+.primary:disabled{opacity:.6;cursor:not-allowed}
+.secondary-link{color:#a99cff;font-size:11px;margin-top:13px;cursor:pointer}
+.msg{margin-top:12px;padding:10px;border-radius:11px;font-size:10px}
+.err{background:#29151b;border:1px solid #67313d;color:#ffadb8}
+.ok{color:#52d67d;background:#102319;border:1px solid #214c31}
+#main{display:none;min-height:100vh;padding-bottom:92px}
+.screen{display:none;padding:17px 15px 22px;animation:in .22s ease}
+.screen.active{display:block}
+@keyframes in{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+.top{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.top h1{font-size:25px;margin:0;letter-spacing:-.7px}
+.top p{font-size:10px;color:var(--muted);margin:4px 0 0}
+.mini-avatar,.avatar{background:var(--grad);display:grid;place-items:center;font-weight:900}
+.mini-avatar{width:42px;height:42px;border-radius:14px}
+.hero{padding:17px;border:1px solid #302a4d;border-radius:21px;background:
+radial-gradient(circle at 100% 0,#6d5dfc2b,transparent 43%),linear-gradient(145deg,#17142a,#10131b);
+margin-bottom:14px}
+.live{display:flex;align-items:center;gap:7px;color:#bcb0ff;font-size:9px;font-weight:900;letter-spacing:.5px}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 12px var(--green)}
+.hero h2{font-size:19px;margin:11px 0 5px}.hero p{color:var(--muted);font-size:10px;line-height:1.55;margin:0}
+.quick{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:13px}
+.quick button{border:1px solid #343044;background:#171522;color:#fff;border-radius:12px;
+padding:10px;text-align:left;font-size:10px;font-weight:800}
+.quick b{display:block;font-size:14px;margin-bottom:3px}
+.filters{display:flex;gap:7px;overflow:auto;scrollbar-width:none;margin:0 0 14px}
+.filters::-webkit-scrollbar{display:none}
+.filter{white-space:nowrap;border:1px solid var(--line);background:var(--surface);color:var(--muted);
+border-radius:20px;padding:9px 12px;font-size:10px;font-weight:800}
+.filter.active{background:#251f3f;color:#fff;border-color:#5a48bd}
+.card{background:linear-gradient(145deg,#11141d,#0e1118);border:1px solid var(--line);
+border-radius:19px;padding:15px;margin-bottom:11px;box-shadow:0 12px 30px #0000001f}
+.userline{display:flex;align-items:center;gap:9px}.avatar{width:36px;height:36px;border-radius:12px;font-size:12px}
+.grow{flex:1}.name{font-size:11px;font-weight:900}.muted{font-size:9px;color:var(--muted);margin-top:3px}
+.chip{color:#b7a9ff;background:#211c35;border:1px solid #342b56;border-radius:9px;padding:5px 7px;font-size:8px;font-weight:900}
+.q{font-size:16px;line-height:1.48;font-weight:850;margin:13px 0}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.opt{position:relative;overflow:hidden;min-height:58px;border:1px solid var(--line);
+background:#171a23;color:#fff;border-radius:13px;padding:11px 9px;text-align:left;font-size:11px;font-weight:800}
+.opt:disabled{opacity:.65;cursor:default}.pct{display:block;color:#8b94a8;font-size:9px;margin-top:5px}
+.bar{position:absolute;left:0;bottom:0;height:3px;background:var(--grad);border-radius:0 4px 0 0}
+.bottom{display:flex;justify-content:space-between;align-items:center;margin-top:11px;color:#687286;font-size:9px}
+.textbtn{border:0;background:none;color:#7e889d;font-size:9px;padding:0;font-weight:800}
+.cities{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
+.city{background:#151a23;border:1px solid #252d3a;border-radius:8px;padding:5px 7px;color:#aeb7c8;font-size:8px}
+.comments{display:none;border-top:1px solid var(--line);margin-top:12px;padding-top:12px}
+.comments.show{display:block}
+.form-card{background:linear-gradient(145deg,#12151e,#0e1118);border:1px solid var(--line);border-radius:20px;padding:17px}
+.form-title{font-size:22px;font-weight:900}.form-sub{color:var(--muted);font-size:10px;line-height:1.55;margin:5px 0 17px}
+.label{font-size:8px;color:#778196;font-weight:900;letter-spacing:.5px;margin:13px 0 6px}
+.add{width:100%;border:1px dashed #44415c;background:transparent;color:#a99cff;padding:11px;border-radius:12px;font-size:10px;font-weight:800}
+.info{margin-top:12px;padding:11px;border-radius:12px;background:#10151e;border:1px solid var(--line);color:#7e899d;font-size:9px;line-height:1.5}
+.leader-hero{padding:21px;text-align:center;border-radius:21px;background:
+radial-gradient(circle at 50% 0,#ffd76b24,transparent 55%),linear-gradient(145deg,#181528,#11131b);
+border:1px solid #3b3349;margin-bottom:13px}
+.crown{font-size:34px}.leader-name{font-size:18px;font-weight:900;margin-top:6px}
+.leader-score{font-size:9px;color:#a99cff;margin-top:4px}
+.tabs{display:flex;padding:4px;background:#0e1118;border:1px solid var(--line);border-radius:13px;margin-bottom:12px}
+.tab{flex:1;border:0;background:none;color:#6f798d;border-radius:9px;padding:9px 2px;font-size:9px;font-weight:800}
+.tab.active{background:#292340;color:#fff}
+.rank{display:flex;align-items:center;gap:9px}.rankno{width:23px;text-align:center;font-weight:900}
+.rankscore{text-align:right;color:#a99cff;font-size:11px;font-weight:900}.rankscore small{display:block;color:#697386;font-size:7px}
+.profile-head{text-align:center;padding:8px 0 16px}.profile-avatar{width:78px;height:78px;border-radius:25px;margin:auto;font-size:25px;box-shadow:0 15px 40px #6d5dfc33}
+.profile-name{font-size:21px;font-weight:900;margin-top:10px}.profile-meta{font-size:9px;color:#8c96aa;margin-top:4px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:13px}
+.stat{background:#11141c;border:1px solid var(--line);border-radius:14px;padding:12px 4px;text-align:center}
+.stat b{display:block;font-size:17px}.stat span{font-size:7px;color:#6f798d}
+.profile-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.profile-info{padding:12px;border:1px solid var(--line);border-radius:13px;background:#10131a}
+.profile-info span{display:block;color:#6f798d;font-size:7px;margin-bottom:4px}.profile-info b{font-size:11px}
+.badges{display:flex;gap:7px;overflow:auto}.badge{min-width:82px;text-align:center;padding:11px 6px;border:1px solid var(--line);border-radius:13px;background:#11141c}
+.badge-icon{font-size:20px}.badge small{display:block;color:#7c869a;font-size:7px;margin-top:5px}
+.pending{background:linear-gradient(145deg,#17142a,#11141b);border:1px solid #322a50;border-radius:17px;padding:14px;margin-bottom:10px}
+.pending-label{font-size:8px;color:#a99cff;font-weight:900}.pending-q{font-size:13px;font-weight:850;line-height:1.45;margin:7px 0}
+.result-buttons{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.result{border:1px solid var(--line);background:#171a23;color:#fff;border-radius:10px;padding:9px 3px;font-size:8px;font-weight:800}
+.navbar{position:fixed;z-index:40;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:520px;height:75px;
+display:flex;align-items:center;justify-content:space-around;background:#080a0ff2;backdrop-filter:blur(18px);
+border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom)}
+.nav{border:0;background:none;color:#687286;font-size:8px;font-weight:800;display:flex;flex-direction:column;align-items:center;gap:4px;min-width:58px}
+.nav i{font-style:normal;font-size:19px}.nav.active{color:#a99cff}
+.create-btn{width:48px;height:48px;border:0;border-radius:16px;background:var(--grad);color:#fff;font-size:25px;box-shadow:0 10px 25px #6d5dfc44}
+.toast{position:fixed;z-index:100;left:50%;bottom:88px;transform:translate(-50%,15px);opacity:0;pointer-events:none;
+background:#252b37;border:1px solid #3b4352;color:#fff;border-radius:12px;padding:10px 14px;font-size:9px;font-weight:800;
+transition:.25s;max-width:90%;text-align:center}.toast.show{opacity:1;transform:translate(-50%,0)}
+@media(max-width:360px){.brand{font-size:36px}.q{font-size:14px}}
 </style>
 </head>
 
 <body>
-
 <div class="app">
 
 <section id="auth">
-
 <div class="auth-box">
-
 <div class="logo">N</div>
 <div class="brand">Nexus</div>
-
 <div class="tag" id="authTag"></div>
 
 <div class="language">
@@ -839,30 +139,21 @@ transform:translate(-50%,0)
 </div>
 
 <div id="loginForm">
-
 <input id="le" class="field" type="email" placeholder="E-posta">
-
 <input id="lp" class="field" type="password" placeholder="Şifre">
-
 <button class="primary" onclick="login()" id="loginBtn"></button>
-
-<div class="secondary-link" onclick="registerView" id="registerLink"></div>
-
+<div class="secondary-link" onclick="registerView()" id="registerLink"></div>
 </div>
 
 <div id="registerForm" class="hidden">
-
 <input id="ru" class="field" maxlength="20" placeholder="Kullanıcı adı">
-
 <input id="re" class="field" type="email" placeholder="E-posta">
-
 <input id="rp" class="field" type="password" minlength="6" placeholder="Şifre">
 
 <div class="label" data-i18n="ageLabel"></div>
 <input id="rage" class="field" type="number" min="13" max="100">
 
 <div class="label" data-i18n="genderLabel"></div>
-
 <select id="rg" class="field select">
 <option value="" data-i18n="select"></option>
 <option value="male" data-i18n="male"></option>
@@ -870,101 +161,62 @@ transform:translate(-50%,0)
 </select>
 
 <div class="label" data-i18n="cityLabel"></div>
-
 <input id="rcity" class="field" maxlength="50">
 
 <button class="primary" onclick="register()" id="registerBtn"></button>
-
 <div class="secondary-link" onclick="loginView()" id="loginLink"></div>
-
 </div>
 
 <div id="authMsg"></div>
-
 </div>
 </section>
 
 <main id="main">
 
 <section id="home" class="screen active">
-
 <div class="top">
-<div>
-<h1>🔥 Nexus</h1>
-<p data-i18n="homeSub"></p>
-</div>
+<div><h1>🔥 Nexus</h1><p data-i18n="homeSub"></p></div>
 <div class="mini-avatar" id="ha">N</div>
 </div>
 
 <div class="hero">
-
-<div class="live">
-<span class="dot"></span>
-NEXUS LIVE
-</div>
-
+<div class="live"><span class="dot"></span>NEXUS LIVE</div>
 <h2 data-i18n="heroTitle"></h2>
-
 <p data-i18n="heroText"></p>
-
 <div class="quick">
-
-<button onclick="showScreen('create')">
-<b>🧠</b>
-<span data-i18n="askDecision"></span>
-</button>
-
-<button onclick="showScreen('leaderboard')">
-<b>🏆</b>
-<span data-i18n="seeLeaderboard"></span>
-</button>
-
+<button onclick="showScreen('create')"><b>🧠</b><span data-i18n="askDecision"></span></button>
+<button onclick="showScreen('leaderboard')"><b>🏆</b><span data-i18n="seeLeaderboard"></span></button>
 </div>
 </div>
 
 <div class="filters">
-
 <button class="filter active" onclick="filterFeed(this,'all')" data-i18n="all"></button>
 <button class="filter" onclick="filterFeed(this,'İş')" data-i18n="work"></button>
 <button class="filter" onclick="filterFeed(this,'Aşk')" data-i18n="love"></button>
 <button class="filter" onclick="filterFeed(this,'Günlük')" data-i18n="daily"></button>
 <button class="filter" onclick="filterFeed(this,'Alışveriş')" data-i18n="shopping"></button>
 <button class="filter" onclick="filterFeed(this,'Hayat')" data-i18n="life"></button>
-
 </div>
 
-<div id="feed">
-<div class="card" data-i18n="loading"></div>
-</div>
-
+<div id="feed"><div class="card" data-i18n="loading"></div></div>
 </section>
 
 <section id="create" class="screen">
-
 <div class="form-card">
-
 <div class="form-title" data-i18n="createTitle"></div>
-
 <div class="form-sub" data-i18n="createSub"></div>
 
 <div class="label" data-i18n="questionLabel"></div>
-
 <textarea id="q" class="field"></textarea>
 
 <div class="label" data-i18n="optionsLabel"></div>
-
 <input id="o1" class="field">
-
 <input id="o2" class="field">
 
-<div id="thirdBox" class="hidden">
-<input id="o3" class="field">
-</div>
-
+<div id="thirdBox" class="hidden"><input id="o3" class="field"></div>
 <button class="add" onclick="addThirdOption()" data-i18n="thirdOption"></button>
 
 <div class="label" data-i18n="categoryLabel"></div>
-
 <select id="cat" class="field select">
 <option value="Günlük" data-i18n="daily"></option>
 <option value="İş" data-i18n="work"></option>
@@ -975,354 +227,187 @@ NEXUS LIVE
 </select>
 
 <div class="info" data-i18n="resultInfo"></div>
-
 <button class="primary" style="margin-top:14px" onclick="createDecision()" data-i18n="sendDecision"></button>
-
 </div>
 </section>
 
 <section id="leaderboard" class="screen">
-
 <div class="top">
-<div>
-<h1>🏆 Nexus Yarışı</h1>
-<p data-i18n="leaderSub"></p>
+<div><h1>🏆 Nexus Yarışı</h1><p data-i18n="leaderSub"></p></div>
 </div>
-</div>
-
 <div id="champion"></div>
 
 <div class="tabs">
-
 <button class="tab active" onclick="rankPeriod(this,'day')" data-i18n="today"></button>
 <button class="tab" onclick="rankPeriod(this,'week')" data-i18n="week"></button>
 <button class="tab" onclick="rankPeriod(this,'month')" data-i18n="month"></button>
 <button class="tab" onclick="rankPeriod(this,'all')" data-i18n="allTime"></button>
-
 </div>
-
 <div id="rank"></div>
-
 </section>
 
 <section id="results" class="screen">
-
 <div class="top">
-<div>
-<h1>📊 <span data-i18n="myResults"></span></h1>
-<p data-i18n="resultsSub"></p>
+<div><h1>📊 <span data-i18n="myResults"></span></h1><p data-i18n="resultsSub"></p></div>
 </div>
-</div>
-
 <div id="resultsBox"></div>
-
 </section>
 
 <section id="profile" class="screen">
-
 <div class="card">
-
 <div class="profile-head">
-
 <div id="pa" class="avatar profile-avatar">N</div>
-
 <div id="pn" class="profile-name">@user</div>
-
 <div id="pg" class="profile-meta"></div>
-
 </div>
 
 <div class="stats">
-
-<div class="stat">
-<b id="sc">0%</b>
-<span data-i18n="reliability"></span>
-</div>
-
-<div class="stat">
-<b id="dc">0</b>
-<span data-i18n="decisions"></span>
-</div>
-
-<div class="stat">
-<b id="cc">0</b>
-<span data-i18n="accuracy"></span>
-</div>
-
+<div class="stat"><b id="sc">0%</b><span data-i18n="reliability"></span></div>
+<div class="stat"><b id="dc">0</b><span data-i18n="decisions"></span></div>
+<div class="stat"><b id="cc">0</b><span data-i18n="accuracy"></span></div>
 </div>
 
 <div class="profile-grid">
-
-<div class="profile-info">
-<span data-i18n="age"></span>
-<b id="pAge">-</b>
-</div>
-
-<div class="profile-info">
-<span data-i18n="city"></span>
-<b id="pCity">-</b>
-</div>
-
-<div class="profile-info">
-<span data-i18n="totalScore"></span>
-<b id="totalScore">0</b>
-</div>
-
-<div class="profile-info">
-<span data-i18n="monthlyScore"></span>
-<b id="monthScore">0</b>
-</div>
-
+<div class="profile-info"><span data-i18n="age"></span><b id="pAge">-</b></div>
+<div class="profile-info"><span data-i18n="city"></span><b id="pCity">-</b></div>
+<div class="profile-info"><span data-i18n="totalScore"></span><b id="totalScore">0</b></div>
+<div class="profile-info"><span data-i18n="monthlyScore"></span><b id="monthScore">0</b></div>
 </div>
 </div>
 
 <div class="card">
-
 <div class="label">🏅 <span data-i18n="badges"></span></div>
-
 <div id="badges" class="badges"></div>
-
 </div>
 
 <button class="primary" onclick="logout()" data-i18n="logout"></button>
-
 </section>
 
 <nav class="navbar">
-
-<button class="nav active" onclick="showScreen('home',this)">
-<i>🔥</i>
-<span data-i18n="discover"></span>
-</button>
-
-<button class="nav" onclick="showScreen('leaderboard',this)">
-<i>🏆</i>
-<span data-i18n="competition"></span>
-</button>
-
+<button class="nav active" onclick="showScreen('home',this)"><i>🔥</i><span data-i18n="discover"></span></button>
+<button class="nav" onclick="showScreen('leaderboard',this)"><i>🏆</i><span data-i18n="competition"></span></button>
 <button class="create-btn" onclick="showScreen('create',this)">+</button>
-
-<button class="nav" onclick="showScreen('results',this)">
-<i>📊</i>
-<span data-i18n="results"></span>
-</button>
-
-<button class="nav" onclick="showScreen('profile',this)">
-<i>👤</i>
-<span data-i18n="profile"></span>
-</button>
-
+<button class="nav" onclick="showScreen('results',this)"><i>📊</i><span data-i18n="results"></span></button>
+<button class="nav" onclick="showScreen('profile',this)"><i>👤</i><span data-i18n="profile"></span></button>
 </nav>
-
 </main>
 
 <div id="toast" class="toast"></div>
-
 </div>
 
 <script>
 const SUPABASE_URL="https://gdollkoewmtngxdoxnzn.supabase.co";
 const SUPABASE_KEY="sb_publishable_nboUtwCIJFUE3Zp2rmfcWw_nvLXQqRL";
 
-let db=null;
-let session=null;
-let profile=null;
-let decisions=[];
+let db=null,session=null,profile=null,decisions=[];
 let language=localStorage.getItem("nexusLanguage")||"tr";
-let navigationReady=false;
-let leaderboardPeriod="all";
-let voting=false;
-let creating=false;
+let navigationReady=false,leaderboardPeriod="all",voting=false,creating=false;
 
 const $=id=>document.getElementById(id);
 
 const T={
 tr:{
 tag:"Kararını topluluğa bırak.<br>Sonucunu geri getir.<br><b>Kim daha iyi karar veriyor?</b>",
-login:"Nexus'a Gir →",
-register:"Nexus'a Katıl 🚀",
-registerLink:"Hesabın yok mu? Kayıt ol",
-loginLink:"Zaten hesabın var mı? Giriş yap",
-ageLabel:"YAŞ",genderLabel:"CİNSİYET",cityLabel:"ŞEHİR",
-select:"Seçiniz",male:"🔵 Erkek",female:"🩷 Kadın",
-homeSub:"Topluluk şu anda karar veriyor",
+login:"Nexus'a Gir →",register:"Nexus'a Katıl 🚀",
+registerLink:"Hesabın yok mu? Kayıt ol",loginLink:"Zaten hesabın var mı? Giriş yap",
+ageLabel:"YAŞ",genderLabel:"CİNSİYET",cityLabel:"ŞEHİR",select:"Seçiniz",
+male:"🔵 Erkek",female:"🩷 Kadın",homeSub:"Topluluk şu anda karar veriyor",
 heroTitle:"Herkes herkesle yarışıyor.",
 heroText:"Kararını oluştur. Topluluktan oy al. Başkalarının kararlarına oy ver. Güvenilirliğini yükselt.",
 askDecision:"Karar Sor",seeLeaderboard:"Liderliği Gör",
-all:"🔥 Tümü",work:"💼 İş",love:"❤️ Aşk",daily:"☕ Günlük",
-shopping:"🛍️ Alışveriş",life:"🌍 Hayat",friendship:"👥 Arkadaşlık",
-loading:"Nexus yükleniyor...",
-createTitle:"🧠 Kararını Fırlat",
+all:"🔥 Tümü",work:"💼 İş",love:"❤️ Aşk",daily:"☕ Günlük",shopping:"🛍️ Alışveriş",life:"🌍 Hayat",friendship:"👥 Arkadaşlık",
+loading:"Nexus yükleniyor...",createTitle:"🧠 Kararını Fırlat",
 createSub:"Kararsız kaldığın şeyi Nexus'a bırak. Topluluk senin yerine karar versin.",
-questionLabel:"SORUN / KARAR",optionsLabel:"SEÇENEKLER",
-thirdOption:"＋ Üçüncü seçenek ekle",categoryLabel:"KATEGORİ",
-resultInfo:"💡 Kararını uyguladıktan sonra sonucu bildir. Sonucun Nexus güvenilirliğini etkiler.",
-sendDecision:"🚀 Nexus'a Sor",
-leaderSub:"Herkes aynı yarışta.",today:"Bugün",week:"Hafta",month:"Ay",allTime:"Tümü",
-myResults:"Sonuçlarım",resultsSub:"Kararlarının sonucunu bildir.",
-reliability:"GÜVENİLİRLİK",decisions:"KARAR",accuracy:"İSABET",
-age:"YAŞ",city:"ŞEHİR",totalScore:"TOPLAM PUAN",monthlyScore:"AYLIK PUAN",
-badges:"ROZETLER",logout:"Çıkış Yap",discover:"Keşfet",competition:"Yarış",
-results:"Sonuçlar",profile:"Profil",
-resultWaiting:"🔔 SONUÇ BEKLİYOR",good:"🟢 İyi oldu",
-same:"🟡 Beklediğim gibi",bad:"🔴 Kötü oldu",
-noResults:"🎯 Sonuç bekleyen kararın yok.",
-voteSaved:"Oyun kaydedildi 🎯",decisionSaved:"Kararın Nexus'a gönderildi 🚀",
+questionLabel:"SORUN / KARAR",optionsLabel:"SEÇENEKLER",thirdOption:"＋ Üçüncü seçenek ekle",
+categoryLabel:"KATEGORİ",resultInfo:"💡 Kararını uyguladıktan sonra sonucu bildir. Sonucun Nexus güvenilirliğini etkiler.",
+sendDecision:"🚀 Nexus'a Sor",leaderSub:"Herkes aynı yarışta.",today:"Bugün",week:"Hafta",month:"Ay",allTime:"Tümü",
+myResults:"Sonuçlarım",resultsSub:"Kararlarının sonucunu bildir.",reliability:"GÜVENİLİRLİK",decisions:"KARAR",accuracy:"İSABET",
+age:"YAŞ",city:"ŞEHİR",totalScore:"TOPLAM PUAN",monthlyScore:"AYLIK PUAN",badges:"ROZETLER",logout:"Çıkış Yap",
+discover:"Keşfet",competition:"Yarış",results:"Sonuçlar",profile:"Profil",
+resultWaiting:"🔔 SONUÇ BEKLİYOR",good:"🟢 İyi oldu",same:"🟡 Beklediğim gibi",bad:"🔴 Kötü oldu",
+noResults:"🎯 Sonuç bekleyen kararın yok.",voteSaved:"Oyun kaydedildi 🎯",decisionSaved:"Kararın Nexus'a gönderildi 🚀",
 alreadyVoted:"Bu karara zaten oy verdin.",needDecision:"Karar ve en az iki seçenek gerekli.",
-noCategory:"Henüz bu kategoride karar yok.",champion:"AYIN NEXUS ŞAMPİYONU",
-nexusPoints:"Nexus puanı",reliable:"güvenilirlik",newMember:"Yeni Üye",
-firstDecision:"İlk Karar",decisionHunter:"Karar Avcısı",activeVoter:"Aktif Oycu",
-accurate:"İsabetli",trusted:"Güvenilir",master:"Nexus Ustası"
+noCategory:"Henüz bu kategoride karar yok.",champion:"AYIN NEXUS ŞAMPİYONU",nexusPoints:"Nexus puanı",
+reliable:"güvenilirlik",newMember:"Yeni Üye",firstDecision:"İlk Karar",decisionHunter:"Karar Avcısı",
+activeVoter:"Aktif Oycu",accurate:"İsabetli",trusted:"Güvenilir",master:"Nexus Ustası"
 },
 de:{
 tag:"Überlasse deine Entscheidung der Community.<br>Bring das Ergebnis zurück.<br><b>Wer entscheidet besser?</b>",
-login:"Nexus betreten →",register:"Nexus beitreten 🚀",
-registerLink:"Noch kein Konto? Registrieren",loginLink:"Bereits ein Konto? Einloggen",
-ageLabel:"ALTER",genderLabel:"GESCHLECHT",cityLabel:"STADT",
-select:"Auswählen",male:"🔵 Mann",female:"🩷 Frau",
-homeSub:"Die Community entscheidet gerade",
-heroTitle:"Jeder tritt gegen jeden an.",
+login:"Nexus betreten →",register:"Nexus beitreten 🚀",registerLink:"Noch kein Konto? Registrieren",loginLink:"Bereits ein Konto? Einloggen",
+ageLabel:"ALTER",genderLabel:"GESCHLECHT",cityLabel:"STADT",select:"Auswählen",male:"🔵 Mann",female:"🩷 Frau",
+homeSub:"Die Community entscheidet gerade",heroTitle:"Jeder tritt gegen jeden an.",
 heroText:"Erstelle deine Entscheidung. Lass die Community abstimmen. Stimme über andere Entscheidungen ab und erhöhe deine Zuverlässigkeit.",
-askDecision:"Entscheidung fragen",seeLeaderboard:"Rangliste",
-all:"🔥 Alle",work:"💼 Arbeit",love:"❤️ Liebe",daily:"☕ Alltag",
-shopping:"🛍️ Einkauf",life:"🌍 Leben",friendship:"👥 Freundschaft",
-loading:"Nexus wird geladen...",
-createTitle:"🧠 Entscheidung starten",
-createSub:"Überlasse deine schwierige Entscheidung Nexus. Die Community entscheidet für dich.",
-questionLabel:"FRAGE / ENTSCHEIDUNG",optionsLabel:"OPTIONEN",
-thirdOption:"＋ Dritte Option hinzufügen",categoryLabel:"KATEGORIE",
+askDecision:"Entscheidung fragen",seeLeaderboard:"Rangliste",all:"🔥 Alle",work:"💼 Arbeit",love:"❤️ Liebe",daily:"☕ Alltag",
+shopping:"🛍️ Einkauf",life:"🌍 Leben",friendship:"👥 Freundschaft",loading:"Nexus wird geladen...",
+createTitle:"🧠 Entscheidung starten",createSub:"Überlasse deine schwierige Entscheidung Nexus. Die Community entscheidet für dich.",
+questionLabel:"FRAGE / ENTSCHEIDUNG",optionsLabel:"OPTIONEN",thirdOption:"＋ Dritte Option hinzufügen",categoryLabel:"KATEGORIE",
 resultInfo:"💡 Melde nach deiner Entscheidung das Ergebnis. Dein Ergebnis beeinflusst deine Nexus-Zuverlässigkeit.",
-sendDecision:"🚀 Nexus fragen",
-leaderSub:"Alle sind im selben Wettbewerb.",today:"Heute",week:"Woche",month:"Monat",allTime:"Alle",
-myResults:"Meine Ergebnisse",resultsSub:"Melde die Ergebnisse deiner Entscheidungen.",
-reliability:"ZUVERLÄSSIGKEIT",decisions:"ENTSCHEIDUNGEN",accuracy:"TREFFER",
-age:"ALTER",city:"STADT",totalScore:"GESAMTPUNKTE",monthlyScore:"MONATSPUNKTE",
-badges:"ABZEICHEN",logout:"Abmelden",discover:"Entdecken",competition:"Wettbewerb",
-results:"Ergebnisse",profile:"Profil",
-resultWaiting:"🔔 ERGEBNIS AUSSTEHEND",good:"🟢 Gut gelaufen",
-same:"🟡 Wie erwartet",bad:"🔴 Schlecht gelaufen",
-noResults:"🎯 Keine offenen Ergebnisse.",
-voteSaved:"Stimme gespeichert 🎯",decisionSaved:"Deine Entscheidung wurde gesendet 🚀",
-alreadyVoted:"Du hast bereits abgestimmt.",needDecision:"Frage und mindestens zwei Optionen erforderlich.",
-noCategory:"Noch keine Entscheidungen in dieser Kategorie.",champion:"NEXUS-CHAMPION DES MONATS",
-nexusPoints:"Nexus-Punkte",reliable:"Zuverlässigkeit",newMember:"Neues Mitglied",
-firstDecision:"Erste Entscheidung",decisionHunter:"Entscheidungsjäger",activeVoter:"Aktiver Wähler",
-accurate:"Treffsicher",trusted:"Zuverlässig",master:"Nexus-Meister"
+sendDecision:"🚀 Nexus fragen",leaderSub:"Alle sind im selben Wettbewerb.",today:"Heute",week:"Woche",month:"Monat",allTime:"Alle",
+myResults:"Meine Ergebnisse",resultsSub:"Melde die Ergebnisse deiner Entscheidungen.",reliability:"ZUVERLÄSSIGKEIT",decisions:"ENTSCHEIDUNGEN",accuracy:"TREFFER",
+age:"ALTER",city:"STADT",totalScore:"GESAMTPUNKTE",monthlyScore:"MONATSPUNKTE",badges:"ABZEICHEN",logout:"Abmelden",
+discover:"Entdecken",competition:"Wettbewerb",results:"Ergebnisse",profile:"Profil",resultWaiting:"🔔 ERGEBNIS AUSSTEHEND",
+good:"🟢 Gut gelaufen",same:"🟡 Wie erwartet",bad:"🔴 Schlecht gelaufen",noResults:"🎯 Keine offenen Ergebnisse.",
+voteSaved:"Stimme gespeichert 🎯",decisionSaved:"Deine Entscheidung wurde gesendet 🚀",alreadyVoted:"Du hast bereits abgestimmt.",
+needDecision:"Frage und mindestens zwei Optionen erforderlich.",noCategory:"Noch keine Entscheidungen in dieser Kategorie.",
+champion:"NEXUS-CHAMPION DES MONATS",nexusPoints:"Nexus-Punkte",reliable:"Zuverlässigkeit",newMember:"Neues Mitglied",
+firstDecision:"Erste Entscheidung",decisionHunter:"Entscheidungsjäger",activeVoter:"Aktiver Wähler",accurate:"Treffsicher",trusted:"Zuverlässig",master:"Nexus-Meister"
 },
 en:{
 tag:"Leave your decision to the community.<br>Bring the result back.<br><b>Who makes better decisions?</b>",
-login:"Enter Nexus →",register:"Join Nexus 🚀",
-registerLink:"No account? Register",loginLink:"Already have an account? Log in",
-ageLabel:"AGE",genderLabel:"GENDER",cityLabel:"CITY",
-select:"Select",male:"🔵 Male",female:"🩷 Female",
-homeSub:"The community is deciding now",
-heroTitle:"Everyone competes with everyone.",
+login:"Enter Nexus →",register:"Join Nexus 🚀",registerLink:"No account? Register",loginLink:"Already have an account? Log in",
+ageLabel:"AGE",genderLabel:"GENDER",cityLabel:"CITY",select:"Select",male:"🔵 Male",female:"🩷 Female",
+homeSub:"The community is deciding now",heroTitle:"Everyone competes with everyone.",
 heroText:"Create your decision. Get votes from the community. Vote on other decisions and increase your reliability.",
-askDecision:"Ask Nexus",seeLeaderboard:"Leaderboard",
-all:"🔥 All",work:"💼 Work",love:"❤️ Love",daily:"☕ Daily",
-shopping:"🛍️ Shopping",life:"🌍 Life",friendship:"👥 Friendship",
-loading:"Nexus is loading...",
-createTitle:"🧠 Launch your decision",
-createSub:"Leave your difficult decision to Nexus. The community decides for you.",
-questionLabel:"QUESTION / DECISION",optionsLabel:"OPTIONS",
-thirdOption:"＋ Add third option",categoryLabel:"CATEGORY",
+askDecision:"Ask Nexus",seeLeaderboard:"Leaderboard",all:"🔥 All",work:"💼 Work",love:"❤️ Love",daily:"☕ Daily",
+shopping:"🛍️ Shopping",life:"🌍 Life",friendship:"👥 Friendship",loading:"Nexus is loading...",createTitle:"🧠 Launch your decision",
+createSub:"Leave your difficult decision to Nexus. The community decides for you.",questionLabel:"QUESTION / DECISION",
+optionsLabel:"OPTIONS",thirdOption:"＋ Add third option",categoryLabel:"CATEGORY",
 resultInfo:"💡 Report the result after acting on your decision. Your result affects your Nexus reliability.",
-sendDecision:"🚀 Ask Nexus",
-leaderSub:"Everyone is in the same competition.",today:"Today",week:"Week",month:"Month",allTime:"All",
-myResults:"My Results",resultsSub:"Report the results of your decisions.",
-reliability:"RELIABILITY",decisions:"DECISIONS",accuracy:"ACCURACY",
-age:"AGE",city:"CITY",totalScore:"TOTAL SCORE",monthlyScore:"MONTHLY SCORE",
-badges:"BADGES",logout:"Log out",discover:"Discover",competition:"Competition",
-results:"Results",profile:"Profile",
-resultWaiting:"🔔 RESULT PENDING",good:"🟢 It went well",
-same:"🟡 As expected",bad:"🔴 It went badly",
-noResults:"🎯 No pending results.",
-voteSaved:"Vote saved 🎯",decisionSaved:"Your decision was sent to Nexus 🚀",
-alreadyVoted:"You already voted on this decision.",needDecision:"A question and at least two options are required.",
-noCategory:"No decisions in this category yet.",champion:"NEXUS CHAMPION OF THE MONTH",
-nexusPoints:"Nexus points",reliable:"reliability",newMember:"New Member",
-firstDecision:"First Decision",decisionHunter:"Decision Hunter",activeVoter:"Active Voter",
-accurate:"Accurate",trusted:"Trusted",master:"Nexus Master"
-}
-};
+sendDecision:"🚀 Ask Nexus",leaderSub:"Everyone is in the same competition.",today:"Today",week:"Week",month:"Month",allTime:"All",
+myResults:"My Results",resultsSub:"Report the results of your decisions.",reliability:"RELIABILITY",decisions:"DECISIONS",accuracy:"ACCURACY",
+age:"AGE",city:"CITY",totalScore:"TOTAL SCORE",monthlyScore:"MONTHLY SCORE",badges:"BADGES",logout:"Log out",
+discover:"Discover",competition:"Competition",results:"Results",profile:"Profile",resultWaiting:"🔔 RESULT PENDING",
+good:"🟢 It went well",same:"🟡 As expected",bad:"🔴 It went badly",noResults:"🎯 No pending results.",
+voteSaved:"Vote saved 🎯",decisionSaved:"Your decision was sent to Nexus 🚀",alreadyVoted:"You already voted on this decision.",
+needDecision:"A question and at least two options are required.",noCategory:"No decisions in this category yet.",
+champion:"NEXUS CHAMPION OF THE MONTH",nexusPoints:"Nexus points",reliable:"reliability",newMember:"New Member",
+firstDecision:"First Decision",decisionHunter:"Decision Hunter",activeVoter:"Active Voter",accurate:"Accurate",trusted:"Trusted",master:"Nexus Master"
+}};
 
-function tr(k){
-return T[language]?.[k]||T.tr[k]||k;
-}
-
-function esc(x){
-return String(x??"").replace(/[&<>"']/g,m=>({
-"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
-}[m]));
-}
-
+function tr(k){return T[language]?.[k]||T.tr[k]||k}
+function esc(x){return String(x??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
 function toast(text){
-const e=$("toast");
-if(!e)return;
-e.textContent=text;
-e.classList.add("show");
-clearTimeout(window.toastTimer);
-window.toastTimer=setTimeout(()=>e.classList.remove("show"),2800);
+const e=$("toast");if(!e)return;e.textContent=text;e.classList.add("show");
+clearTimeout(window.toastTimer);window.toastTimer=setTimeout(()=>e.classList.remove("show"),2800)
 }
-
-function authmsg(text,ok=false){
-$("authMsg").innerHTML='<div class="msg '+(ok?"ok":"err")+'">'+esc(text)+'</div>';
-}
+function authmsg(text,ok=false){$("authMsg").innerHTML='<div class="msg '+(ok?"ok":"err")+'">'+esc(text)+'</div>'}
 
 function initSupabase(){
 try{
 if(!window.supabase)throw new Error("Supabase library missing");
 db=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{
-auth:{
-persistSession:true,
-autoRefreshToken:true,
-detectSessionInUrl:true,
-storageKey:"nexus-auth"
-}
-});
-return true;
-}catch(e){
-console.error(e);
-authmsg("Supabase bağlantısı kurulamadı. Sayfayı yenileyip tekrar deneyin.");
-return false;
-}
+auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true,storageKey:"nexus-auth"}
+});return true
+}catch(e){console.error(e);authmsg("Supabase bağlantısı kurulamadı. Sayfayı yenileyip tekrar deneyin.");return false}
 }
 
 function setLanguage(lang){
-language=lang;
-localStorage.setItem("nexusLanguage",lang);
-
-document.documentElement.lang=lang;
-
-document.querySelectorAll(".lang").forEach(b=>{
-b.classList.toggle("active",b.textContent.toLowerCase().includes(lang));
-});
-
-$("authTag").innerHTML=tr("tag");
-$("loginBtn").textContent=tr("login");
-$("registerBtn").textContent=tr("register");
-$("registerLink").textContent=tr("registerLink");
-$("loginLink").textContent=tr("loginLink");
-
-document.querySelectorAll("[data-i18n]").forEach(el=>{
-const key=el.dataset.i18n;
-el.textContent=tr(key);
-});
+language=lang;localStorage.setItem("nexusLanguage",lang);document.documentElement.lang=lang;
+document.querySelectorAll(".lang").forEach(b=>b.classList.toggle("active",b.textContent.toLowerCase().includes(lang)));
+$("authTag").innerHTML=tr("tag");$("loginBtn").textContent=tr("login");$("registerBtn").textContent=tr("register");
+$("registerLink").textContent=tr("registerLink");$("loginLink").textContent=tr("loginLink");
+document.querySelectorAll("[data-i18n]").forEach(el=>el.textContent=tr(el.dataset.i18n));
 
 $("le").placeholder=language==="tr"?"E-posta":language==="de"?"E-Mail":"Email";
 $("lp").placeholder=language==="tr"?"Şifre":language==="de"?"Passwort":"Password";
 $("ru").placeholder=language==="tr"?"Kullanıcı adı":language==="de"?"Benutzername":"Username";
-$("re").placeholder=language==="tr"?"E-posta":language==="de"?"E-Mail":"Email";
-$("rp").placeholder=language==="tr"?"Şifre":language==="de"?"Passwort":"Password";
+$("re").placeholder=$("le").placeholder;$("rp").placeholder=$("lp").placeholder;
 $("rage").placeholder=language==="tr"?"Yaş":language==="de"?"Alter":"Age";
 $("rcity").placeholder=language==="tr"?"Örn. Heilbronn":language==="de"?"z.B. Heilbronn":"e.g. Heilbronn";
-
-if($("q")){
 $("q").placeholder=language==="tr"?"Örn: Bu işi kabul etmeli miyim?":language==="de"?"z.B.: Soll ich diesen Job annehmen?":"e.g. Should I accept this job?";
 $("o1").placeholder=language==="tr"?"1. seçenek":language==="de"?"1. Option":"Option 1";
 $("o2").placeholder=language==="tr"?"2. seçenek":language==="de"?"2. Option":"Option 2";
 $("o3").placeholder=language==="tr"?"3. seçenek":language==="de"?"3. Option":"Option 3";
-}
 }
 
 function registerView(){
@@ -1330,7 +415,6 @@ $("loginForm").classList.add("hidden");
 $("registerForm").classList.remove("hidden");
 $("authMsg").innerHTML="";
 }
-
 function loginView(){
 $("registerForm").classList.add("hidden");
 $("loginForm").classList.remove("hidden");
@@ -1338,197 +422,92 @@ $("authMsg").innerHTML="";
 }
 
 async function register(){
-if(!db){
-authmsg("Supabase bağlantısı hazır değil.");
-return;
-}
-
-const btn=$("registerBtn");
-if(btn.disabled)return;
-btn.disabled=true;
-
+if(!db)return authmsg("Supabase bağlantısı hazır değil.");
+const btn=$("registerBtn");if(btn.disabled)return;btn.disabled=true;
 try{
 const username=$("ru").value.trim().replace(/\s+/g,"").slice(0,20);
-const email=$("re").value.trim();
-const password=$("rp").value;
-const age=Number($("rage").value);
-const gender=$("rg").value;
-const city=$("rcity").value.trim();
+const email=$("re").value.trim(),password=$("rp").value;
+const age=Number($("rage").value),gender=$("rg").value,city=$("rcity").value.trim();
 
-if(!username||!email||password.length<6)
-throw new Error("Kullanıcı adı, e-posta ve en az 6 karakterli şifre gerekli.");
-
-if(!age||age<13||age>100)
-throw new Error("Lütfen geçerli bir yaş gir.");
-
+if(!username||!email||password.length<6)throw new Error("Kullanıcı adı, e-posta ve en az 6 karakterli şifre gerekli.");
+if(!age||age<13||age>100)throw new Error("Lütfen geçerli bir yaş gir.");
 if(!gender)throw new Error("Lütfen cinsiyet seç.");
 if(!city)throw new Error("Lütfen şehir bilgisini gir.");
 
-const r=await db.auth.signUp({
-email,
-password,
-options:{
-data:{username,age,gender,city}
-}
-});
-
-if(r.error)throw r.error;
-if(!r.data.user)throw new Error("Kayıt oluşturulamadı.");
+const r=await db.auth.signUp({email,password,options:{data:{username,age,gender,city}}});
+if(r.error)throw r.error;if(!r.data.user)throw new Error("Kayıt oluşturulamadı.");
 
 if(!r.data.session){
-authmsg(
-language==="tr"?
-"Kayıt oluşturuldu. E-posta doğrulama gerekiyorsa gelen kutunu kontrol et.":
-language==="de"?
-"Konto erstellt. Bitte prüfe deine E-Mail zur Bestätigung.":
-"Account created. Please check your email for verification.",
-true
-);
+authmsg(language==="tr"?"Kayıt oluşturuldu. E-posta doğrulama gerekiyorsa gelen kutunu kontrol et.":
+language==="de"?"Konto erstellt. Bitte prüfe deine E-Mail zur Bestätigung.":"Account created. Please check your email for verification.",true);
 return;
 }
-
-session=r.data.session;
-
-await ensureProfile(r.data.user,username,age,gender,city);
-await start();
-
-}catch(e){
-console.error(e);
-authmsg("Kayıt başarısız: "+e.message);
-}finally{
-btn.disabled=false;
-}
+session=r.data.session;await ensureProfile(r.data.user,username,age,gender,city);await start();
+}catch(e){console.error(e);authmsg("Kayıt başarısız: "+e.message)}
+finally{btn.disabled=false}
 }
 
 async function login(){
-if(!db){
-authmsg("Supabase bağlantısı hazır değil. Sayfayı yenile.");
-return;
-}
-
-const btn=$("loginBtn");
-if(btn.disabled)return;
-btn.disabled=true;
-
+if(!db)return authmsg("Supabase bağlantısı hazır değil. Sayfayı yenile.");
+const btn=$("loginBtn");if(btn.disabled)return;btn.disabled=true;
 try{
-const email=$("le").value.trim();
-const password=$("lp").value;
-
-if(!email||!password)
-throw new Error("E-posta ve şifre gerekli.");
-
+const email=$("le").value.trim(),password=$("lp").value;
+if(!email||!password)throw new Error("E-posta ve şifre gerekli.");
 const r=await db.auth.signInWithPassword({email,password});
-
-if(r.error)throw r.error;
-if(!r.data.session)throw new Error("Oturum oluşturulamadı.");
-
-session=r.data.session;
-await ensureProfile(r.data.user);
-await start();
-
-}catch(e){
-console.error(e);
-authmsg("Giriş başarısız: "+e.message);
-}finally{
-btn.disabled=false;
-}
+if(r.error)throw r.error;if(!r.data.session)throw new Error("Oturum oluşturulamadı.");
+session=r.data.session;await ensureProfile(r.data.user);await start();
+}catch(e){console.error(e);authmsg("Giriş başarısız: "+e.message)}
+finally{btn.disabled=false}
 }
 
 async function ensureProfile(user,username,age,gender,city){
 let r=await db.from("profiles").select("*").eq("id",user.id).maybeSingle();
-
 if(r.error)throw new Error("Profil kontrolü başarısız: "+r.error.message);
-
-if(r.data){
-profile=r.data;
-return;
-}
+if(r.data){profile=r.data;return}
 
 const meta=user.user_metadata||{};
 let name=username||meta.username||"@"+(user.email||"user").split("@")[0];
 if(!name.startsWith("@"))name="@"+name;
 
-const data={
-id:user.id,
-username:name.slice(0,21),
-age:age||meta.age||null,
-gender:gender||meta.gender||null,
-city:city||meta.city||null,
-decisions_count:0,
-correct_count:0,
-votes_count:0,
-reliability_score:0
-};
+const data={id:user.id,username:name.slice(0,21),age:age||meta.age||null,gender:gender||meta.gender||null,
+city:city||meta.city||null,decisions_count:0,correct_count:0,votes_count:0,reliability_score:0};
 
 r=await db.from("profiles").insert(data).select().single();
-
 if(r.error){
-const fallback={
-id:user.id,
-username:name.slice(0,21),
-decisions_count:0,
-correct_count:0,
-votes_count:0,
-reliability_score:0
-};
-
-const f=await db.from("profiles").insert(fallback).select().single();
-
-if(f.error){
-throw new Error("Profil oluşturulamadı: "+r.error.message);
-}
-
+const f=await db.from("profiles").insert({
+id:user.id,username:name.slice(0,21),decisions_count:0,correct_count:0,votes_count:0,reliability_score:0
+}).select().single();
+if(f.error)throw new Error("Profil oluşturulamadı: "+r.error.message);
 profile=f.data;
-}else{
-profile=r.data;
-}
+}else profile=r.data;
 }
 
 function calculateScore(p){
-return Number(p?.decisions_count||0)*10+
-Number(p?.correct_count||0)*25+
-Number(p?.votes_count||0)*2;
+return Number(p?.decisions_count||0)*10+Number(p?.correct_count||0)*25+Number(p?.votes_count||0)*2
 }
 
 function updateProfile(){
 if(!profile)return;
-
-const name=profile.username||"@user";
-const initial=name.replace("@","").charAt(0).toUpperCase()||"N";
-
-$("ha").textContent=initial;
-$("pa").textContent=initial;
-$("pn").textContent=name;
+const name=profile.username||"@user",initial=name.replace("@","").charAt(0).toUpperCase()||"N";
+$("ha").textContent=initial;$("pa").textContent=initial;$("pn").textContent=name;
 
 const g=String(profile.gender||"").toLowerCase();
-
-if(["male","m","erkek"].includes(g)){
-$("pg").textContent="🔵 "+tr("male").replace("🔵 ","");
-}else if(["female","f","kadın","kadin"].includes(g)){
-$("pg").textContent="🩷 "+tr("female").replace("🩷 ","");
-}else{
-$("pg").textContent="Nexus üyesi";
-}
+$("pg").textContent=["male","m","erkek"].includes(g)?"🔵 "+tr("male").replace("🔵 ",""):
+["female","f","kadın","kadin"].includes(g)?"🩷 "+tr("female").replace("🩷 ",""):"Nexus üyesi";
 
 $("pAge").textContent=profile.age?profile.age+" "+tr("age").toLowerCase():"-";
 $("pCity").textContent=profile.city?"📍 "+profile.city:"-";
 $("sc").textContent=Number(profile.reliability_score||0)+"%";
 $("dc").textContent=Number(profile.decisions_count||0);
 $("cc").textContent=Number(profile.correct_count||0);
-
 $("totalScore").textContent=calculateScore(profile);
 $("monthScore").textContent=calculateScore(profile);
-
 renderBadges();
 }
 
 function renderBadges(){
-const badges=[];
-const d=Number(profile?.decisions_count||0);
-const c=Number(profile?.correct_count||0);
-const v=Number(profile?.votes_count||0);
-const r=Number(profile?.reliability_score||0);
-
+const badges=[],d=Number(profile?.decisions_count||0),c=Number(profile?.correct_count||0),
+v=Number(profile?.votes_count||0),r=Number(profile?.reliability_score||0);
 if(d>=1)badges.push(["🧠",tr("firstDecision")]);
 if(d>=10)badges.push(["🔥",tr("decisionHunter")]);
 if(v>=10)badges.push(["🗳️",tr("activeVoter")]);
@@ -1536,328 +515,142 @@ if(c>=5)badges.push(["🎯",tr("accurate")]);
 if(r>=80)badges.push(["⭐",tr("trusted")]);
 if(d>=50)badges.push(["👑",tr("master")]);
 if(!badges.length)badges.push(["🌱",tr("newMember")]);
-
-$("badges").innerHTML=badges.map(b=>`
-<div class="badge">
-<div class="badge-icon">${b[0]}</div>
-<small>${esc(b[1])}</small>
-</div>
-`).join("");
+$("badges").innerHTML=badges.map(b=>`<div class="badge"><div class="badge-icon">${b[0]}</div><small>${esc(b[1])}</small></div>`).join("");
 }
 
 async function start(){
-$("auth").style.display="none";
-$("main").style.display="block";
-
-updateProfile();
-initializeNavigation();
-
-await Promise.allSettled([
-loadFeed(),
-loadResults(),
-loadLeaderboard()
-]);
+$("auth").style.display="none";$("main").style.display="block";
+updateProfile();initializeNavigation();
+await Promise.allSettled([loadFeed(),loadResults(),loadLeaderboard()]);
 }
 
 async function loadFeed(){
 $("feed").innerHTML='<div class="card">'+esc(tr("loading"))+'</div>';
+const r=await db.from("decisions").select("id,user_id,question,category,status,result,created_at,profiles(username,gender,city),options(id,option_text,position)")
+.order("created_at",{ascending:false}).limit(60);
+if(r.error){console.error(r.error);$("feed").innerHTML='<div class="card err">'+esc(r.error.message)+'</div>';return}
 
-const r=await db.from("decisions")
-.select("id,user_id,question,category,status,result,created_at,profiles(username,gender,city),options(id,option_text,position)")
-.order("created_at",{ascending:false})
-.limit(60);
+const rows=r.data||[],ids=rows.map(x=>x.id);let votes=[];
+if(ids.length){const v=await db.from("votes").select("decision_id,option_id,user_id").in("decision_id",ids);if(!v.error)votes=v.data||[]}
 
-if(r.error){
-console.error(r.error);
-$("feed").innerHTML='<div class="card err">'+esc(r.error.message)+'</div>';
-return;
-}
-
-const rows=r.data||[];
-const ids=rows.map(x=>x.id);
-let votes=[];
-
-if(ids.length){
-const v=await db.from("votes").select("decision_id,option_id,user_id").in("decision_id",ids);
-if(!v.error)votes=v.data||[];
-}
-
-const voterIds=[...new Set(votes.map(v=>v.user_id).filter(Boolean))];
-let vp=[];
-
-if(voterIds.length){
-const q=await db.from("profiles").select("id,gender,city").in("id",voterIds);
-if(!q.error)vp=q.data||[];
-}
+const voterIds=[...new Set(votes.map(v=>v.user_id).filter(Boolean))];let vp=[];
+if(voterIds.length){const q=await db.from("profiles").select("id,gender,city").in("id",voterIds);if(!q.error)vp=q.data||[]}
 
 decisions=rows.map(d=>{
 const vv=votes.filter(v=>v.decision_id===d.id);
-
-const oo=(d.options||[])
-.sort((a,b)=>a.position-b.position)
-.map(o=>({
-id:o.id,
-text:o.option_text,
-n:vv.filter(v=>v.option_id===o.id).length
+const oo=(d.options||[]).sort((a,b)=>a.position-b.position).map(o=>({
+id:o.id,text:o.option_text,n:vv.filter(v=>v.option_id===o.id).length
 }));
-
-let male=0;
-let female=0;
-const cities={};
-
+let male=0,female=0;const cities={};
 vv.forEach(v=>{
-const p=vp.find(x=>x.id===v.user_id);
-if(!p)return;
-
+const p=vp.find(x=>x.id===v.user_id);if(!p)return;
 const g=String(p.gender||"").toLowerCase();
-
 if(["male","m","erkek"].includes(g))male++;
 if(["female","f","kadın","kadin"].includes(g))female++;
-
-if(p.city){
-const city=p.city.trim();
-if(city)cities[city]=(cities[city]||0)+1;
-}
+if(p.city){const city=p.city.trim();if(city)cities[city]=(cities[city]||0)+1}
 });
-
-return{
-...d,
-oo,
-total:vv.length,
-male,
-female,
-cities,
-voted:vv.some(v=>v.user_id===session.user.id)
-};
+return {...d,oo,total:vv.length,male,female,cities,voted:vv.some(v=>v.user_id===session.user.id)}
 });
-
 renderFeed();
 }
 
 function renderFeed(filter="all"){
 const list=filter==="all"?decisions:decisions.filter(d=>d.category===filter);
-
-if(!list.length){
-$("feed").innerHTML='<div class="card">'+esc(tr("noCategory"))+'</div>';
-return;
-}
+if(!list.length){$("feed").innerHTML='<div class="card">'+esc(tr("noCategory"))+'</div>';return}
 
 $("feed").innerHTML=list.map(d=>{
-const name=d.profiles?.username||"@user";
-const av=name.replace("@","")[0]?.toUpperCase()||"U";
-
-const cities=Object.entries(d.cities||{})
-.sort((a,b)=>b[1]-a[1]).slice(0,5);
+const name=d.profiles?.username||"@user",av=name.replace("@","")[0]?.toUpperCase()||"U";
+const cities=Object.entries(d.cities||{}).sort((a,b)=>b[1]-a[1]).slice(0,5);
 
 const options=d.oo.map(o=>{
 const p=d.total?Math.round(o.n/d.total*100):0;
-
-return`
-<button class="opt"
-${d.voted?"disabled":""}
-onclick="vote('${esc(d.id)}','${esc(o.id)}')">
-${esc(o.text)}
-<span class="pct">${p}% · ${o.n} oy</span>
-<span class="bar" style="width:${p}%"></span>
-</button>`;
+return `<button class="opt" ${d.voted?"disabled":""} onclick="vote('${esc(d.id)}','${esc(o.id)}')">
+${esc(o.text)}<span class="pct">${p}% · ${o.n} oy</span><span class="bar" style="width:${p}%"></span></button>`
 }).join("");
 
-const cityHtml=cities.map(c=>`
-<span class="city">📍 ${esc(c[0])} ${c[1]}</span>
-`).join("");
-
-return`
-<div class="card">
-<div class="userline">
-<div class="avatar">${esc(av)}</div>
-<div class="grow">
-<div class="name">${esc(name)}</div>
-<div class="muted">${new Date(d.created_at).toLocaleDateString()}</div>
-</div>
-<div class="chip">${esc(d.category||"Nexus")}</div>
-</div>
-
+return `<div class="card">
+<div class="userline"><div class="avatar">${esc(av)}</div><div class="grow">
+<div class="name">${esc(name)}</div><div class="muted">${new Date(d.created_at).toLocaleDateString()}</div>
+</div><div class="chip">${esc(d.category||"Nexus")}</div></div>
 <div class="q">${esc(d.question)}</div>
-
 <div class="opts">${options}</div>
-
-<div class="bottom">
-<span>👥 ${d.total} oy</span>
-<button class="textbtn" onclick="toggleComments('${esc(d.id)}')">💬 Yorum</button>
-</div>
-
-<div class="cities">
-<span class="city">🔵 ${d.male||0}</span>
-<span class="city">🩷 ${d.female||0}</span>
-${cityHtml}
-</div>
-
-<div class="comments" id="comments-${esc(d.id)}">
-<div class="muted">Yorumlar yakında burada gösterilecek.</div>
-</div>
-</div>`;
+<div class="bottom"><span>👥 ${d.total} oy</span><button class="textbtn" onclick="toggleComments('${esc(d.id)}')">💬 Yorum</button></div>
+<div class="cities"><span class="city">🔵 ${d.male||0}</span><span class="city">🩷 ${d.female||0}</span>
+${cities.map(c=>`<span class="city">📍 ${esc(c[0])} ${c[1]}</span>`).join("")}</div>
+<div class="comments" id="comments-${esc(d.id)}"><div class="muted">Yorumlar yakında burada gösterilecek.</div></div>
+</div>`
 }).join("");
 }
 
 function filterFeed(btn,c){
 document.querySelectorAll(".filter").forEach(x=>x.classList.remove("active"));
-btn.classList.add("active");
-renderFeed(c);
+btn.classList.add("active");renderFeed(c);
 }
 
 async function vote(did,oid){
 if(voting)return;
-
 const d=decisions.find(x=>x.id===did);
-
-if(!d||d.voted){
-toast(tr("alreadyVoted"));
-return;
-}
-
+if(!d||d.voted){toast(tr("alreadyVoted"));return}
 voting=true;
-
 try{
-const r=await db.from("votes").insert({
-decision_id:did,
-option_id:oid,
-user_id:session.user.id
-});
-
-if(r.error){
-toast(r.error.code==="23505"?tr("alreadyVoted"):"Oy verilemedi: "+r.error.message);
-return;
-}
+const r=await db.from("votes").insert({decision_id:did,option_id:oid,user_id:session.user.id});
+if(r.error){toast(r.error.code==="23505"?tr("alreadyVoted"):"Oy verilemedi: "+r.error.message);return}
 
 const n=Number(profile.votes_count||0)+1;
-
-const p=await db.from("profiles")
-.update({votes_count:n})
-.eq("id",session.user.id)
-.select()
-.single();
-
-if(!p.error)profile=p.data;
-else profile.votes_count=n;
-
-updateProfile();
-await loadFeed();
-toast(tr("voteSaved"));
-
-}catch(e){
-console.error(e);
-toast("Oy verilemedi: "+e.message);
-}finally{
-voting=false;
-}
+const p=await db.from("profiles").update({votes_count:n}).eq("id",session.user.id).select().single();
+if(!p.error)profile=p.data;else profile.votes_count=n;
+updateProfile();await loadFeed();toast(tr("voteSaved"));
+}catch(e){console.error(e);toast("Oy verilemedi: "+e.message)}
+finally{voting=false}
 }
 
 function toggleComments(id){
-const e=$("comments-"+id);
-if(e)e.classList.toggle("show");
+const e=$("comments-"+id);if(e)e.classList.toggle("show")
 }
 
-function addThirdOption(){
-$("thirdBox").classList.remove("hidden");
-}
+function addThirdOption(){$("thirdBox").classList.remove("hidden")}
 
 async function createDecision(){
 if(creating)return;
+if(!session){toast("Önce giriş yapmalısın.");return}
 
-if(!session){
-toast("Önce giriş yapmalısın.");
-return;
-}
-
-const q=$("q").value.trim();
-const a=$("o1").value.trim();
-const b=$("o2").value.trim();
-const c=$("o3")?.value.trim();
-
-if(!q||!a||!b){
-toast(tr("needDecision"));
-return;
-}
-
+const q=$("q").value.trim(),a=$("o1").value.trim(),b=$("o2").value.trim(),c=$("o3")?.value.trim();
+if(!q||!a||!b){toast(tr("needDecision"));return}
 creating=true;
 
 try{
 const r=await db.from("decisions").insert({
-user_id:session.user.id,
-question:q,
-category:$("cat").value,
-status:"open"
+user_id:session.user.id,question:q,category:$("cat").value,status:"open"
 }).select().single();
 
-if(r.error){
-toast("Karar oluşturulamadı: "+r.error.message);
-return;
-}
+if(r.error){toast("Karar oluşturulamadı: "+r.error.message);return}
 
-const rows=[
-{decision_id:r.data.id,option_text:a,position:1},
-{decision_id:r.data.id,option_text:b,position:2}
-];
-
-if(c)rows.push({
-decision_id:r.data.id,
-option_text:c,
-position:3
-});
+const rows=[{decision_id:r.data.id,option_text:a,position:1},{decision_id:r.data.id,option_text:b,position:2}];
+if(c)rows.push({decision_id:r.data.id,option_text:c,position:3});
 
 const o=await db.from("options").insert(rows);
-
 if(o.error){
 await db.from("decisions").delete().eq("id",r.data.id);
-toast("Seçenekler kaydedilemedi: "+o.error.message);
-return;
+toast("Seçenekler kaydedilemedi: "+o.error.message);return
 }
 
 const n=Number(profile.decisions_count||0)+1;
+const p=await db.from("profiles").update({decisions_count:n}).eq("id",session.user.id).select().single();
+if(!p.error)profile=p.data;else profile.decisions_count=n;
 
-const p=await db.from("profiles")
-.update({decisions_count:n})
-.eq("id",session.user.id)
-.select()
-.single();
-
-if(!p.error)profile=p.data;
-else profile.decisions_count=n;
-
-["q","o1","o2","o3"].forEach(id=>{
-if($(id))$(id).value="";
-});
-
+["q","o1","o2","o3"].forEach(id=>{if($(id))$(id).value=""});
 $("thirdBox").classList.add("hidden");
-
-updateProfile();
-await loadFeed();
-await loadResults();
-showScreen("home");
-toast(tr("decisionSaved"));
-
-}catch(e){
-console.error(e);
-toast("Karar oluşturulamadı: "+e.message);
-}finally{
-creating=false;
-}
+updateProfile();await loadFeed();await loadResults();showScreen("home");toast(tr("decisionSaved"));
+}catch(e){console.error(e);toast("Karar oluşturulamadı: "+e.message)}
+finally{creating=false}
 }
 
 async function loadResults(){
-const r=await db.from("decisions")
-.select("id,question,category,created_at")
-.eq("user_id",session.user.id)
-.eq("status","open")
-.order("created_at",{ascending:false});
-
-if(r.error){
-$("resultsBox").innerHTML='<div class="card err">'+esc(r.error.message)+'</div>';
-return;
-}
+const r=await db.from("decisions").select("id,question,category,created_at")
+.eq("user_id",session.user.id).eq("status","open").order("created_at",{ascending:false});
+if(r.error){$("resultsBox").innerHTML='<div class="card err">'+esc(r.error.message)+'</div>';return}
 
 const rows=r.data||[];
-
 $("resultsBox").innerHTML=rows.length?rows.map(d=>`
 <div class="pending">
 <div class="pending-label">${tr("resultWaiting")}</div>
@@ -1867,300 +660,154 @@ $("resultsBox").innerHTML=rows.length?rows.map(d=>`
 <button class="result" onclick="result('${esc(d.id)}','good')">${tr("good")}</button>
 <button class="result" onclick="result('${esc(d.id)}','same')">${tr("same")}</button>
 <button class="result" onclick="result('${esc(d.id)}','bad')">${tr("bad")}</button>
-</div>
-</div>
-`).join(""):'<div class="card">'+esc(tr("noResults"))+'</div>';
+</div></div>`).join(""):'<div class="card">'+esc(tr("noResults"))+'</div>';
 }
 
 async function result(id,val){
 if(!["good","same","bad"].includes(val))return;
 
-const r=await db.from("decisions")
-.update({result:val,status:"completed"})
-.eq("id",id)
-.eq("user_id",session.user.id)
-.eq("status","open")
-.select("id");
+const r=await db.from("decisions").update({result:val,status:"completed"})
+.eq("id",id).eq("user_id",session.user.id).eq("status","open").select("id");
 
-if(r.error){
-toast("Sonuç kaydedilemedi: "+r.error.message);
-return;
-}
+if(r.error){toast("Sonuç kaydedilemedi: "+r.error.message);return}
+if(!r.data?.length){toast("Bu karar artık güncel değil.");await loadResults();return}
 
-if(!r.data?.length){
-toast("Bu karar artık güncel değil.");
-await loadResults();
-return;
-}
+const a=await db.from("decisions").select("result").eq("user_id",session.user.id);
+if(a.error){toast("Sonuç kaydedildi.");await loadResults();return}
 
-const a=await db.from("decisions")
-.select("result")
-.eq("user_id",session.user.id);
-
-if(a.error){
-toast("Sonuç kaydedildi.");
-await loadResults();
-return;
-}
-
-const rows=a.data||[];
-const done=rows.filter(x=>x.result);
-const good=done.filter(x=>x.result==="good").length;
+const rows=a.data||[],done=rows.filter(x=>x.result),good=done.filter(x=>x.result==="good").length;
 const score=done.length?Math.round(good/done.length*100):0;
 
-const p=await db.from("profiles")
-.update({
-decisions_count:rows.length,
-correct_count:good,
-reliability_score:score
-})
-.eq("id",session.user.id)
-.select()
-.single();
+const p=await db.from("profiles").update({
+decisions_count:rows.length,correct_count:good,reliability_score:score
+}).eq("id",session.user.id).select().single();
 
 if(!p.error)profile=p.data;
-
-updateProfile();
-await loadResults();
-await loadLeaderboard();
-
-toast("Sonucun kaydedildi 🧠");
+updateProfile();await loadResults();await loadLeaderboard();toast("Sonucun kaydedildi 🧠");
 }
 
 function periodStart(period){
 const now=new Date();
-
-if(period==="day"){
-return new Date(now.getFullYear(),now.getMonth(),now.getDate());
-}
-
+if(period==="day")return new Date(now.getFullYear(),now.getMonth(),now.getDate());
 if(period==="week"){
-const d=new Date(now);
-const day=d.getDay()||7;
-d.setDate(d.getDate()-day+1);
-d.setHours(0,0,0,0);
-return d;
+const d=new Date(now),day=d.getDay()||7;
+d.setDate(d.getDate()-day+1);d.setHours(0,0,0,0);return d
 }
-
-if(period==="month"){
-return new Date(now.getFullYear(),now.getMonth(),1);
-}
-
-return null;
+if(period==="month")return new Date(now.getFullYear(),now.getMonth(),1);
+return null
 }
 
 async function loadLeaderboard(){
-const r=await db.from("profiles")
-.select("id,username,gender,city,decisions_count,correct_count,votes_count,reliability_score")
-.limit(100);
-
-if(r.error){
-$("rank").innerHTML='<div class="card err">'+esc(r.error.message)+'</div>';
-return;
-}
+const r=await db.from("profiles").select("id,username,gender,city,decisions_count,correct_count,votes_count,reliability_score").limit(100);
+if(r.error){$("rank").innerHTML='<div class="card err">'+esc(r.error.message)+'</div>';return}
 
 let rows=r.data||[];
 
 if(leaderboardPeriod!=="all"){
-const start=periodStart(leaderboardPeriod);
-
-const ids=rows.map(x=>x.id);
-let activity=[];
-
+const start=periodStart(leaderboardPeriod),ids=rows.map(x=>x.id);let activity=[];
 if(ids.length){
-const d=await db.from("decisions")
-.select("user_id,created_at,result")
-.in("user_id",ids)
-.gte("created_at",start.toISOString());
-
+const d=await db.from("decisions").select("user_id,created_at,result").in("user_id",ids).gte("created_at",start.toISOString());
 if(!d.error)activity=d.data||[];
 }
-
 rows=rows.map(u=>{
-const acts=activity.filter(a=>a.user_id===u.id);
-const decisions=acts.length;
-const correct=acts.filter(a=>a.result==="good").length;
-
-return{
-...u,
-periodDecisions:decisions,
-periodCorrect:correct,
-score:decisions*10+correct*25+Number(u.votes_count||0)*2
-};
+const acts=activity.filter(a=>a.user_id===u.id),decisions=acts.length,correct=acts.filter(a=>a.result==="good").length;
+return {...u,score:decisions*10+correct*25+Number(u.votes_count||0)*2}
 });
-}else{
-rows=rows.map(u=>({
-...u,
-score:
-Number(u.decisions_count||0)*10+
-Number(u.correct_count||0)*25+
-Number(u.votes_count||0)*2
-}));
-}
+}else rows=rows.map(u=>({...u,score:Number(u.decisions_count||0)*10+Number(u.correct_count||0)*25+Number(u.votes_count||0)*2}));
 
 rows.sort((a,b)=>b.score-a.score);
-
 const leader=rows[0];
 
-$("champion").innerHTML=leader?`
-<div class="leader-hero">
-<div class="crown">👑</div>
-<div class="muted">${tr("champion")}</div>
+$("champion").innerHTML=leader?`<div class="leader-hero">
+<div class="crown">👑</div><div class="muted">${tr("champion")}</div>
 <div class="leader-name">${esc(leader.username||"@user")}</div>
-<div class="leader-score">
-⭐ ${leader.score} ${tr("nexusPoints")}
-· %${Number(leader.reliability_score||0)} ${tr("reliable")}
-</div>
+<div class="leader-score">⭐ ${leader.score} ${tr("nexusPoints")} · %${Number(leader.reliability_score||0)} ${tr("reliable")}</div>
 </div>`:"";
 
 $("rank").innerHTML=rows.map((u,i)=>{
-const n=u.username||"@user";
-const g=String(u.gender||"").toLowerCase();
-
-const gi=["male","m","erkek"].includes(g)?"🔵":
-["female","f","kadın","kadin"].includes(g)?"🩷":"";
-
-return`
-<div class="card">
-<div class="rank">
+const n=u.username||"@user",g=String(u.gender||"").toLowerCase();
+const gi=["male","m","erkek"].includes(g)?"🔵":["female","f","kadın","kadin"].includes(g)?"🩷":"";
+return `<div class="card"><div class="rank">
 <div class="rankno">${i<3?["🥇","🥈","🥉"][i]:i+1}</div>
 <div class="avatar">${esc(n.replace("@","")[0]?.toUpperCase()||"U")}</div>
-<div class="grow">
-<b style="font-size:11px">${esc(n)} ${gi}</b>
-<div class="muted">
-${Number(u.decisions_count||0)} karar
-${u.city?" · 📍 "+esc(u.city):""}
-</div>
-</div>
-<div class="rankscore">
-${u.score}
-<small>${tr("nexusPoints")}</small>
-</div>
-</div>
-</div>`;
+<div class="grow"><b style="font-size:11px">${esc(n)} ${gi}</b>
+<div class="muted">${Number(u.decisions_count||0)} karar${u.city?" · 📍 "+esc(u.city):""}</div></div>
+<div class="rankscore">${u.score}<small>${tr("nexusPoints")}</small></div>
+</div></div>`
 }).join("")||'<div class="card">Henüz lider yok.</div>';
 }
 
 function rankPeriod(btn,p){
 document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
-btn.classList.add("active");
-leaderboardPeriod=p;
-loadLeaderboard();
+btn.classList.add("active");leaderboardPeriod=p;loadLeaderboard();
 }
 
 function showScreen(id,btn,useHistory=true){
-const target=$(id);
-if(!target)return;
-
+const target=$(id);if(!target)return;
 document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
 target.classList.add("active");
-
 document.querySelectorAll(".nav").forEach(n=>n.classList.remove("active"));
 
-if(btn&&btn.classList.contains("nav")){
-btn.classList.add("active");
-}else{
-const navs=document.querySelectorAll(".nav");
-navs.forEach(n=>{
-const text=n.getAttribute("onclick")||"";
-if(text.includes("'"+id+"'"))n.classList.add("active");
+if(btn&&btn.classList.contains("nav"))btn.classList.add("active");
+else document.querySelectorAll(".nav").forEach(n=>{
+if((n.getAttribute("onclick")||"").includes("'"+id+"'"))n.classList.add("active")
 });
-}
 
-if(useHistory&&navigationReady){
-history.pushState({nexusScreen:id},"","#"+id);
-}
-
+if(useHistory&&navigationReady)history.pushState({nexusScreen:id},"","#"+id);
 if(id==="profile")updateProfile();
 if(id==="leaderboard")loadLeaderboard();
 if(id==="results")loadResults();
-
 window.scrollTo({top:0,behavior:"smooth"});
 }
 
 function initializeNavigation(){
 const valid=["home","create","leaderboard","results","profile"];
 let h=location.hash.replace("#","");
-
 if(!valid.includes(h))h="home";
-
 history.replaceState({nexusScreen:h},"","#"+h);
-navigationReady=true;
-showScreen(h,null,false);
+navigationReady=true;showScreen(h,null,false);
 }
 
 window.addEventListener("popstate",()=>{
 const valid=["home","create","leaderboard","results","profile"];
 let h=location.hash.replace("#","");
-
 if(!valid.includes(h))h="home";
-
 showScreen(h,null,false);
 });
 
 async function logout(){
-try{
-if(db)await db.auth.signOut();
-}catch(e){
-console.error(e);
-}
-
-session=null;
-profile=null;
-decisions=[];
-
-$("main").style.display="none";
-$("auth").style.display="flex";
-
-loginView();
+try{if(db)await db.auth.signOut()}catch(e){console.error(e)}
+session=null;profile=null;decisions=[];
+$("main").style.display="none";$("auth").style.display="flex";loginView();
 }
 
 (async function(){
 setLanguage(language);
-
-const ok=initSupabase();
-if(!ok)return;
+const ok=initSupabase();if(!ok)return;
 
 try{
 const r=await db.auth.getSession();
-
-if(r.error){
-console.error(r.error);
-authmsg("Supabase oturumu okunamadı. Lütfen sayfayı yenileyin.");
-return;
-}
+if(r.error){console.error(r.error);authmsg("Supabase oturumu okunamadı. Lütfen sayfayı yenileyin.");return}
 
 if(r.data?.session){
 session=r.data.session;
-
-try{
-await ensureProfile(session.user);
-await start();
-}catch(e){
-console.error(e);
-$("auth").style.display="flex";
-$("main").style.display="none";
-authmsg(e.message);
-}
+try{await ensureProfile(session.user);await start()}
+catch(e){console.error(e);$("auth").style.display="flex";$("main").style.display="none";authmsg(e.message)}
 }
 
-db.auth.onAuthStateChange(async(_event,newSession)=>{
+db.auth.onAuthStateChange((_event,newSession)=>{
+if(newSession&&(!session||session.user.id!==newSession.user.id)){
 session=newSession;
-
-if(!newSession){
-profile=null;
-$("main").style.display="none";
-$("auth").style.display="flex";
-loginView();
+setTimeout(async()=>{
+try{await ensureProfile(newSession.user);await start()}
+catch(e){console.error(e);authmsg(e.message)}
+},0);
+}else if(!newSession){
+session=null;profile=null;$("main").style.display="none";$("auth").style.display="flex";loginView();
 }
 });
-
-}catch(e){
-console.error(e);
-authmsg("Supabase bağlantısı kurulamadı. Sayfayı yenileyip tekrar deneyin.");
-}
+}catch(e){console.error(e);authmsg("Supabase bağlantısı kurulamadı. Sayfayı yenileyip tekrar deneyin.")}
 })();
 </script>
-
 </body>
-   </html>
+                                     </html>
